@@ -5,30 +5,11 @@ jQuery(document).ready(function($) {
 	}
 
 	if(rlArgs.script === 'swipebox') {
-		$('a[rel="'+rlArgs.selector+'"]').swipebox({
+		$('a[rel*="'+rlArgs.selector+'"]').swipebox({
 			useCSS: rlArgs.animation,
 			hideBarsDelay: (rlArgs.hideBars === '1' ? parseInt(rlArgs.hideBarsDelay) : 0),
+			videoMaxWidth: parseInt(rlArgs.videoMaxWidth)
 		});
-
-		if(rlArgs.activeGalleries === '1') {
-			var rlGalleriesArr = new Array();
-
-			jQuery.each($('a').filter(function() {
-				return this.rel.match(new RegExp(rlArgs.selector+'\\[gallery-\\d+\\]'));
-			}), function(i) {
-				rlGalleriesArr[i] = $(this).attr('rel');
-			});
-
-			var rlUniqueGalleriesArr = rlGalleriesArr.filter(rlUniqueArr);
-
-			for(var i = 0; i < rlUniqueGalleriesArr.length; i++)
-			{
-				$('a[rel="'+rlUniqueGalleriesArr[i]+'"]').swipebox({
-					useCSS: rlArgs.animation,
-					hideBarsDelay: (rlArgs.hideBars === '1' ? parseInt(rlArgs.hideBarsDelay) : 0),
-				});
-			}
-		}
 	} else {
 		$('a[rel*="'+rlArgs.selector+'"]').prettyPhoto({
 			animation_speed: rlArgs.animationSpeed,

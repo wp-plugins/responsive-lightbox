@@ -27,6 +27,7 @@ class Responsive_Lightbox
 			'script' => 'swipebox',
 			'selector' => 'lightbox',
 			'galleries' => TRUE,
+			'videos' => TRUE,
 			'image_links' => TRUE,
 			'deactivation_delete' => FALSE
 		),
@@ -39,8 +40,8 @@ class Responsive_Lightbox
 				'opacity' => 75,
 				'show_title' => TRUE,
 				'allow_resize' => TRUE,
-				'width' => 600,
-				'height' => 360,
+				'width' => 1080,
+				'height' => 720,
 				'separator' => '/',
 				'theme' => 'pp_default',
 				'horizontal_padding' => 20,
@@ -56,15 +57,14 @@ class Responsive_Lightbox
 			'swipebox' => array(
 				'animation' => 'css',
 				'hide_bars' => TRUE,
-				'hide_bars_delay' => 5000
+				'hide_bars_delay' => 5000,
+				'video_max_width' => 1080
 			)
 		)
 	);
 	private $scripts = array();
 	private $options = array();
-	private $selectors = array();
 	private $tabs = array();
-	private $galleries = array();
 	private $gallery_no = 0;
 
 
@@ -74,6 +74,13 @@ class Responsive_Lightbox
 		register_deactivation_hook(__FILE__, array(&$this, 'deactivation'));
 
 		$this->options = array_merge(array('settings' => get_option('rl_settings')), array('configuration' => get_option('rl_configuration')));
+
+		//updates from 1.0.0 to 1.0.1
+		if(!isset($this->options['configuration']['swipebox']['video_max_width']))
+			$this->options['configuration']['swipebox']['video_max_width'] = $this->defaults['configuration']['swipebox']['video_max_width'];
+
+		if(!isset($this->options['settings']['videos']))
+			$this->options['settings']['videos'] = $this->defaults['settings']['videos'];
 
 		//actions
 		add_action('plugins_loaded', array(&$this, 'load_textdomain'));
@@ -89,14 +96,137 @@ class Responsive_Lightbox
 		add_filter('post_gallery', array(&$this, 'gallery_attributes'), 1000);
 
 		if($this->options['settings']['galleries'] === TRUE)
-		{
 			add_filter('wp_get_attachment_link', array(&$this, 'add_gallery_lightbox_selector'), 1000, 6);
-		}
+
+		if($this->options['settings']['videos'] === TRUE)
+			add_filter('the_content', array(&$this, 'add_videos_lightbox_selector'));
 
 		if($this->options['settings']['image_links'] === TRUE)
+			add_filter('the_content', array(&$this, 'add_links_lightbox_selector'));
+	}
+
+
+	public function add_videos_lightbox_selector($content)
+	{
+		preg_match_all('/<a(.*?)href=(?:\'|")(http:\/\/(?:www\.)?((youtube\.com\/watch\?v=[a-z0-9]{11})|(vimeo\.com\/[0-9]{8,})))(?:\'|")(.*?)>/i', $content, $links);
+
+		if(isset($links[0]))
 		{
-			add_filter('image_send_to_editor', array(&$this, 'add_links_lightbox_selector'), 1000);
+			foreach($links[0] as $id => $link)
+			{
+				$found = FALSE;
+				$rel_a = '';
+
+				if(preg_match('/<a.*?rel=(?:\'|")(.*?)(?:\'|").*?>/', $link, $result) === 1)
+				{
+					if(isset($result[1]))
+					{
+						$number = '';
+						$rel_a = $result[1];
+						$rels = explode(' ', $result[1]);
+
+						foreach($rels as $no => $rel)
+						{
+							if($rel === $this->options['settings']['selector'])
+							{
+								$number = $no;
+								$found = TRUE;
+								break;
+							}
+						}
+
+						if($number !== '')
+						{
+							$rels[$number] = $this->options['settings']['selector'].'-video-'.$id;
+						}
+
+						$rel_a = implode(' ', $rels);
+					}
+				}
+
+				if($found === TRUE)
+				{
+					$lightbox = '';
+
+					if(preg_match('/.*?rel=(?:\'|")(.*?)(?:\'|").*?/', $links[1][$id]) === 1)
+					{
+						$links[1][$id] = 'rel="'.$rel_a.'"';
+					}
+					elseif(preg_match('/.*?rel=(?:\'|")(.*?)(?:\'|").*?/', $links[6][$id]) === 1)
+					{
+						$links[6][$id] = 'rel="'.$rel_a.'"';
+					}
+				}
+				else
+					$lightbox = ' rel="'.($rel_a !== '' ? $rel_a.' ' : '').$this->options['settings']['selector'].'-video-'.$id.'"';
+
+				$content = str_replace($link, '<a'.$links[1][$id].'href="'.$links[2][$id].'"'.$lightbox.$links[6][$id].'>', $content);
+			}
 		}
+
+		return $content;
+	}
+
+
+	public function add_links_lightbox_selector($content)
+	{
+		preg_match_all('/<a(.*?)href=(?:\'|")(.*?).(bmp|gif|jpeg|jpg|png)(?:\'|")(.*?)>/i', $content, $links);
+
+		if(isset($links[0]))
+		{
+			foreach($links[0] as $id => $link)
+			{
+				$found = FALSE;
+				$rel_a = '';
+
+				if(preg_match('/<a.*?rel=(?:\'|")(.*?)(?:\'|").*?>/', $link, $result) === 1)
+				{
+					if(isset($result[1]))
+					{
+						$number = '';
+						$rel_a = $result[1];
+						$rels = explode(' ', $result[1]);
+
+						foreach($rels as $no => $rel)
+						{
+							if($rel === $this->options['settings']['selector'])
+							{
+								$number = $no;
+								$found = TRUE;
+								break;
+							}
+						}
+
+						if($number !== '')
+						{
+							$rels[$number] = $this->options['settings']['selector'].'-'.$id;
+						}
+
+						$rel_a = implode(' ', $rels);
+					}
+				}
+
+				if($found === TRUE)
+				{
+					$lightbox = '';
+
+					if(preg_match('/.*?rel=(?:\'|")(.*?)(?:\'|").*?/', $links[1][$id]) === 1)
+					{
+						$links[1][$id] = 'rel="'.$rel_a.'"';
+					}
+					elseif(preg_match('/.*?rel=(?:\'|")(.*?)(?:\'|").*?/', $links[4][$id]) === 1)
+					{
+						$links[4][$id] = 'rel="'.$rel_a.'"';
+					}
+				}
+				else
+					$lightbox = ' rel="'.($rel_a !== '' ? $rel_a.' ' : '').$this->options['settings']['selector'].'-'.$id.'"';
+
+				$content = str_replace($link, '<a'.$links[1][$id].'href="'.$links[2][$id].'.'.$links[3][$id].'"'.$lightbox.$links[4][$id].'>', $content);
+			}
+		}
+
+		return $content;
 	}
 
 
@@ -113,12 +243,6 @@ class Responsive_Lightbox
 		$link = (preg_match('/<a.*? rel=("|\').*?("|\')>/', $link) === 1 ? preg_replace('/(<a.*? rel=(?:"|\').*?)((?:"|\').*?>)/', '$1 '.$this->options['settings']['selector'].'[gallery-'.$this->gallery_no.']'.'$2', $link) : preg_replace('/(<a.*?)>/', '$1 rel="'.$this->options['settings']['selector'].'[gallery-'.$this->gallery_no.']'.'">', $link));
 
 		return (preg_match('/<a.*? href=("|\').*?("|\')>/', $link) === 1 ? preg_replace('/(<a.*? href=(?:"|\')).*?((?:"|\').*?>)/', '$1'.wp_get_attachment_url($id).'$2', $link) : preg_replace('/(<a.*?)>/', '$1 href="'.wp_get_attachment_url($id).'">', $link));
-	}
-
-
-	public function add_links_lightbox_selector($link)
-	{
-		return (preg_match('/<a.*? rel=".*?">/', $link) === 1 ? preg_replace('/(<a.*? rel=".*?)(".*?>)/', '$1 '.$this->options['settings']['selector'].'$2', $link) : preg_replace('/(<a.*?)>/', '$1 rel="'.$this->options['settings']['selector'].'">', $link));
 	}
 
 
@@ -156,11 +280,6 @@ class Responsive_Lightbox
 					'jquery' => __('jQuery', 'responsive-lightbox')
 				)
 			)
-		);
-
-		$this->selectors = array(
-			'rel' => __('rel', 'responsive-lightbox'),
-			'class' => __('class', 'responsive-lightbox')
 		);
 
 		$this->choices = array(
@@ -210,6 +329,7 @@ class Responsive_Lightbox
 		add_settings_field('rl_script', __('Lightbox script', 'responsive-lightbox'), array(&$this, 'rl_script'), 'rl_settings', 'rl_settings');
 		add_settings_field('rl_selector', __('Selector', 'responsive-lightbox'), array(&$this, 'rl_selector'), 'rl_settings', 'rl_settings');
 		add_settings_field('rl_galleries', __('Galleries', 'responsive-lightbox'), array(&$this, 'rl_galleries'), 'rl_settings', 'rl_settings');
+		add_settings_field('rl_videos', __('Video links', 'responsive-lightbox'), array(&$this, 'rl_videos'), 'rl_settings', 'rl_settings');
 		add_settings_field('rl_image_links', __('Image links', 'responsive-lightbox'), array(&$this, 'rl_image_links'), 'rl_settings', 'rl_settings');
 		add_settings_field('rl_deactivation_delete', __('Deactivation', 'responsive-lightbox'), array(&$this, 'rl_deactivation_delete'), 'rl_settings', 'rl_settings');
 
@@ -221,6 +341,7 @@ class Responsive_Lightbox
 		{
 			add_settings_field('rl_sw_animation', __('Animation type', 'responsive-lightbox'), array(&$this, 'rl_sw_animation'), 'rl_configuration', 'rl_configuration');
 			add_settings_field('rl_sw_hide_bars', __('Top and bottom bars', 'responsive-lightbox'), array(&$this, 'rl_sw_hide_bars'), 'rl_configuration', 'rl_configuration');
+			add_settings_field('rl_video_max_width', __('Enter the max width of videos in a lightbox', 'responsive-lightbox'), array(&$this, 'rl_video_max_width'), 'rl_configuration', 'rl_configuration');
 		}
 		elseif($this->options['settings']['script'] === 'prettyphoto')
 		{
@@ -230,8 +351,8 @@ class Responsive_Lightbox
 			add_settings_field('rl_pp_opacity', __('Opacity', 'responsive-lightbox'), array(&$this, 'rl_pp_opacity'), 'rl_configuration', 'rl_configuration');
 			add_settings_field('rl_pp_title', __('Show title', 'responsive-lightbox'), array(&$this, 'rl_pp_title'), 'rl_configuration', 'rl_configuration');
 			add_settings_field('rl_pp_allow_resize', __('Allow resize big images', 'responsive-lightbox'), array(&$this, 'rl_pp_allow_resize'), 'rl_configuration', 'rl_configuration');
-			add_settings_field('rl_pp_width', __('Width', 'responsive-lightbox'), array(&$this, 'rl_pp_width'), 'rl_configuration', 'rl_configuration');
-			add_settings_field('rl_pp_height', __('Height', 'responsive-lightbox'), array(&$this, 'rl_pp_height'), 'rl_configuration', 'rl_configuration');
+			add_settings_field('rl_pp_width', __('Video width', 'responsive-lightbox'), array(&$this, 'rl_pp_width'), 'rl_configuration', 'rl_configuration');
+			add_settings_field('rl_pp_height', __('Video height', 'responsive-lightbox'), array(&$this, 'rl_pp_height'), 'rl_configuration', 'rl_configuration');
 			add_settings_field('rl_pp_theme', __('Theme', 'responsive-lightbox'), array(&$this, 'rl_pp_theme'), 'rl_configuration', 'rl_configuration');
 			add_settings_field('rl_pp_horizontal_padding', __('Horizontal padding', 'responsive-lightbox'), array(&$this, 'rl_pp_horizontal_padding'), 'rl_configuration', 'rl_configuration');
 			add_settings_field('rl_pp_hide_flash', __('Hide Flash', 'responsive-lightbox'), array(&$this, 'rl_pp_hide_flash'), 'rl_configuration', 'rl_configuration');
@@ -288,6 +409,24 @@ class Responsive_Lightbox
 
 		echo '
 			<p class="description">'.__('Add lightbox to WordPress image galleries by default', 'responsive-lightbox').'</p>
+		</div>';
+	}
+
+
+	public function rl_videos()
+	{
+		echo '
+		<div id="rl_videos">';
+
+		foreach($this->choices as $val => $trans)
+		{
+			echo '
+			<input id="rl-videos-'.$val.'" type="radio" name="rl_settings[videos]" value="'.$val.'" '.checked(($val === 'yes' ? TRUE : FALSE), $this->options['settings']['videos'], FALSE).' />
+			<label for="rl-videos-'.$val.'">'.$trans.'</label>';
+		}
+
+		echo '
+			<p class="description">'.__('Add lightbox to YouTube and Vimeo video links by default', 'responsive-lightbox').'</p>
 		</div>';
 	}
 
@@ -364,6 +503,16 @@ class Responsive_Lightbox
 		<div id="rl_sw_hide_bars_delay"'.($this->options['configuration']['swipebox']['hide_bars'] === FALSE ? ' style="display: none;"' : '').'>
 			<input type="text" name="rl_configuration[swipebox][hide_bars_delay]" value="'.$this->options['configuration']['swipebox']['hide_bars_delay'].'" />
 			<p class="description">'.__('Enter the time for images animation (in miliseconds)', 'responsive-lightbox').'</p>
+		</div>';
+	}
+
+
+	public function rl_video_max_width()
+	{
+		echo '
+		<div id="rl_video_max_width">
+			<input type="text" name="rl_configuration[swipebox][video_max_width]" value="'.$this->options['configuration']['swipebox']['video_max_width'].'" />
+			<p class="description">'.__('Video max width', 'responsive-lightbox').'</p>
 		</div>';
 	}
 
@@ -679,6 +828,7 @@ class Responsive_Lightbox
 
 			//checkboxes
 			$input['galleries'] = (isset($input['galleries']) && in_array($input['galleries'], array_keys($this->choices)) ? ($input['galleries'] === 'yes' ? TRUE : FALSE) : $this->options['settings']['galleries']);
+			$input['videos'] = (isset($input['videos']) && in_array($input['videos'], array_keys($this->choices)) ? ($input['videos'] === 'yes' ? TRUE : FALSE) : $this->options['settings']['videos']);
 			$input['image_links'] = (isset($input['image_links']) && in_array($input['image_links'], array_keys($this->choices)) ? ($input['image_links'] === 'yes' ? TRUE : FALSE) : $this->options['settings']['image_links']);
 			$input['deactivation_delete'] = (isset($input['deactivation_delete']) && in_array($input['deactivation_delete'], array_keys($this->choices)) ? ($input['deactivation_delete'] === 'yes' ? TRUE : FALSE) : $this->options['settings']['deactivation_delete']);
 		}
@@ -692,6 +842,7 @@ class Responsive_Lightbox
 				//hide bars
 				$input['swipebox']['hide_bars'] = (isset($input['swipebox']['hide_bars']) && in_array($input['swipebox']['hide_bars'], array_keys($this->choices)) ? ($input['swipebox']['hide_bars'] === 'yes' ? TRUE : FALSE) : $this->options['configuration']['swipebox']['hide_bars']);
 				$input['swipebox']['hide_bars_delay'] = (int)($input['swipebox']['hide_bars_delay'] > 0 ? $input['swipebox']['hide_bars_delay'] : $this->options['configuration']['swipebox']['hide_bars_delay']);
+				$input['swipebox']['video_max_width'] = (int)($input['swipebox']['video_max_width'] > 0 ? $input['swipebox']['video_max_width'] : $this->options['configuration']['swipebox']['video_max_width']);
 			}
 			elseif($this->options['settings']['script'] === 'prettyphoto' && $_POST['script_r'] === 'prettyphoto')
 			{
@@ -950,7 +1101,8 @@ class Responsive_Lightbox
 				array(
 					'animation' => ($this->options['configuration']['swipebox']['animation'] === 'css' ? TRUE : FALSE),
 					'hideBars' => $this->getBooleanValue($this->options['configuration']['swipebox']['hide_bars']),
-					'hideBarsDelay' => $this->options['configuration']['swipebox']['hide_bars_delay']
+					'hideBarsDelay' => $this->options['configuration']['swipebox']['hide_bars_delay'],
+					'videoMaxWidth' => $this->options['configuration']['swipebox']['video_max_width']
 				)
 			);
 		}
