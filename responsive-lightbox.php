@@ -1,8 +1,8 @@
 <?php
 /*
 Plugin Name: Responsive Lightbox
-Description: Responsive Lightbox allows users to view larger versions of images and galleries in a lightbox (overaly) effect optimized for mobile devices.
-Version: 1.0.0
+Description: Responsive Lightbox allows users to view larger versions of images and galleries in a lightbox (overlay) effect optimized for mobile devices.
+Version: 1.0.1
 Author: dFactory
 Author URI: http://www.dfactory.eu/
 Plugin URI: http://www.dfactory.eu/plugins/responsive-lightbox/
@@ -341,7 +341,7 @@ class Responsive_Lightbox
 		{
 			add_settings_field('rl_sw_animation', __('Animation type', 'responsive-lightbox'), array(&$this, 'rl_sw_animation'), 'rl_configuration', 'rl_configuration');
 			add_settings_field('rl_sw_hide_bars', __('Top and bottom bars', 'responsive-lightbox'), array(&$this, 'rl_sw_hide_bars'), 'rl_configuration', 'rl_configuration');
-			add_settings_field('rl_video_max_width', __('Enter the max width of videos in a lightbox', 'responsive-lightbox'), array(&$this, 'rl_video_max_width'), 'rl_configuration', 'rl_configuration');
+			add_settings_field('rl_video_max_width', __('Video max width', 'responsive-lightbox'), array(&$this, 'rl_video_max_width'), 'rl_configuration', 'rl_configuration');
 		}
 		elseif($this->options['settings']['script'] === 'prettyphoto')
 		{
@@ -512,7 +512,7 @@ class Responsive_Lightbox
 		echo '
 		<div id="rl_video_max_width">
 			<input type="text" name="rl_configuration[swipebox][video_max_width]" value="'.$this->options['configuration']['swipebox']['video_max_width'].'" />
-			<p class="description">'.__('Video max width', 'responsive-lightbox').'</p>
+			<p class="description">'.__('Enter the max video width in a lightbox', 'responsive-lightbox').'</p>
 		</div>';
 	}
 
