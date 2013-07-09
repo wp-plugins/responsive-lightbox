@@ -1,10 +1,10 @@
 === Responsive Lightbox ===
 Contributors: dfactory
 Donate link: http://www.dfactory.eu/
-Tags: gallery, images, lightbox, links, photos, template, theme, lightbox, photo, image, picture, slideshow, modal, overlay, YouTube, Vimeo, video, videos
+Tags: gallery, images, lightbox, links, photos, template, theme, photo, image, picture, slideshow, modal, overlay, YouTube, Vimeo, video, videos
 Requires at least: 3.3
 Tested up to: 3.5.2
-Stable tag: 1.0.1
+Stable tag: 1.0.1.1
 License: MIT License
 License URI: http://opensource.org/licenses/MIT
 
@@ -34,9 +34,9 @@ For more information, check out plugin page at [dFactory](http://www.dfactory.eu
 
 == Installation ==
 
-1. Install Responsive Lightbox either via the WordPress.org plugin directory, or by uploading the files to your server</li>
-1. Activate the plugin through the 'Plugins' menu in WordPress</li>
-1. Go to the Responsive Lightbox settings and set your desired options.</li>
+1. Install Responsive Lightbox either via the WordPress.org plugin directory, or by uploading the files to your server
+2. Activate the plugin through the 'Plugins' menu in WordPress
+3. Go to the Responsive Lightbox settings and set your desired options.
 
 == Frequently Asked Questions ==
 
@@ -53,6 +53,7 @@ No questions yet.
 * New: Support for video links (YouTube and Vimeo)
 * New: Added Polish translation
 * New: Added Persian translation by Ali Mirzaei
+* Tweak: SwipeBox script updated
 * Tweak: Changed method of applying lightbox rel attribute to single images
 
 = 1.0.0 =
@@ -60,5 +61,5 @@ Initial release
 
 == Upgrade Notice ==
 
-= 1.0.1 =
+= 1.0.1.1 =
 New: Support for video links (YouTube and Vimeo), Polish and Persian translations
