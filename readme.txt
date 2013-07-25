@@ -28,7 +28,7 @@ For more information, check out plugin page at [dFactory](http://www.dfactory.eu
 
 = Translations: =
 
-* Polish
+* Polish - by Bartosz Arendt
 * Persian - by Ali Mirzaei
 
 

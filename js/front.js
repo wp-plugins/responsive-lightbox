@@ -1,16 +1,12 @@
 jQuery(document).ready(function($) {
 
-	function rlUniqueArr(v, i, s) {
-		return s.indexOf(v) === i;
-	}
-
 	if(rlArgs.script === 'swipebox') {
 		$('a[rel*="'+rlArgs.selector+'"]').swipebox({
 			useCSS: rlArgs.animation,
 			hideBarsDelay: (rlArgs.hideBars === '1' ? parseInt(rlArgs.hideBarsDelay) : 0),
 			videoMaxWidth: parseInt(rlArgs.videoMaxWidth)
 		});
-	} else {
+	} else if(rlArgs.script === 'prettyphoto') {
 		$('a[rel*="'+rlArgs.selector+'"]').prettyPhoto({
 			animation_speed: rlArgs.animationSpeed,
 			slideshow: (rlArgs.slideshow === '1' ? parseInt(rlArgs.slideshowDelay) : false),
