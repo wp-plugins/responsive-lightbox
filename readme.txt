@@ -4,7 +4,7 @@ Donate link: http://www.dfactory.eu/
 Tags: gallery, images, lightbox, links, photos, template, theme, photo, image, picture, slideshow, modal, overlay, YouTube, Vimeo, video, videos
 Requires at least: 3.3
 Tested up to: 3.5.2
-Stable tag: 1.0.1.1
+Stable tag: 1.0.2
 License: MIT License
 License URI: http://opensource.org/licenses/MIT
 
@@ -22,14 +22,16 @@ For more information, check out plugin page at [dFactory](http://www.dfactory.eu
 * Automatically add lightbox to WordPress image galleries
 * Automatically add lightbox to WordPress image links
 * Automatically add lightbox to WordPress video links (YouTube, Vimeo)
+* Option to display single post images as a gallery
 * Enter a selector for lightbox
 * Highly customizable settings for each of the lightbox scripts
 * .pot file for translations included
 
 = Translations: =
 
+* French - by [Li-An](http://www.echodesplugins.li-an.fr/)
+* Persian - by [Ali Mirzaei](http://alimir.ir/)
 * Polish - by Bartosz Arendt
-* Persian - by Ali Mirzaei
 
 
 == Installation ==
@@ -49,6 +51,11 @@ No questions yet.
 
 == Changelog ==
 
+= 1.0.2 =
+* New: Option to display single post images as a gallery
+* New: Added French translation by Li-An
+* Tweak: Rewritten regex for selector
+
 = 1.0.1 =
 * New: Support for video links (YouTube and Vimeo)
 * New: Added Polish translation
@@ -61,5 +68,5 @@ Initial release
 
 == Upgrade Notice ==
 
-= 1.0.1.1 =
-New: Support for video links (YouTube and Vimeo), Polish and Persian translations
+= 1.0.2 =
+New: Option to display single post images as a gallery, French translation
