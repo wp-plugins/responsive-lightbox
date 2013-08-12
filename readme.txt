@@ -3,8 +3,8 @@ Contributors: dfactory
 Donate link: http://www.dfactory.eu/
 Tags: gallery, images, lightbox, links, photos, template, theme, photo, image, picture, slideshow, modal, overlay, YouTube, Vimeo, video, videos
 Requires at least: 3.3
-Tested up to: 3.5.2
-Stable tag: 1.0.2
+Tested up to: 3.6
+Stable tag: 1.0.3
 License: MIT License
 License URI: http://opensource.org/licenses/MIT
 
@@ -29,6 +29,7 @@ For more information, check out plugin page at [dFactory](http://www.dfactory.eu
 
 = Translations: =
 
+* Czech - by Vaclav Hnilicka
 * French - by [Li-An](http://www.echodesplugins.li-an.fr/)
 * Persian - by [Ali Mirzaei](http://alimir.ir/)
 * Polish - by Bartosz Arendt
@@ -51,6 +52,11 @@ No questions yet.
 
 == Changelog ==
 
+= 1.0.3 =
+* New: Added Czech translation, thanks to Vaclav Hnilicka
+* Tweak: Small UI enhancements
+* Tweak: Changed SwipeBox Top and Bottom bars options description
+
 = 1.0.2 =
 * New: Option to display single post images as a gallery
 * New: Added French translation by Li-An
@@ -68,5 +74,5 @@ Initial release
 
 == Upgrade Notice ==
 
-= 1.0.2 =
-New: Option to display single post images as a gallery, French translation
+= 1.0.3 =
+New: Added Czech translation by Vaclav Hnilicka, Small UI enhancements

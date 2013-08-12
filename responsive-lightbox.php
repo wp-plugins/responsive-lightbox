@@ -2,7 +2,7 @@
 /*
 Plugin Name: Responsive Lightbox
 Description: Responsive Lightbox allows users to view larger versions of images and galleries in a lightbox (overlay) effect optimized for mobile devices.
-Version: 1.0.2
+Version: 1.0.3
 Author: dFactory
 Author URI: http://www.dfactory.eu/
 Plugin URI: http://www.dfactory.eu/plugins/responsive-lightbox/
@@ -482,11 +482,11 @@ class Responsive_Lightbox
 		}
 
 		echo '
-			<p class="description">'.__('Disable if you don\'t want to display top and bottom bars.', 'responsive-lightbox').'</p>
-		</div>class="wplikebtns"
+			<p class="description">'.__('Disable if you don\'t want to top and bottom bars to be hidden after a period of time.', 'responsive-lightbox').'</p>
+		</div>
 		<div id="rl_sw_hide_bars_delay"'.($this->options['configuration']['swipebox']['hide_bars'] === FALSE ? ' style="display: none;"' : '').'>
 			<input type="text" name="rl_configuration[swipebox][hide_bars_delay]" value="'.$this->options['configuration']['swipebox']['hide_bars_delay'].'" />
-			<p class="description">'.__('Enter the time for images animation (in miliseconds)', 'responsive-lightbox').'</p>
+			<p class="description">'.__('Enter the time after which the top and bottom bars will be hidden (when hiding is enabled).', 'responsive-lightbox').'</p>
 		</div>';
 	}
 

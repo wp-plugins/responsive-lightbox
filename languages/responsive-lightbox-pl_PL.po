@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Responsive Lightbox\n"
-"POT-Creation-Date: 2013-07-25 10:58+0100\n"
-"PO-Revision-Date: 2013-07-25 10:59+0100\n"
+"POT-Creation-Date: 2013-08-12 10:19+0100\n"
+"PO-Revision-Date: 2013-08-12 10:19+0100\n"
 "Last-Translator: Bartosz Arendt <info@digitalfactory.pl>\n"
 "Language-Team: dFactory <info@dfactory.eu>\n"
 "Language: Polski\n"
@@ -248,12 +248,18 @@ msgid "Select a method of applying a lightbox effect."
 msgstr "Wybierz sposób dodawania efekty lightbox."
 
 #: ../responsive-lightbox.php:485
-msgid "Disable if you don't want to display top and bottom bars."
-msgstr "Wyłącz to, jeśli nie chcesz wyświetlać górnego i dolnego paska."
+msgid ""
+"Disable if you don't want to top and bottom bars to be hidden after a period "
+"of time."
+msgstr "Wyłącz to, jeśli nie chcesz ukrywać górnego i dolnego paska."
 
 #: ../responsive-lightbox.php:489
-msgid "Enter the time for images animation (in miliseconds)"
-msgstr "Podaj czas trwania animacji między obrazkami (w milisekundach)"
+msgid ""
+"Enter the time after which the top and bottom bars will be hidden (when "
+"hiding is enabled)."
+msgstr ""
+"Podaj czas po którym chcesz ukryć górny i dolny pasek (jeśli opcja ukrywania "
+"jest włączona)."
 
 #: ../responsive-lightbox.php:499
 msgid "Enter the max video width in a lightbox"
@@ -425,3 +431,6 @@ msgstr "Pomoc"
 #: ../responsive-lightbox.php:1156
 msgid "Settings"
 msgstr "Ustawienia"
+
+#~ msgid "Enter the time for images animation (in miliseconds)"
+#~ msgstr "Podaj czas trwania animacji między obrazkami (w milisekundach)"
