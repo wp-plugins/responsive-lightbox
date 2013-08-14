@@ -4,7 +4,7 @@ Donate link: http://www.dfactory.eu/
 Tags: gallery, images, lightbox, links, photos, template, theme, photo, image, picture, slideshow, modal, overlay, YouTube, Vimeo, video, videos
 Requires at least: 3.3
 Tested up to: 3.6
-Stable tag: 1.0.3
+Stable tag: 1.0.4
 License: MIT License
 License URI: http://opensource.org/licenses/MIT
 
@@ -52,6 +52,9 @@ No questions yet.
 
 == Changelog ==
 
+= 1.0.4 =
+* Fix: Changed regex for links to attachment pages, thanks to Darwin
+
 = 1.0.3 =
 * New: Added Czech translation, thanks to Vaclav Hnilicka
 * Tweak: Small UI enhancements
@@ -74,5 +77,5 @@ Initial release
 
 == Upgrade Notice ==
 
-= 1.0.3 =
-New: Added Czech translation by Vaclav Hnilicka, Small UI enhancements
+= 1.0.4 =
+Fix: Changed regex for links to attachment pages, thanks to Darwin
