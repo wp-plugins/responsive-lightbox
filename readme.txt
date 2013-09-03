@@ -4,7 +4,7 @@ Donate link: http://www.dfactory.eu/
 Tags: gallery, images, lightbox, links, photos, template, theme, photo, image, picture, slideshow, modal, overlay, YouTube, Vimeo, video, videos
 Requires at least: 3.3
 Tested up to: 3.6
-Stable tag: 1.0.4
+Stable tag: 1.1.0
 License: MIT License
 License URI: http://opensource.org/licenses/MIT
 
@@ -25,6 +25,7 @@ For more information, check out plugin page at [dFactory](http://www.dfactory.eu
 * Option to display single post images as a gallery
 * Enter a selector for lightbox
 * Highly customizable settings for each of the lightbox scripts
+* Multisite support
 * .pot file for translations included
 
 = Translations: =
@@ -52,6 +53,10 @@ No questions yet.
 
 == Changelog ==
 
+= 1.1.0 =
+* New: Multisite support
+* Fix: Notice during first plugin activation
+
 = 1.0.4 =
 * Fix: Changed regex for links to attachment pages, thanks to Darwin
 
@@ -77,5 +82,5 @@ Initial release
 
 == Upgrade Notice ==
 
-= 1.0.4 =
-Fix: Changed regex for links to attachment pages, thanks to Darwin
+= 1.1.0 =
+New: Multisite support
