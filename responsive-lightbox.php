@@ -38,7 +38,7 @@ class Responsive_Lightbox
 				'slideshow' => FALSE,
 				'slideshow_delay' => 5000,
 				'slideshow_autoplay' => FALSE,
-				'opacity' => 0.75,
+				'opacity' => 75,
 				'show_title' => TRUE,
 				'allow_resize' => TRUE,
 				'width' => 1080,
@@ -146,15 +146,11 @@ class Responsive_Lightbox
 							$content = str_replace($link, preg_replace('/rel=(?:\'|")(.*?)(?:\'|")/', 'rel="'.(!empty($new_rel) ? simplode(' ', $new_rels).' ' : '').$this->options['settings']['selector'].'-video-'.$id.'"', $link), $content);
 						}
 						else
-						{
 							$content = str_replace($link, preg_replace('/rel=(?:\'|")(.*?)(?:\'|")/', 'rel="'.($result[1] !== '' ? $result[1].' ' : '').$this->options['settings']['selector'].'-video-'.$id.'"', $link), $content);
-						}
 					}
 				}
 				else
-				{
 					$content = str_replace($link, '<a'.$links[1][$id].'href="'.$links[2][$id].'"'.$links[6][$id].' rel="'.$this->options['settings']['selector'].'-video-'.$id.'">', $content);
-				}
 			}
 		}
 
@@ -197,16 +193,12 @@ class Responsive_Lightbox
 								$content = str_replace($link, preg_replace('/rel=(?:\'|")(.*?)(?:\'|")/', 'rel="'.(!empty($new_rels) ? implode(' ', $new_rels).' ' : '').$this->options['settings']['selector'].'-'.$id.'"', $link), $content);
 							}
 							else
-							{
 								$content = str_replace($link, preg_replace('/rel=(?:\'|")(.*?)(?:\'|")/', 'rel="'.($result[1] !== '' ? $result[1].' ' : '').$this->options['settings']['selector'].'-'.$id.'"', $link), $content);
-							}
 						}
 					}
 				}
 				else
-				{
 					$content = str_replace($link, '<a'.$links[1][$id].'href="'.$links[2][$id].'.'.$links[3][$id].'"'.$links[4][$id].' rel="'.$this->options['settings']['selector'].($this->options['settings']['images_as_gallery'] === TRUE ? $rel_hash : '-'.$id).'">', $content);
-				}
 			}
 		}
 
@@ -646,8 +638,11 @@ class Responsive_Lightbox
 	{
 		echo '
 		<div>
-			<input type="text" name="responsive_lightbox_configuration[prettyphoto][opacity]" value="'.$this->options['configuration']['prettyphoto']['opacity'].'" />
-			<p class="description">'.__('Value between 0 and 1 (for e.g. 0.5)', 'responsive-lightbox').'</p>
+			<input type="text" id="rl_pp_opacity_input" class="hide-if-js" name="responsive_lightbox_configuration[prettyphoto][opacity]" value="'.$this->options['configuration']['prettyphoto']['opacity'].'" />
+			<div class="wplike-slider">
+				<span class="left hide-if-no-js">0</span><span class="middle" id="rl_pp_opacity_span"></span><span class="right hide-if-no-js">100</span>
+			</div>
+			<p class="description">'.__('Value between 0 and 100, 100 for no opacity', 'responsive-lightbox').'</p>
 		</div>';
 	}
 
@@ -925,6 +920,9 @@ class Responsive_Lightbox
 				//opacity
 				$input['prettyphoto']['opacity'] = (int)$input['prettyphoto']['opacity'];
 
+				if($input['prettyphoto']['opacity'] < 0 || $input['prettyphoto']['opacity'] > 100)
+					$input['prettyphoto']['opacity'] = $this->options['configuration']['prettyphoto']['opacity'];
+
 				//title
 				$input['prettyphoto']['show_title'] = (isset($input['prettyphoto']['show_title']) && in_array($input['prettyphoto']['show_title'], array_keys($this->choices)) ? ($input['prettyphoto']['show_title'] === 'yes' ? TRUE : FALSE) : $this->options['configuration']['prettyphoto']['show_title']);
 
@@ -1057,15 +1055,15 @@ class Responsive_Lightbox
 				<h3 class="metabox-title">'.__('Responsive Lightbox', 'responsive-lightbox').'</h3>
 				<div class="inner">
 					<h3>'.__('Need support?', 'responsive-lightbox').'</h3>
-					<p>'.__('If you are having problems with this plugin, please talk about them in the', 'responsive-lightbox').' <a href="http://dfactory.eu/support/" target="_blank" title="'.__('Support forum', 'responsive-lightbox').'">'.__('Support forum', 'responsive-lightbox').'</a></p>
+					<p>'.__('If you are having problems with this plugin, please talk about them in the', 'responsive-lightbox').' <a href="http://dfactory.eu/support/?utm_source=responsive-lightbox-settings&utm_medium=link&utm_campaign=support" target="_blank" title="'.__('Support forum', 'responsive-lightbox').'">'.__('Support forum', 'responsive-lightbox').'</a></p>
 					<hr />
 					<h3>'.__('Do you like this plugin?', 'responsive-lightbox').'</h3>
 					<p><a href="http://wordpress.org/support/view/plugin-reviews/responsive-lightbox" target="_blank" title="'.__('Rate it 5', 'responsive-lightbox').'">'.__('Rate it 5', 'responsive-lightbox').'</a> '.__('on WordPress.org', 'responsive-lightbox').'<br />'.
-					__('Blog about it & link to the', 'responsive-lightbox').' <a href="http://dfactory.eu/plugins/responsive-lightbox/" target="_blank" title="'.__('plugin page', 'responsive-lightbox').'">'.__('plugin page', 'responsive-lightbox').'</a><br />'.
-					__('Check out our other', 'responsive-lightbox').' <a href="http://dfactory.eu/plugins/" target="_blank" title="'.__('WordPress plugins', 'responsive-lightbox').'">'.__('WordPress plugins', 'responsive-lightbox').'</a>
+					__('Blog about it & link to the', 'responsive-lightbox').' <a href="http://dfactory.eu/plugins/responsive-lightbox/?utm_source=responsive-lightbox-settings&utm_medium=link&utm_campaign=blog-about" target="_blank" title="'.__('plugin page', 'responsive-lightbox').'">'.__('plugin page', 'responsive-lightbox').'</a><br />'.
+					__('Check out our other', 'responsive-lightbox').' <a href="http://dfactory.eu/plugins/responsive-lightbox/?utm_source=responsive-lightbox-settings&utm_medium=link&utm_campaign=other-plugins" target="_blank" title="'.__('WordPress plugins', 'responsive-lightbox').'">'.__('WordPress plugins', 'responsive-lightbox').'</a>
 					</p>            
 					<hr />
-					<p class="df-link">Created by <a href="http://www.dfactory.eu" target="_blank" title="dFactory - Quality plugins for WordPress"><img src="'.plugins_url('/images/logo-dfactory.png' , __FILE__ ).'" title="dFactory - Quality plugins for WordPress" alt="dFactory - Quality plugins for WordPress" /></a></p>
+					<p class="df-link">Created by <a href="http://www.dfactory.eu/?utm_source=responsive-lightbox-settings&utm_medium=link&utm_campaign=created-by" target="_blank" title="dFactory - Quality plugins for WordPress"><img src="'.plugins_url('/images/logo-dfactory.png' , __FILE__ ).'" title="dFactory - Quality plugins for WordPress" alt="dFactory - Quality plugins for WordPress" /></a></p>
 				</div>
 			</div>
 			<div class="clear"></div>
@@ -1075,19 +1073,20 @@ class Responsive_Lightbox
 
 	public function admin_comments_scripts_styles($page)
 	{
-		if(is_admin() && $page === 'settings_page_responsive-lightbox')
+		if($page === 'settings_page_responsive-lightbox')
 		{
 			wp_enqueue_script(
 				'responsive-lightbox-admin',
 				plugins_url('js/admin.js', __FILE__),
-				array('jquery', 'jquery-ui-core', 'jquery-ui-button')
+				array('jquery', 'jquery-ui-core', 'jquery-ui-button', 'jquery-ui-slider')
 			);
 
 			wp_localize_script(
 				'responsive-lightbox-admin',
 				'rlArgs',
 				array(
-					'resetScriptToDefaults' => __('Are you sure you want to reset scripts settings to defaults?', 'responsive-lightbox')
+					'resetScriptToDefaults' => __('Are you sure you want to reset scripts settings to defaults?', 'responsive-lightbox'),
+					'opacity' => $this->options['configuration']['prettyphoto']['opacity']
 				)
 			);
 

@@ -7,3 +7,6 @@
 .df-credits .inner { padding:15px 10px; }
 .df-credits .df-link { font-family: Georgia, "Times New Roman", "Bitstream Charter", Times, serif; font-style:italic; margin:0; }
 .df-credits .df-link a { vertical-align: middle; padding: 5px 0 0 4px; }
+.wplike-slider span.middle { width: 150px; }
+.wplike-slider span.left { margin-right: 10px; }
+.wplike-slider span.right { margin-left: 10px; }

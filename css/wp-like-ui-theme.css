@@ -655,7 +655,8 @@ button.ui-button::-moz-focus-inner { border: 0; padding: 0; } /* reset extra pad
 .ui-datepicker select.ui-datepicker-month-year {width: 100%;}
 .ui-datepicker select.ui-datepicker-month, 
 .ui-datepicker select.ui-datepicker-year { width: 49%;}
-.ui-datepicker table {width: 100%; font-size: .9em; border-collapse: collapse; margin:0 0 .4em; }
+.ui-datepicker table {width: 100%; font-size: .9em; border-collapse: collapse; margin:0 0 .4em; background:#fff; }
+.ui-datepicker.ui-widget-content { background:#fff; }
 .ui-datepicker th { padding: .7em .3em; text-align: center; font-weight: normal; border: 0;  }
 .ui-datepicker td { border: 0; padding: 1px; }
 .ui-datepicker td span, .ui-datepicker td a { display: block; padding: .2em; text-align: center; text-decoration: none; }
@@ -772,3 +773,10 @@ button.ui-button::-moz-focus-inner { border: 0; padding: 0; } /* reset extra pad
 	-moz-box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
 	box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
 }
+
+/* Time picker Addon */
+.ui-timepicker-div .ui-widget-header { position:relative; padding:.35em 0; border: none; border-bottom: 1px solid #dfdfdf; -moz-border-radius: 0; -webkit-border-radius: 0; border-radius: 0; }
+.ui-timepicker-div dl { padding:0 7px; }
+.ui-timepicker-div dl { border-collapse: collapse; font-size: 0.9em; }
+.ui_tpicker_hour_slider, .ui_tpicker_minute_slider { width:100%;}
+.ui-timepicker-div .ui-slider .ui-slider-handle { background: url("images/slider_handles.png") no-repeat scroll 0 0 transparent; border:none; }

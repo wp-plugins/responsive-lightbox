@@ -1,6 +1,16 @@
 jQuery(document).ready(function($) {
 
 	$('.wplikebtns').buttonset();
+	$('#rl_pp_opacity_span').slider({
+		value: rlArgs.opacity,
+		min: 0,
+		max: 100,
+		step: 1,
+		orientation: 'horizontal',
+		slide: function(e, ui) {
+			$('#rl_pp_opacity_input').attr('value', ui.value);
+		}
+	});
 
 	$(document).on('change', '#rl-slideshow-yes, #rl-slideshow-no', function(event) {
 		if($('#rl-slideshow-yes:checked').val() === 'yes') {
