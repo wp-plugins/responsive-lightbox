@@ -3,8 +3,8 @@ Contributors: dfactory
 Donate link: http://www.dfactory.eu/
 Tags: gallery, images, lightbox, links, photos, template, theme, photo, image, picture, slideshow, modal, overlay, YouTube, Vimeo, video, videos
 Requires at least: 3.3
-Tested up to: 3.6
-Stable tag: 1.1.0
+Tested up to: 3.6.1
+Stable tag: 1.1.1
 License: MIT License
 License URI: http://opensource.org/licenses/MIT
 
@@ -53,6 +53,9 @@ No questions yet.
 
 == Changelog ==
 
+= 1.1.1 =
+* Tweak: UI enhancements for prettyPhoto opacity
+
 = 1.1.0 =
 * New: Multisite support
 * Fix: Notice during first plugin activation
@@ -82,5 +85,6 @@ Initial release
 
 == Upgrade Notice ==
 
-= 1.1.0 =
-New: Multisite support
+
+= 1.1.1 =
+* Tweak: UI enhancements for prettyPhoto opacity
