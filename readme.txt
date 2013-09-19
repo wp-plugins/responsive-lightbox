@@ -32,6 +32,7 @@ For more information, check out plugin page at [dFactory](http://www.dfactory.eu
 
 * Czech - by Vaclav Hnilicka
 * French - by [Li-An](http://www.echodesplugins.li-an.fr/)
+* Japanese - by stranger-jp
 * Persian - by [Ali Mirzaei](http://alimir.ir/)
 * Polish - by Bartosz Arendt
 
@@ -52,6 +53,9 @@ No questions yet.
 2. screenshot-2.jpg
 
 == Changelog ==
+
+= 1.1.2 =
+* New: Japanese translation, thanks to stranger-jp
 
 = 1.1.1 =
 * Tweak: UI enhancements for prettyPhoto opacity
@@ -85,6 +89,5 @@ Initial release
 
 == Upgrade Notice ==
 
-
-= 1.1.1 =
-* Tweak: UI enhancements for prettyPhoto opacity
+= 1.1.2 =
+New: Japanese translation, thanks to stranger-jp
