@@ -4,7 +4,7 @@ Donate link: http://www.dfactory.eu/
 Tags: gallery, images, lightbox, links, photos, template, theme, photo, image, picture, slideshow, modal, overlay, YouTube, Vimeo, video, videos
 Requires at least: 3.3
 Tested up to: 3.6.1
-Stable tag: 1.1.2
+Stable tag: 1.2.0
 License: MIT License
 License URI: http://opensource.org/licenses/MIT
 
@@ -54,6 +54,11 @@ No questions yet.
 
 == Changelog ==
 
+= 1.2.0 =
+* New: Added FancyBox script
+* Tweak: UI enhancements for options
+* Tweak: Better YouTube video handling (including https protocol) 
+
 = 1.1.2 =
 * New: Japanese translation, thanks to stranger-jp
 
@@ -89,5 +94,5 @@ Initial release
 
 == Upgrade Notice ==
 
-= 1.1.2 =
-New: Japanese translation, thanks to stranger-jp
+= 1.2.0 =
+* New: Added FancyBox script
