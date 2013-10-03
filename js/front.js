@@ -31,5 +31,36 @@ jQuery(document).ready(function($) {
 			callback: function(){},
 			ie6_fallback: true
 		});
+	} else if(rlArgs.script === 'fancybox') {
+		$('a[rel*="'+rlArgs.selector+'"]').fancybox({
+			modal: (rlArgs.modal === '1' ? true : false),
+			overlayShow: (rlArgs.showOverlay === '1' ? true : false),
+			showCloseButton: (rlArgs.showCloseButton === '1' ? true : false),
+			enableEscapeButton: (rlArgs.enableEscapeButton === '1' ? true : false),
+			hideOnOverlayClick: (rlArgs.hideOnOverlayClick === '1' ? true : false),
+			hideOnContentClick: (rlArgs.hideOnContentClick === '1' ? true : false),
+			cyclic: (rlArgs.cyclic === '1' ? true : false),
+			showNavArrows: (rlArgs.showNavArrows === '1' ? true : false),
+			autoScale: (rlArgs.autoScale === '1' ? true : false),
+			scrolling: rlArgs.scrolling,
+			centerOnScroll: (rlArgs.centerOnScroll === '1' ? true : false),
+			opacity: (rlArgs.opacity === '1' ? true : false),
+			overlayOpacity: parseFloat(rlArgs.overlayOpacity / 100),
+			overlayColor: rlArgs.overlayColor,
+			titleShow: (rlArgs.titleShow === '1' ? true : false),
+			titlePosition: rlArgs.titlePosition,
+			transitionIn: rlArgs.transitions,
+			transitionOut: rlArgs.transitions,
+			easingIn: rlArgs.easings,
+			easingOut: rlArgs.easings,
+			speedIn: parseInt(rlArgs.speeds),
+			speedOut: parseInt(rlArgs.speeds),
+			changeSpeed: parseInt(rlArgs.changeSpeed),
+			changeFade: parseInt(rlArgs.changeFade),
+			padding: parseInt(rlArgs.padding),
+			margin: parseInt(rlArgs.margin),
+			width: parseInt(rlArgs.videoWidth),
+			height: parseInt(rlArgs.videoHeight)
+		});
 	}
 });
