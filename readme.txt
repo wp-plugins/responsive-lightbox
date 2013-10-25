@@ -3,7 +3,7 @@ Contributors: dfactory
 Donate link: http://www.dfactory.eu/
 Tags: gallery, images, lightbox, links, photos, template, theme, photo, image, picture, slideshow, modal, overlay, YouTube, Vimeo, video, videos
 Requires at least: 3.3
-Tested up to: 3.6.1
+Tested up to: 3.7
 Stable tag: 1.2.2
 License: MIT License
 License URI: http://opensource.org/licenses/MIT
@@ -35,6 +35,7 @@ For more information, check out plugin page at [dFactory](http://www.dfactory.eu
 * Japanese - by stranger-jp
 * Persian - by [Ali Mirzaei](http://alimir.ir/)
 * Polish - by Bartosz Arendt
+* Serbo-Croatian - by Borisa Djuraskovic
 
 
 == Installation ==
@@ -53,6 +54,9 @@ No questions yet.
 2. screenshot-2.jpg
 
 == Changelog ==
+
+= 1.2.3 =
+* New: Serbo-Croatian translation, thanks to Borisa Djuraskovic
 
 = 1.2.2 =
 * New: Option to force PNG icons in case of display problems
@@ -102,6 +106,5 @@ Initial release
 
 == Upgrade Notice ==
 
-= 1.2.2 =
-* New: Option to force PNG icons in case of display problems
-* Fix: Bug with video width not working in SwipeBox
+= 1.2.3 =
+* New: Serbo-Croatian translation, thanks to Borisa Djuraskovic
