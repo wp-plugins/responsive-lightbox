@@ -4,7 +4,7 @@ Donate link: http://www.dfactory.eu/
 Tags: gallery, images, lightbox, links, photos, template, theme, photo, image, picture, slideshow, modal, overlay, YouTube, Vimeo, video, videos
 Requires at least: 3.3
 Tested up to: 3.7
-Stable tag: 1.2.2
+Stable tag: 1.2.3
 License: MIT License
 License URI: http://opensource.org/licenses/MIT
 
