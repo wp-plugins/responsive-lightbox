@@ -4,7 +4,7 @@ Donate link: http://www.dfactory.eu/
 Tags: gallery, images, lightbox, links, photos, template, theme, photo, image, picture, slideshow, modal, overlay, YouTube, Vimeo, video, videos
 Requires at least: 3.3
 Tested up to: 3.7
-Stable tag: 1.2.3
+Stable tag: 1.3.0
 License: MIT License
 License URI: http://opensource.org/licenses/MIT
 
@@ -18,7 +18,7 @@ For more information, check out plugin page at [dFactory](http://www.dfactory.eu
 
 = Features include: =
 
-* Select from 3 responsive lightbox scripts (SwipeBox, prettyPhoto, FancyBox)
+* Select from 4 responsive lightbox scripts (SwipeBox, prettyPhoto, FancyBox, Nivo Lightbox)
 * Automatically add lightbox to WordPress image galleries
 * Automatically add lightbox to WordPress image links
 * Automatically add lightbox to WordPress video links (YouTube, Vimeo)
@@ -54,6 +54,10 @@ No questions yet.
 2. screenshot-2.jpg
 
 == Changelog ==
+
+= 1.3.0 =
+* New: Added Nivo Lightbox script
+* New: Option to reset plugin settings to defaults
 
 = 1.2.3 =
 * New: Serbo-Croatian translation, thanks to Borisa Djuraskovic
@@ -106,5 +110,6 @@ Initial release
 
 == Upgrade Notice ==
 
-= 1.2.3 =
-* New: Serbo-Croatian translation, thanks to Borisa Djuraskovic
+= 1.3.0 =
+* New: Added Nivo Lightbox script
+* New: Option to reset plugin settings to defaults
