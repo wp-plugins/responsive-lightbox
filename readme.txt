@@ -36,6 +36,7 @@ For more information, check out plugin page at [dFactory](http://www.dfactory.eu
 * Persian - by [Ali Mirzaei](http://alimir.ir/)
 * Polish - by Bartosz Arendt
 * Serbo-Croatian - by Borisa Djuraskovic
+* Spanish - by [Gaston](http://www.detodoynada.com.ar)
 
 
 == Installation ==
@@ -54,6 +55,10 @@ No questions yet.
 2. screenshot-2.jpg
 
 == Changelog ==
+
+= 1.3.1 =
+* New: Spanish translation, thanks to Gaston
+* Tweak: Japanese translation updated
 
 = 1.3.0 =
 * New: Added Nivo Lightbox script
@@ -110,6 +115,6 @@ Initial release
 
 == Upgrade Notice ==
 
-= 1.3.0 =
-* New: Added Nivo Lightbox script
-* New: Option to reset plugin settings to defaults
+= 1.3.1 =
+* New: Spanish translation, thanks to Gaston
+* Tweak: Japanese translation updated
