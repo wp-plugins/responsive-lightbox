@@ -3,8 +3,8 @@ Contributors: dfactory
 Donate link: http://www.dfactory.eu/
 Tags: gallery, images, lightbox, links, photos, template, theme, photo, image, picture, slideshow, modal, overlay, YouTube, Vimeo, video, videos
 Requires at least: 3.3
-Tested up to: 3.7
-Stable tag: 1.3.1
+Tested up to: 3.8
+Stable tag: 1.3.2
 License: MIT License
 License URI: http://opensource.org/licenses/MIT
 
@@ -32,10 +32,11 @@ For more information, check out plugin page at [dFactory](http://www.dfactory.eu
 
 * Czech - by Vaclav Hnilicka
 * French - by [Li-An](http://www.echodesplugins.li-an.fr/)
+* German - by [Andreas Reitberger](http://wdbase.de)
 * Japanese - by stranger-jp
 * Persian - by [Ali Mirzaei](http://alimir.ir/)
 * Polish - by Bartosz Arendt
-* Serbo-Croatian - by Borisa Djuraskovic
+* Serbo-Croatian - by [Borisa Djuraskovic](http://www.webhostinghub.com/)
 * Spanish - by [Gaston](http://www.detodoynada.com.ar)
 
 
@@ -55,6 +56,10 @@ No questions yet.
 2. screenshot-2.jpg
 
 == Changelog ==
+
+= 1.3.2 =
+* New: German translation, thanks to Andreas Reitberger
+* Tweak: Nivo Lightbox script updated
 
 = 1.3.1 =
 * New: Spanish translation, thanks to Gaston
@@ -115,6 +120,6 @@ Initial release
 
 == Upgrade Notice ==
 
-= 1.3.1 =
-* New: Spanish translation, thanks to Gaston
-* Tweak: Japanese translation updated
+= 1.3.2 =
+* Tweak: Nivo Lightbox script updated
+* New: German translation, thanks to Andreas Reitberger

@@ -75,7 +75,7 @@ jQuery(document).ready(function($) {
 			$('a[rel*="'+rlArgs.selector+'"]').nivoLightbox({
 				effect: rlArgs.effect,
 				keyboardNav: (rlArgs.keyboardNav === '1' ? true : false),
-				errorMessage: rlArgs.errorMessage,
+				errorMessage: rlArgs.errorMessage
 			});
 		}
 	});

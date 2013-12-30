@@ -2,12 +2,14 @@
 /*
 Plugin Name: Responsive Lightbox
 Description: Responsive Lightbox allows users to view larger versions of images and galleries in a lightbox (overlay) effect optimized for mobile devices.
-Version: 1.3.1
+Version: 1.3.2
 Author: dFactory
 Author URI: http://www.dfactory.eu/
 Plugin URI: http://www.dfactory.eu/plugins/responsive-lightbox/
 License: MIT License
 License URI: http://opensource.org/licenses/MIT
+Text Domain: responsive-lightbox
+Domain Path: /languages
 
 Responsive Lightbox
 Copyright (C) 2013, Digital Factory - info@digitalfactory.pl
@@ -95,7 +97,7 @@ class Responsive_Lightbox
 				'error_message' => 'The requested content cannot be loaded. Please try again later.'
 			)
 		),
-		'version' => '1.3.1'
+		'version' => '1.3.2'
 	);
 	private $scripts = array();
 	private $options = array();
@@ -1732,7 +1734,7 @@ class Responsive_Lightbox
 					<h3>'.__('Do you like this plugin?', 'responsive-lightbox').'</h3>
 					<p><a href="http://wordpress.org/support/view/plugin-reviews/responsive-lightbox" target="_blank" title="'.__('Rate it 5', 'responsive-lightbox').'">'.__('Rate it 5', 'responsive-lightbox').'</a> '.__('on WordPress.org', 'responsive-lightbox').'<br />'.
 					__('Blog about it & link to the', 'responsive-lightbox').' <a href="http://www.dfactory.eu/plugins/responsive-lightbox/?utm_source=responsive-lightbox-settings&utm_medium=link&utm_campaign=blog-about" target="_blank" title="'.__('plugin page', 'responsive-lightbox').'">'.__('plugin page', 'responsive-lightbox').'</a><br />'.
-					__('Check out our other', 'responsive-lightbox').' <a href="http://www.dfactory.eu/plugins/responsive-lightbox/?utm_source=responsive-lightbox-settings&utm_medium=link&utm_campaign=other-plugins" target="_blank" title="'.__('WordPress plugins', 'responsive-lightbox').'">'.__('WordPress plugins', 'responsive-lightbox').'</a>
+					__('Check out our other', 'responsive-lightbox').' <a href="http://www.dfactory.eu/?utm_source=responsive-lightbox-settings&utm_medium=link&utm_campaign=other-plugins" target="_blank" title="'.__('WordPress plugins', 'responsive-lightbox').'">'.__('WordPress plugins', 'responsive-lightbox').'</a>
 					</p>            
 					<hr />
 					<p class="df-link">Created by <a href="http://www.dfactory.eu/?utm_source=responsive-lightbox-settings&utm_medium=link&utm_campaign=created-by" target="_blank" title="dFactory - Quality plugins for WordPress"><img src="'.plugins_url('/images/logo-dfactory.png' , __FILE__ ).'" title="dFactory - Quality plugins for WordPress" alt="dFactory - Quality plugins for WordPress" /></a></p>
