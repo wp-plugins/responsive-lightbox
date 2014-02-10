@@ -2,7 +2,7 @@
 /*
 Plugin Name: Responsive Lightbox
 Description: Responsive Lightbox allows users to view larger versions of images and galleries in a lightbox (overlay) effect optimized for mobile devices.
-Version: 1.3.2
+Version: 1.3.3
 Author: dFactory
 Author URI: http://www.dfactory.eu/
 Plugin URI: http://www.dfactory.eu/plugins/responsive-lightbox/
@@ -32,7 +32,9 @@ class Responsive_Lightbox
 			'videos' => TRUE,
 			'image_links' => TRUE,
 			'images_as_gallery' => FALSE,
-			'deactivation_delete' => FALSE
+			'deactivation_delete' => FALSE,
+			'enable_custom_events' => FALSE,
+			'custom_events' => 'ajaxComplete'
 		),
 		'configuration' => array(
 			'prettyphoto' => array(
@@ -97,7 +99,7 @@ class Responsive_Lightbox
 				'error_message' => 'The requested content cannot be loaded. Please try again later.'
 			)
 		),
-		'version' => '1.3.2'
+		'version' => '1.3.3'
 	);
 	private $scripts = array();
 	private $options = array();
@@ -161,7 +163,7 @@ class Responsive_Lightbox
 			add_filter('the_content', array(&$this, 'add_videos_lightbox_selector'));
 
 		if($this->options['settings']['image_links'] === TRUE || $this->options['settings']['images_as_gallery'] === TRUE)
-			add_filter('the_content', array(&$this, 'add_links_lightbox_selector'));
+			add_filter('the_content', array(&$this, 'add_links_lightbox_selector'), 30);
 	}
 
 
@@ -292,7 +294,6 @@ class Responsive_Lightbox
 					'direct' => __('direct', 'responsive-lightbox'),
 					'gpu' => __('gpu', 'responsive-lightbox')
 				)
-				
 			),
 			'swipebox' => array(
 				'name' => __('SwipeBox', 'responsive-lightbox'),
@@ -452,6 +453,7 @@ class Responsive_Lightbox
 		add_settings_field('rl_videos', __('Video links', 'responsive-lightbox'), array(&$this, 'rl_videos'), 'responsive_lightbox_settings', 'responsive_lightbox_settings');
 		add_settings_field('rl_image_links', __('Image links', 'responsive-lightbox'), array(&$this, 'rl_image_links'), 'responsive_lightbox_settings', 'responsive_lightbox_settings');
 		add_settings_field('rl_images_as_gallery', __('Single images as gallery', 'responsive-lightbox'), array(&$this, 'rl_images_as_gallery'), 'responsive_lightbox_settings', 'responsive_lightbox_settings');
+		add_settings_field('rl_enable_custom_events', __('Custom events', 'responsive-lightbox'), array(&$this, 'rl_enable_custom_events'), 'responsive_lightbox_settings', 'responsive_lightbox_settings');
 		add_settings_field('rl_deactivation_delete', __('Deactivation', 'responsive-lightbox'), array(&$this, 'rl_deactivation_delete'), 'responsive_lightbox_settings', 'responsive_lightbox_settings');
 
 		//configuration
@@ -547,6 +549,28 @@ class Responsive_Lightbox
 		<div id="rl_selector">
 			<input type="text" value="'.esc_attr($this->options['settings']['selector']).'" name="responsive_lightbox_settings[selector]" />
 			<p class="description">'.__('Select to which rel selector lightbox effect will be applied to.', 'responsive-lightbox').'</p>
+		</div>';
+	}
+
+
+	public function rl_enable_custom_events()
+	{
+		echo '
+		<div id="rl_enable_custom_events" class="wplikebtns">';
+
+		foreach($this->choices as $val => $trans)
+		{
+			echo '
+			<input id="rl-enable-custom-events-'.$val.'" type="radio" name="responsive_lightbox_settings[enable_custom_events]" value="'.esc_attr($val).'" '.checked(($val === 'yes' ? TRUE : FALSE), $this->options['settings']['enable_custom_events'], FALSE).' />
+			<label for="rl-enable-custom-events-'.$val.'">'.$trans.'</label>';
+		}
+
+		echo '
+			<p class="description">'.__('Enable triggering lightbox on custom jquery events.', 'responsive-lightbox').'</p>
+			<div id="rl_custom_events"'.($this->options['settings']['enable_custom_events'] === FALSE ? ' style="display: none;"' : '').'>
+				<input type="text" name="responsive_lightbox_settings[custom_events]" value="'.esc_attr($this->options['settings']['custom_events']).'" />
+				<p class="description">'.__('Enter a space separated list of events.', 'responsive-lightbox').'</p>
+			</div>
 		</div>';
 	}
 
@@ -1448,6 +1472,15 @@ class Responsive_Lightbox
 			//selector
 			$input['selector'] = sanitize_text_field(isset($input['selector']) && $input['selector'] !== '' ? $input['selector'] : $this->defaults['settings']['selector']);
 
+			//enable custom events
+			$input['enable_custom_events'] = (isset($input['enable_custom_events']) && in_array($input['enable_custom_events'], array_keys($this->choices)) ? ($input['enable_custom_events'] === 'yes' ? TRUE : FALSE) : $this->defaults['settings']['enable_custom_events']);
+
+			//custom events
+			if($input['enable_custom_events'] === TRUE)
+			{
+				$input['custom_events'] = sanitize_text_field(isset($input['custom_events']) && $input['custom_events'] !== '' ? $input['custom_events'] : $this->defaults['settings']['custom_events']);
+			}
+
 			//checkboxes
 			$input['galleries'] = (isset($input['galleries']) && in_array($input['galleries'], array_keys($this->choices)) ? ($input['galleries'] === 'yes' ? TRUE : FALSE) : $this->defaults['settings']['galleries']);
 			$input['videos'] = (isset($input['videos']) && in_array($input['videos'], array_keys($this->choices)) ? ($input['videos'] === 'yes' ? TRUE : FALSE) : $this->defaults['settings']['videos']);
@@ -1705,7 +1738,24 @@ class Responsive_Lightbox
 
 		echo '
 			</h2>
-			<div class="metabox-holder postbox-container responsive-lightbox-settings">
+			<div class="responsive-lightbox-settings">
+			
+				<div class="df-credits">
+					<h3 class="hndle">'.__('Responsive Lightbox', 'responsive-lightbox').' '.$this->defaults['version'].'</h3>
+					<div class="inside">
+						<h4 class="inner">'.__('Need support?', 'responsive-lightbox').'</h4>
+						<p class="inner">'.__('If you are having problems with this plugin, please talk about them in the', 'responsive-lightbox').' <a href="http://www.dfactory.eu/support/?utm_source=responsive-lightbox-settings&utm_medium=link&utm_campaign=support" target="_blank" title="'.__('Support forum', 'responsive-lightbox').'">'.__('Support forum', 'responsive-lightbox').'</a></p>
+						<hr />
+						<h4 class="inner">'.__('Do you like this plugin?', 'responsive-lightbox').'</h4>
+						<p class="inner"><a href="http://wordpress.org/support/view/plugin-reviews/responsive-lightbox" target="_blank" title="'.__('Rate it 5', 'responsive-lightbox').'">'.__('Rate it 5', 'responsive-lightbox').'</a> '.__('on WordPress.org', 'responsive-lightbox').'<br />'.
+						__('Blog about it & link to the', 'responsive-lightbox').' <a href="http://www.dfactory.eu/plugins/responsive-lightbox/?utm_source=responsive-lightbox-settings&utm_medium=link&utm_campaign=blog-about" target="_blank" title="'.__('plugin page', 'responsive-lightbox').'">'.__('plugin page', 'responsive-lightbox').'</a><br />'.
+						__('Check out our other', 'responsive-lightbox').' <a href="http://www.dfactory.eu/?utm_source=responsive-lightbox-settings&utm_medium=link&utm_campaign=other-plugins" target="_blank" title="'.__('WordPress plugins', 'responsive-lightbox').'">'.__('WordPress plugins', 'responsive-lightbox').'</a>
+						</p>            
+						<hr />
+						<p class="df-link inner">Created by <a href="http://www.dfactory.eu/?utm_source=responsive-lightbox-settings&utm_medium=link&utm_campaign=created-by" target="_blank" title="dFactory - Quality plugins for WordPress"><img src="'.plugins_url('/images/logo-dfactory.png' , __FILE__ ).'" title="dFactory - Quality plugins for WordPress" alt="dFactory - Quality plugins for WordPress" /></a></p>
+					</div>
+				</div>
+			
 				<form action="options.php" method="post">
 					<input type="hidden" name="script_r" value="'.esc_attr($this->options['settings']['script']).'" />';
 
@@ -1724,21 +1774,6 @@ class Responsive_Lightbox
 		echo '
 					</p>
 				</form>
-			</div>
-			<div class="df-credits postbox-container">
-				<h3 class="metabox-title">'.__('Responsive Lightbox', 'responsive-lightbox').' '.$this->defaults['version'].'</h3>
-				<div class="inner">
-					<h3>'.__('Need support?', 'responsive-lightbox').'</h3>
-					<p>'.__('If you are having problems with this plugin, please talk about them in the', 'responsive-lightbox').' <a href="http://www.dfactory.eu/support/?utm_source=responsive-lightbox-settings&utm_medium=link&utm_campaign=support" target="_blank" title="'.__('Support forum', 'responsive-lightbox').'">'.__('Support forum', 'responsive-lightbox').'</a></p>
-					<hr />
-					<h3>'.__('Do you like this plugin?', 'responsive-lightbox').'</h3>
-					<p><a href="http://wordpress.org/support/view/plugin-reviews/responsive-lightbox" target="_blank" title="'.__('Rate it 5', 'responsive-lightbox').'">'.__('Rate it 5', 'responsive-lightbox').'</a> '.__('on WordPress.org', 'responsive-lightbox').'<br />'.
-					__('Blog about it & link to the', 'responsive-lightbox').' <a href="http://www.dfactory.eu/plugins/responsive-lightbox/?utm_source=responsive-lightbox-settings&utm_medium=link&utm_campaign=blog-about" target="_blank" title="'.__('plugin page', 'responsive-lightbox').'">'.__('plugin page', 'responsive-lightbox').'</a><br />'.
-					__('Check out our other', 'responsive-lightbox').' <a href="http://www.dfactory.eu/?utm_source=responsive-lightbox-settings&utm_medium=link&utm_campaign=other-plugins" target="_blank" title="'.__('WordPress plugins', 'responsive-lightbox').'">'.__('WordPress plugins', 'responsive-lightbox').'</a>
-					</p>            
-					<hr />
-					<p class="df-link">Created by <a href="http://www.dfactory.eu/?utm_source=responsive-lightbox-settings&utm_medium=link&utm_campaign=created-by" target="_blank" title="dFactory - Quality plugins for WordPress"><img src="'.plugins_url('/images/logo-dfactory.png' , __FILE__ ).'" title="dFactory - Quality plugins for WordPress" alt="dFactory - Quality plugins for WordPress" /></a></p>
-				</div>
 			</div>
 			<div class="clear"></div>
 		</div>';
@@ -1792,6 +1827,7 @@ class Responsive_Lightbox
 		$args = array(
 			'script' => $this->options['settings']['script'],
 			'selector' => $this->options['settings']['selector'],
+			'custom_events' => ($this->options['settings']['enable_custom_events'] === TRUE ? ' '.$this->options['settings']['custom_events'] : ''),
 			'activeGalleries' => $this->getBooleanValue($this->options['settings']['galleries'])
 		);
 
@@ -1925,7 +1961,7 @@ class Responsive_Lightbox
 		{
 			wp_register_script(
 				'responsive-lightbox-nivo',
-				plugins_url('assets/nivo/nivo-lightbox.min.js', __FILE__),
+				plugins_url('assets/nivo/nivo-lightbox.js', __FILE__),
 				array('jquery')
 			);
 

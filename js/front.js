@@ -1,6 +1,6 @@
 jQuery(document).ready(function($) {
 
-	$(document).on('ready ajaxComplete', function() {
+	$(document).on('ready'+rlArgs.custom_events, function() {
 		if(rlArgs.script === 'swipebox') {
 			$('a[rel*="'+rlArgs.selector+'"]').swipebox({
 				useCSS: (rlArgs.animation === '1' ? true : false),

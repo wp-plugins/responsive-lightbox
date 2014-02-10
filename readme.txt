@@ -3,8 +3,8 @@ Contributors: dfactory
 Donate link: http://www.dfactory.eu/
 Tags: gallery, images, lightbox, links, photos, template, theme, photo, image, picture, slideshow, modal, overlay, YouTube, Vimeo, video, videos
 Requires at least: 3.3
-Tested up to: 3.8
-Stable tag: 1.3.2
+Tested up to: 3.8.1
+Stable tag: 1.3.3
 License: MIT License
 License URI: http://opensource.org/licenses/MIT
 
@@ -56,6 +56,10 @@ No questions yet.
 2. screenshot-2.jpg
 
 == Changelog ==
+
+= 1.3.3 =
+* New: Triggering lightbox on custom jquery events option
+* Tweak: UI imporovements for WP 3.8
 
 = 1.3.2 =
 * New: German translation, thanks to Andreas Reitberger
@@ -120,6 +124,6 @@ Initial release
 
 == Upgrade Notice ==
 
-= 1.3.2 =
-* Tweak: Nivo Lightbox script updated
-* New: German translation, thanks to Andreas Reitberger
+= 1.3.3 =
+* New: Triggering lightbox on custom jquery events option
+* Tweak: UI imporovements for WP 3.8
