@@ -4,7 +4,7 @@ Donate link: http://www.dfactory.eu/
 Tags: gallery, images, lightbox, links, photos, template, theme, photo, image, picture, slideshow, modal, overlay, YouTube, Vimeo, video, videos
 Requires at least: 3.3
 Tested up to: 3.8.1
-Stable tag: 1.3.3
+Stable tag: 1.3.4
 License: MIT License
 License URI: http://opensource.org/licenses/MIT
 
@@ -57,9 +57,12 @@ No questions yet.
 
 == Changelog ==
 
+= 1.3.4 =
+* Fix: Gallery images displayed as single images
+
 = 1.3.3 =
 * New: Triggering lightbox on custom jquery events option
-* Tweak: UI imporovements for WP 3.8
+* Tweak: UI improvements for WP 3.8
 
 = 1.3.2 =
 * New: German translation, thanks to Andreas Reitberger
@@ -124,6 +127,5 @@ Initial release
 
 == Upgrade Notice ==
 
-= 1.3.3 =
-* New: Triggering lightbox on custom jquery events option
-* Tweak: UI imporovements for WP 3.8
+= 1.3.4 =
+* Fix: Gallery images displayed as single images

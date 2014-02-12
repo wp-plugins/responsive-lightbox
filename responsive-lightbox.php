@@ -2,7 +2,7 @@
 /*
 Plugin Name: Responsive Lightbox
 Description: Responsive Lightbox allows users to view larger versions of images and galleries in a lightbox (overlay) effect optimized for mobile devices.
-Version: 1.3.3
+Version: 1.3.4
 Author: dFactory
 Author URI: http://www.dfactory.eu/
 Plugin URI: http://www.dfactory.eu/plugins/responsive-lightbox/
@@ -99,7 +99,7 @@ class Responsive_Lightbox
 				'error_message' => 'The requested content cannot be loaded. Please try again later.'
 			)
 		),
-		'version' => '1.3.3'
+		'version' => '1.3.4'
 	);
 	private $scripts = array();
 	private $options = array();
@@ -163,7 +163,7 @@ class Responsive_Lightbox
 			add_filter('the_content', array(&$this, 'add_videos_lightbox_selector'));
 
 		if($this->options['settings']['image_links'] === TRUE || $this->options['settings']['images_as_gallery'] === TRUE)
-			add_filter('the_content', array(&$this, 'add_links_lightbox_selector'), 30);
+			add_filter('the_content', array(&$this, 'add_links_lightbox_selector'));
 	}
 
 
