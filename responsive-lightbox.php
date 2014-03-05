@@ -2,7 +2,7 @@
 /*
 Plugin Name: Responsive Lightbox
 Description: Responsive Lightbox allows users to view larger versions of images and galleries in a lightbox (overlay) effect optimized for mobile devices.
-Version: 1.3.5
+Version: 1.3.6
 Author: dFactory
 Author URI: http://www.dfactory.eu/
 Plugin URI: http://www.dfactory.eu/plugins/responsive-lightbox/
@@ -45,6 +45,7 @@ class Responsive_Lightbox
 				'opacity' => 75,
 				'show_title' => TRUE,
 				'allow_resize' => TRUE,
+				'allow_expand' => true,
 				'width' => 1080,
 				'height' => 720,
 				'separator' => '/',
@@ -99,7 +100,7 @@ class Responsive_Lightbox
 				'error_message' => 'The requested content cannot be loaded. Please try again later.'
 			)
 		),
-		'version' => '1.3.5'
+		'version' => '1.3.6'
 	);
 	private $scripts = array();
 	private $options = array();
@@ -475,6 +476,7 @@ class Responsive_Lightbox
 			add_settings_field('rl_pp_opacity', __('Opacity', 'responsive-lightbox'), array(&$this, 'rl_pp_opacity'), 'responsive_lightbox_configuration', 'responsive_lightbox_configuration');
 			add_settings_field('rl_pp_title', __('Show title', 'responsive-lightbox'), array(&$this, 'rl_pp_title'), 'responsive_lightbox_configuration', 'responsive_lightbox_configuration');
 			add_settings_field('rl_pp_allow_resize', __('Allow resize big images', 'responsive-lightbox'), array(&$this, 'rl_pp_allow_resize'), 'responsive_lightbox_configuration', 'responsive_lightbox_configuration');
+			add_settings_field('rl_pp_allow_expand', __('Allow expand', 'responsive-lightbox'), array(&$this, 'rl_pp_allow_expand'), 'responsive_lightbox_configuration', 'responsive_lightbox_configuration');
 			add_settings_field('rl_pp_width', __('Video width', 'responsive-lightbox'), array(&$this, 'rl_pp_width'), 'responsive_lightbox_configuration', 'responsive_lightbox_configuration');
 			add_settings_field('rl_pp_height', __('Video height', 'responsive-lightbox'), array(&$this, 'rl_pp_height'), 'responsive_lightbox_configuration', 'responsive_lightbox_configuration');
 			add_settings_field('rl_pp_theme', __('Theme', 'responsive-lightbox'), array(&$this, 'rl_pp_theme'), 'responsive_lightbox_configuration', 'responsive_lightbox_configuration');
@@ -836,6 +838,24 @@ class Responsive_Lightbox
 
 		echo '
 			<p class="description">'.__('Resize the photos bigger than viewport.', 'responsive-lightbox').'</p>
+		</div>';
+	}
+
+
+	public function rl_pp_allow_expand()
+	{
+		echo '
+		<div id="rl_pp_allow_expand" class="wplikebtns">';
+
+		foreach($this->choices as $val => $trans)
+		{
+			echo '
+			<input id="rl-pp-allow-expand-'.$val.'" type="radio" name="responsive_lightbox_configuration[prettyphoto][allow_expand]" value="'.esc_attr($val).'" '.checked(($val === 'yes' ? TRUE : FALSE), $this->options['configuration']['prettyphoto']['allow_expand'], FALSE).' />
+			<label for="rl-pp-allow-expand-'.$val.'">'.$trans.'</label>';
+		}
+
+		echo '
+			<p class="description">'.__('Expands something.', 'responsive-lightbox').'</p>
 		</div>';
 	}
 
@@ -1527,6 +1547,9 @@ class Responsive_Lightbox
 				//resize
 				$input['prettyphoto']['allow_resize'] = (isset($input['prettyphoto']['allow_resize']) && in_array($input['prettyphoto']['allow_resize'], array_keys($this->choices)) ? ($input['prettyphoto']['allow_resize'] === 'yes' ? TRUE : FALSE) : $this->defaults['configuration']['prettyphoto']['allow_resize']);
 
+				//expand
+				$input['prettyphoto']['allow_expand'] = (isset($input['prettyphoto']['allow_expand']) && in_array($input['prettyphoto']['allow_expand'], array_keys($this->choices)) ? ($input['prettyphoto']['allow_expand'] === 'yes' ? TRUE : FALSE) : $this->defaults['configuration']['prettyphoto']['allow_expand']);
+
 				//dimensions
 				$input['prettyphoto']['width'] = (int)($input['prettyphoto']['width'] > 0 ? $input['prettyphoto']['width'] : $this->defaults['configuration']['prettyphoto']['width']);
 				$input['prettyphoto']['height'] = (int)($input['prettyphoto']['height'] > 0 ? $input['prettyphoto']['height'] : $this->defaults['configuration']['prettyphoto']['height']);
@@ -1824,14 +1847,14 @@ class Responsive_Lightbox
 
 	public function front_scripts_styles()
 	{
-		$args = array(
+		$args = apply_filters('rl_lightbox_args', array(
 			'script' => $this->options['settings']['script'],
 			'selector' => $this->options['settings']['selector'],
 			'custom_events' => ($this->options['settings']['enable_custom_events'] === TRUE ? ' '.$this->options['settings']['custom_events'] : ''),
 			'activeGalleries' => $this->getBooleanValue($this->options['settings']['galleries'])
-		);
+		));
 
-		if($this->options['settings']['script'] === 'prettyphoto')
+		if($args['script'] === 'prettyphoto')
 		{
 			wp_register_script(
 				'responsive-lightbox-prettyphoto',
@@ -1858,6 +1881,7 @@ class Responsive_Lightbox
 					'opacity' => sprintf('%.2f', ($this->options['configuration']['prettyphoto']['opacity'] / 100)),
 					'showTitle' => $this->getBooleanValue($this->options['configuration']['prettyphoto']['show_title']),
 					'allowResize' => $this->getBooleanValue($this->options['configuration']['prettyphoto']['allow_resize']),
+					'allowExpand' => $this->getBooleanValue($this->options['configuration']['prettyphoto']['allow_expand']),
 					'width' => $this->options['configuration']['prettyphoto']['width'],
 					'height' => $this->options['configuration']['prettyphoto']['height'],
 					'separator' => $this->options['configuration']['prettyphoto']['separator'],
@@ -1874,7 +1898,7 @@ class Responsive_Lightbox
 				)
 			);
 		}
-		elseif($this->options['settings']['script'] === 'swipebox')
+		elseif($args['script'] === 'swipebox')
 		{
 			wp_register_script(
 				'responsive-lightbox-swipebox',
@@ -1909,7 +1933,7 @@ class Responsive_Lightbox
 				);
 			}
 		}
-		elseif($this->options['settings']['script'] === 'fancybox')
+		elseif($args['script'] === 'fancybox')
 		{
 			wp_register_script(
 				'responsive-lightbox-fancybox',
@@ -1957,7 +1981,7 @@ class Responsive_Lightbox
 				)
 			);
 		}
-		elseif($this->options['settings']['script'] === 'nivo')
+		elseif($args['script'] === 'nivo')
 		{
 			wp_register_script(
 				'responsive-lightbox-nivo',

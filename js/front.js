@@ -15,6 +15,7 @@ jQuery(document).ready(function($) {
 				opacity: rlArgs.opacity,
 				show_title: (rlArgs.showTitle === '1' ? true : false),
 				allow_resize: (rlArgs.allowResize === '1' ? true : false),
+				allow_expand: (rlArgs.allowExpand === '1' ? true : false),
 				default_width: parseInt(rlArgs.width),
 				default_height: parseInt(rlArgs.height),
 				counter_separator_label: rlArgs.separator,

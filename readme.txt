@@ -4,7 +4,7 @@ Donate link: http://www.dfactory.eu/
 Tags: gallery, images, lightbox, links, photos, template, theme, photo, image, picture, slideshow, modal, overlay, YouTube, Vimeo, video, videos
 Requires at least: 3.3
 Tested up to: 3.8.1
-Stable tag: 1.3.5
+Stable tag: 1.3.6
 License: MIT License
 License URI: http://opensource.org/licenses/MIT
 
@@ -26,6 +26,7 @@ For more information, check out plugin page at [dFactory](http://www.dfactory.eu
 * Enter a selector for lightbox
 * Highly customizable settings for each of the lightbox scripts
 * Multisite support
+* Filter hook for embeddding different scripts based on any custom conditions (page, post, category, user id, etc.)
 * .pot file for translations included
 
 = Translations: =
@@ -57,6 +58,9 @@ No questions yet.
 2. screenshot-2.jpg
 
 == Changelog ==
+
+= 1.3.6 =
+* New: Added rl_lightbox_args filter hook for embeddding different scripts based on any custom conditions (page, post, category, user id, etc.)
 
 = 1.3.5 =
 * New: Dutch translation, thanks to [Sebas Blom](http://www.basbva.nl/)
@@ -131,5 +135,5 @@ Initial release
 
 == Upgrade Notice ==
 
-= 1.3.5 =
-* New: Dutch translation, thanks to [Sebas Blom](http://www.basbva.nl/)
+= 1.3.6 =
+* New: Added rl_lightbox_args filter hook for embeddding different scripts based on any custom conditions (page, post, category, user id, etc.)
