@@ -78,7 +78,17 @@ jQuery(document).ready(function($) {
 				keyboardNav: (rlArgs.keyboardNav === '1' ? true : false),
 				errorMessage: rlArgs.errorMessage
 			});
+		} else if(rlArgs.script === 'imagelightbox') {
+			$('a[rel*="'+rlArgs.selector+'"]').each(function(i, item) {
+				$('a[rel="'+item.rel+'"]').imageLightbox({
+					animationSpeed: parseInt(rlArgs.animationSpeed),
+					preloadNext: (rlArgs.preloadNext === '1' ? true : false),
+					enableKeyboard: (rlArgs.enableKeyboard === '1' ? true : false),
+					quitOnEnd: (rlArgs.quitOnEnd === '1' ? true : false),
+					quitOnImgClick: (rlArgs.quitOnImageClick === '1' ? true : false),
+					quitOnDocClick: (rlArgs.quitOnDocumentClick === '1' ? true : false)
+				});
+			});
 		}
 	});
-
 });

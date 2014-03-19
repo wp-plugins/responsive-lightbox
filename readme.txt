@@ -1,10 +1,10 @@
-=== Responsive Lightbox ===
+=== Responsive Lightbox by dFactory ===
 Contributors: dfactory
 Donate link: http://www.dfactory.eu/
 Tags: gallery, images, lightbox, links, photos, template, theme, photo, image, picture, slideshow, modal, overlay, YouTube, Vimeo, video, videos
 Requires at least: 3.3
 Tested up to: 3.8.1
-Stable tag: 1.3.6
+Stable tag: 1.4.0
 License: MIT License
 License URI: http://opensource.org/licenses/MIT
 
@@ -18,11 +18,12 @@ For more information, check out plugin page at [dFactory](http://www.dfactory.eu
 
 = Features include: =
 
-* Select from 4 responsive lightbox scripts (SwipeBox, prettyPhoto, FancyBox, Nivo Lightbox)
+* Select from 5 responsive lightbox scripts (SwipeBox, prettyPhoto, FancyBox, Nivo Lightbox, Image Lightbox)
 * Automatically add lightbox to WordPress image galleries
 * Automatically add lightbox to WordPress image links
 * Automatically add lightbox to WordPress video links (YouTube, Vimeo)
 * Option to display single post images as a gallery
+* Option to trigger lightbox on custom jquery events
 * Enter a selector for lightbox
 * Highly customizable settings for each of the lightbox scripts
 * Multisite support
@@ -58,6 +59,11 @@ No questions yet.
 2. screenshot-2.jpg
 
 == Changelog ==
+
+= 1.4.0 =
+* New: Added Image Lightbox script
+* New: Option to load scripts in header or footer
+* Tweak: Changed Swipebox script to custom built - thanks to Arno Welzel
 
 = 1.3.6 =
 * New: Added rl_lightbox_args filter hook for embeddding different scripts based on any custom conditions (page, post, category, user id, etc.)
@@ -135,5 +141,7 @@ Initial release
 
 == Upgrade Notice ==
 
-= 1.3.6 =
-* New: Added rl_lightbox_args filter hook for embeddding different scripts based on any custom conditions (page, post, category, user id, etc.)
+= 1.4.0 =
+
+* New: Added Image Lightbox script
+* New: Option to load scripts in header or footer
