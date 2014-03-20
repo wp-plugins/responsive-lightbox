@@ -2,7 +2,7 @@
 /*
 Plugin Name: Responsive Lightbox
 Description: Responsive Lightbox allows users to view larger versions of images and galleries in a lightbox (overlay) effect optimized for mobile devices.
-Version: 1.4.0.1
+Version: 1.4.1
 Author: dFactory
 Author URI: http://www.dfactory.eu/
 Plugin URI: http://www.dfactory.eu/plugins/responsive-lightbox/
@@ -109,7 +109,7 @@ class Responsive_Lightbox
 				'quit_on_document_click' => true
 			)
 		),
-		'version' => '1.4.0.1'
+		'version' => '1.4.1'
 	);
 	private $scripts = array();
 	private $options = array();
@@ -2080,7 +2080,7 @@ class Responsive_Lightbox
 		{
 			wp_register_script(
 				'responsive-lightbox-swipebox',
-				plugins_url('assets/swipebox/source/jquery.swipebox.js', __FILE__),
+				plugins_url('assets/swipebox/source/jquery.swipebox.min.js', __FILE__),
 				array('jquery'),
 				'',
 				($this->options['settings']['loading_place'] === 'header' ? false : true)
