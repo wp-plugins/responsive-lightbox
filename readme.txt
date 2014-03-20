@@ -4,7 +4,7 @@ Donate link: http://www.dfactory.eu/
 Tags: gallery, images, lightbox, links, photos, template, theme, photo, image, picture, slideshow, modal, overlay, YouTube, Vimeo, video, videos
 Requires at least: 3.3
 Tested up to: 3.8.1
-Stable tag: 1.4.1
+Stable tag: 1.4.2
 License: MIT License
 License URI: http://opensource.org/licenses/MIT
 
@@ -59,6 +59,9 @@ No questions yet.
 2. screenshot-2.jpg
 
 == Changelog ==
+
+= 1.4.2 =
+* Fix: Final fix for IE scroll bug
 
 = 1.4.1 =
 * Fix: Swipebox script files inconsistency
@@ -144,5 +147,5 @@ Initial release
 
 == Upgrade Notice ==
 
-= 1.4.1 =
-* Fix: Swipebox script files inconsistency
+= 1.4.2 =
+* Fix: Final fix for IE scroll bug
