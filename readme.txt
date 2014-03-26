@@ -4,7 +4,7 @@ Donate link: http://www.dfactory.eu/
 Tags: gallery, images, lightbox, links, photos, template, theme, photo, image, picture, slideshow, modal, overlay, YouTube, Vimeo, video, videos
 Requires at least: 3.3
 Tested up to: 3.8.1
-Stable tag: 1.4.2
+Stable tag: 1.4.3
 License: MIT License
 License URI: http://opensource.org/licenses/MIT
 
@@ -34,6 +34,7 @@ For more information, check out plugin page at [dFactory](http://www.dfactory.eu
 
 * Czech - by Vaclav Hnilicka
 * Dutch - by [Sebas Blom](http://www.basbva.nl/)
+* Estonian - by Hugo Amtmann
 * French - by [Li-An](http://www.echodesplugins.li-an.fr/)
 * German - by [Andreas Reitberger](http://wdbase.de)
 * Japanese - by stranger-jp
@@ -60,6 +61,10 @@ No questions yet.
 
 == Changelog ==
 
+= 1.4.3 =
+* New: Estonian translation, thanks to Hugo Amtmann
+* Tweak: Swipebox script update, thanks to Arno Welzel
+
 = 1.4.2 =
 * Fix: Final fix for IE scroll bug
 
@@ -69,7 +74,7 @@ No questions yet.
 = 1.4.0 =
 * New: Added Image Lightbox script
 * New: Option to load scripts in header or footer
-* Tweak: Changed Swipebox script to custom built - thanks to Arno Welzel
+* Tweak: Changed Swipebox script to custom built, thanks to Arno Welzel
 
 = 1.3.6 =
 * New: Added rl_lightbox_args filter hook for embeddding different scripts based on any custom conditions (page, post, category, user id, etc.)
@@ -147,5 +152,6 @@ Initial release
 
 == Upgrade Notice ==
 
-= 1.4.2 =
-* Fix: Final fix for IE scroll bug
+= 1.4.3 =
+* New: Estonian translation, thanks to Hugo Amtmann
+* Tweak: Swipebox script update, thanks to Arno Welzel
