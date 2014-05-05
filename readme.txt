@@ -3,8 +3,8 @@ Contributors: dfactory
 Donate link: http://www.dfactory.eu/
 Tags: gallery, images, lightbox, links, photos, template, theme, photo, image, picture, slideshow, modal, overlay, YouTube, Vimeo, video, videos
 Requires at least: 3.3
-Tested up to: 3.8.1
-Stable tag: 1.4.3
+Tested up to: 3.9.0
+Stable tag: 1.4.4
 License: MIT License
 License URI: http://opensource.org/licenses/MIT
 
@@ -60,6 +60,9 @@ No questions yet.
 2. screenshot-2.jpg
 
 == Changelog ==
+
+= 1.4.4
+* Fix: Prevent unintentional scroll to the top when pressing the "enter" key in the opened swipebox, thanks to Arno Welzel
 
 = 1.4.3 =
 * New: Estonian translation, thanks to Hugo Amtmann
@@ -152,6 +155,5 @@ Initial release
 
 == Upgrade Notice ==
 
-= 1.4.3 =
-* New: Estonian translation, thanks to Hugo Amtmann
-* Tweak: Swipebox script update, thanks to Arno Welzel
+= 1.4.4
+* Fix: Prevent unintentional scroll to the top when pressing the "enter" key in the opened swipebox, thanks to Arno Welzel

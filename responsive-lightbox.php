@@ -2,7 +2,7 @@
 /*
 Plugin Name: Responsive Lightbox
 Description: Responsive Lightbox allows users to view larger versions of images and galleries in a lightbox (overlay) effect optimized for mobile devices.
-Version: 1.4.3
+Version: 1.4.4
 Author: dFactory
 Author URI: http://www.dfactory.eu/
 Plugin URI: http://www.dfactory.eu/plugins/responsive-lightbox/
@@ -109,7 +109,7 @@ class Responsive_Lightbox
 				'quit_on_document_click' => true
 			)
 		),
-		'version' => '1.4.3'
+		'version' => '1.4.4'
 	);
 	private $scripts = array();
 	private $options = array();
