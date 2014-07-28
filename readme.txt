@@ -4,7 +4,7 @@ Donate link: http://www.dfactory.eu/
 Tags: gallery, images, lightbox, links, photos, template, theme, photo, image, picture, slideshow, modal, overlay, YouTube, Vimeo, video, videos
 Requires at least: 3.3
 Tested up to: 3.9.1
-Stable tag: 1.4.5
+Stable tag: 1.4.6
 License: MIT License
 License URI: http://opensource.org/licenses/MIT
 
@@ -40,8 +40,9 @@ For more information, check out plugin page at [dFactory](http://www.dfactory.eu
 * Japanese - by stranger-jp
 * Persian - by [Ali Mirzaei](http://alimir.ir/)
 * Polish - by Bartosz Arendt
-* Russian - by Konstantin
+* Russian - by [Konstantin](http://l-konstantin.ru)
 * Serbo-Croatian - by [Borisa Djuraskovic](http://www.webhostinghub.com/)
+* Slovak - by [Patrik Žec](http://patwist.com)
 * Spanish - by [Gaston](http://www.detodoynada.com.ar)
 
 
@@ -62,8 +63,11 @@ No questions yet.
 
 == Changelog ==
 
+= 1.4.6 =
+* New: Slovak translation, thanks to [Patrik Žec](http://patwist.com)
+
 = 1.4.5 =
-* New: Russian translation, thanks to Konstantin
+* New: Russian translation, thanks to [Konstantin](http://l-konstantin.ru)
 
 = 1.4.4 =
 * Fix: Prevent unintentional scroll to the top when pressing the "enter" key in the opened swipebox, thanks to Arno Welzel
@@ -159,5 +163,5 @@ Initial release
 
 == Upgrade Notice ==
 
-= 1.4.5 =
-* New: Russian translation, thanks to Konstantin
+= 1.4.6 =
+* New: Slovak translation, thanks to [Patrik Žec](http://patwist.com)
