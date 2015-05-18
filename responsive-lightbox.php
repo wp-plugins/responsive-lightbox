@@ -2,7 +2,7 @@
 /*
 Plugin Name: Responsive Lightbox
 Description: Responsive Lightbox allows users to view larger versions of images and galleries in a lightbox (overlay) effect optimized for mobile devices.
-Version: 1.4.11
+Version: 1.4.12
 Author: dFactory
 Author URI: http://www.dfactory.eu/
 Plugin URI: http://www.dfactory.eu/plugins/responsive-lightbox/
@@ -28,7 +28,7 @@ if ( ! defined( 'ABSPATH' ) )
  * Responsive Lightbox class.
  *
  * @class Responsive_Lightbox
- * @version	1.4.11
+ * @version	1.4.12
  */
 class Responsive_Lightbox {
 
@@ -122,7 +122,7 @@ class Responsive_Lightbox {
 				'quit_on_document_click' => true
 			)
 		),
-		'version'		 => '1.4.11'
+		'version'		 => '1.4.12'
 	);
 	private $scripts = array();
 	private $options = array();
@@ -206,7 +206,7 @@ class Responsive_Lightbox {
 
 							$content = str_replace( $link, preg_replace( '/rel=(?:\'|")(.*?)(?:\'|")/', 'rel="' . ( ! empty( $new_rel ) ? simplode( ' ', $new_rels ) . ' ' : '') . $this->options['settings']['selector'] . '-video-' . $id . '"', $link ), $content );
 						} else
-							$content = str_replace( $link, preg_replace( '/rel=(?:\'|")(.*?)(?:\'|")/', 'rel="' . ($result[1] !== '' ? $result[1] . ' ' : '') . $this->options['settings']['selector'] . '-video-' . $id . '"', $link ), $content );
+							$content = str_replace( $link, preg_replace( '/rel=(?:\'|")(.*?)(?:\'|")/', 'rel="' . ( $result[1] !== '' ? $result[1] . ' ' : '' ) . $this->options['settings']['selector'] . '-video-' . $id . '"', $link ), $content );
 					}
 				} else
 					$content = str_replace( $link, '<a' . $links[1][$id] . 'href="' . $links[2][$id] . '"' . $links[6][$id] . ' rel="' . $this->options['settings']['selector'] . '-video-' . $id . '">', $content );
@@ -221,12 +221,12 @@ class Responsive_Lightbox {
 
 		if ( isset( $links[0] ) ) {
 			if ( $this->options['settings']['images_as_gallery'] === true )
-				$rel_hash = '[gallery-' . wp_generate_password( 4, false, false ) . ']';
+				$rel_hash = '[gallery-' . $this->generate_password( 4 ) . ']';
 
 			foreach ( $links[0] as $id => $link ) {
 				if ( preg_match( '/<a.*?rel=(?:\'|")(.*?)(?:\'|").*?>/', $link, $result ) === 1 ) {
 					if ( $this->options['settings']['images_as_gallery'] === true ) {
-						$content = str_replace( $link, preg_replace( '/rel=(?:\'|")(.*?)(?:\'|")/', 'rel="' . $this->options['settings']['selector'] . $rel_hash . '"' . ($this->options['settings']['script'] === 'imagelightbox' ? ' data-imagelightbox="' . $id . '"' : ''), $link ), $content );
+						$content = str_replace( $link, preg_replace( '/rel=(?:\'|")(.*?)(?:\'|")/', 'rel="' . $this->options['settings']['selector'] . $rel_hash . '"' . ( $this->options['settings']['script'] === 'imagelightbox' ? ' data-imagelightbox="' . $id . '"' : '' ), $link ), $content );
 					} else {
 						if ( isset( $result[1] ) ) {
 							$new_rels = array();
@@ -238,13 +238,13 @@ class Responsive_Lightbox {
 										$new_rels[] = $rel;
 								}
 
-								$content = str_replace( $link, preg_replace( '/rel=(?:\'|")(.*?)(?:\'|")/', 'rel="' . ( ! empty( $new_rels ) ? implode( ' ', $new_rels ) . ' ' : '') . $this->options['settings']['selector'] . '-' . $id . '"' . ($this->options['settings']['script'] === 'imagelightbox' ? ' data-imagelightbox="' . $id . '"' : ''), $link ), $content );
+								$content = str_replace( $link, preg_replace( '/rel=(?:\'|")(.*?)(?:\'|")/', 'rel="' . ( ! empty( $new_rels ) ? implode( ' ', $new_rels ) . ' ' : '' ) . $this->options['settings']['selector'] . '-' . $id . '"' . ( $this->options['settings']['script'] === 'imagelightbox' ? ' data-imagelightbox="' . $id . '"' : '' ), $link ), $content );
 							} else
-								$content = str_replace( $link, preg_replace( '/rel=(?:\'|")(.*?)(?:\'|")/', 'rel="' . ($result[1] !== '' ? $result[1] . ' ' : '') . $this->options['settings']['selector'] . '-' . $id . '"' . ($this->options['settings']['script'] === 'imagelightbox' ? ' data-imagelightbox="' . $id . '"' : ''), $link ), $content );
+								$content = str_replace( $link, preg_replace( '/rel=(?:\'|")(.*?)(?:\'|")/', 'rel="' . ( $result[1] !== '' ? $result[1] . ' ' : '' ) . $this->options['settings']['selector'] . '-' . $id . '"' . ( $this->options['settings']['script'] === 'imagelightbox' ? ' data-imagelightbox="' . $id . '"' : '' ), $link ), $content );
 						}
 					}
 				} else
-					$content = str_replace( $link, '<a' . $links[1][$id] . 'href="' . $links[2][$id] . '.' . $links[3][$id] . '"' . $links[4][$id] . ' rel="' . $this->options['settings']['selector'] . ($this->options['settings']['images_as_gallery'] === true ? $rel_hash : '-' . $id) . '"' . ($this->options['settings']['script'] === 'imagelightbox' ? ' data-imagelightbox="' . $id . '"' : '') . '>', $content );
+					$content = str_replace( $link, '<a' . $links[1][$id] . 'href="' . $links[2][$id] . '.' . $links[3][$id] . '"' . $links[4][$id] . ' rel="' . $this->options['settings']['selector'] . ( $this->options['settings']['images_as_gallery'] === true ? $rel_hash : '-' . $id ) . '"' . ( $this->options['settings']['script'] === 'imagelightbox' ? ' data-imagelightbox="' . $id . '"' : '' ) . '>', $content );
 			}
 		}
 
@@ -258,9 +258,12 @@ class Responsive_Lightbox {
 	}
 
 	public function add_gallery_lightbox_selector( $link, $id, $size, $permalink, $icon, $text ) {
-		$link = (preg_match( '/<a.*? rel=("|\').*?("|\')>/', $link ) === 1 ? preg_replace( '/(<a.*? rel=(?:"|\').*?)((?:"|\').*?>)/', '$1 ' . $this->options['settings']['selector'] . '[gallery-' . $this->gallery_no . ']' . '$2', $link ) : preg_replace( '/(<a.*?)>/', '$1 rel="' . $this->options['settings']['selector'] . '[gallery-' . $this->gallery_no . ']' . '">', $link ));
-
-		return (preg_match( '/<a.*? href=("|\').*?("|\')>/', $link ) === 1 ? preg_replace( '/(<a.*? href=(?:"|\')).*?((?:"|\').*?>)/', '$1' . wp_get_attachment_url( $id ) . '$2', $link ) : preg_replace( '/(<a.*?)>/', '$1 href="' . wp_get_attachment_url( $id ) . '">', $link ));
+		if ( preg_match( '/<a(.*?)href=(?:\'|")([^<]*?).(bmp|gif|jpeg|jpg|png)(?:\'|")(.*?)>/i', $link ) === 1 ) {
+			$link = ( preg_match( '/<a.*? rel=("|\').*?("|\')>/', $link ) === 1 ? preg_replace( '/(<a.*? rel=(?:"|\').*?)((?:"|\').*?>)/', '$1 ' . $this->options['settings']['selector'] . '[gallery-' . $this->gallery_no . ']' . '$2', $link ) : preg_replace( '/(<a.*?)>/', '$1 rel="' . $this->options['settings']['selector'] . '[gallery-' . $this->gallery_no . ']' . '">', $link ) );
+			$link = ( preg_match( '/<a.*? href=("|\').*?("|\')>/', $link ) === 1 ? preg_replace( '/(<a.*? href=(?:"|\')).*?((?:"|\').*?>)/', '$1' . wp_get_attachment_url( $id ) . '$2', $link ) : preg_replace( '/(<a.*?)>/', '$1 href="' . wp_get_attachment_url( $id ) . '">', $link ) );
+		}
+		
+		return apply_filters( 'rl_lightbox_attachment_link', $link, $id, $size, $permalink, $icon, $text );
 	}
 
 	public function load_defaults() {
@@ -2091,6 +2094,20 @@ class Responsive_Lightbox {
 		} else {
 			return $content;
 		}
+	}
+	
+	/**
+	 * Generate password helper, without wp_rand() and DB call it uses
+	*/
+	private function generate_password( $length = 64 ) {
+		$chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+		$password = '';
+
+		for( $i = 0; $i < $length; $i++ ) {
+			$password .= substr( $chars, mt_rand( 0, strlen( $chars ) - 1 ), 1 );
+		}
+
+		return $password;
 	}
 
 }
