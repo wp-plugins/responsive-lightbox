@@ -2,9 +2,9 @@
 Contributors: dfactory
 Donate link: http://www.dfactory.eu/
 Tags: gallery, images, lightbox, links, photos, template, theme, photo, image, picture, slideshow, modal, overlay, YouTube, Vimeo, video, videos
-Requires at least: 3.3
-Tested up to: 4.1
-Stable tag: 1.4.10
+Requires at least: 3.6
+Tested up to: 4.2.2
+Stable tag: 1.4.13
 License: MIT License
 License URI: http://opensource.org/licenses/MIT
 
@@ -64,6 +64,19 @@ No questions yet.
 2. screenshot-2.jpg
 
 == Changelog ==
+
+= 1.4.13 =
+* Fix: Reverted back the regex change in lightbox selector to gallery links
+
+= 1.4.12 =
+* Fix: jQuery prettyPhoto DOM Cross-Site Scripting (XSS) vulnerability
+* Tweak: Added regex filetype check before applying lightbox selector to gallery links.
+* Tweak: Switched from wp_generate_password() to custom function, without needless DB call.
+
+= 1.4.11 =
+* Tweak: Swipebox script updated to 1.3.0.2
+* Tweak: prettyPhoto CSS tweaks
+* Tweak: fancyBox IE patch
 
 = 1.4.10 =
 * Tweak: Image Lightbox updated
@@ -180,5 +193,5 @@ Initial release
 
 == Upgrade Notice ==
 
-= 1.4.10 =
-* Tweak: Image Lightbox updated
+= 1.4.13 =
+* Fix: Reverted back the regex change in lightbox selector to gallery links
