@@ -2,7 +2,7 @@
 /*
 Plugin Name: Responsive Lightbox
 Description: Responsive Lightbox allows users to view larger versions of images and galleries in a lightbox (overlay) effect optimized for mobile devices.
-Version: 1.4.12
+Version: 1.4.13
 Author: dFactory
 Author URI: http://www.dfactory.eu/
 Plugin URI: http://www.dfactory.eu/plugins/responsive-lightbox/
@@ -28,7 +28,7 @@ if ( ! defined( 'ABSPATH' ) )
  * Responsive Lightbox class.
  *
  * @class Responsive_Lightbox
- * @version	1.4.12
+ * @version	1.4.13
  */
 class Responsive_Lightbox {
 
@@ -122,7 +122,7 @@ class Responsive_Lightbox {
 				'quit_on_document_click' => true
 			)
 		),
-		'version'		 => '1.4.12'
+		'version'		 => '1.4.13'
 	);
 	private $scripts = array();
 	private $options = array();
@@ -256,14 +256,11 @@ class Responsive_Lightbox {
 
 		return $style;
 	}
-
+	
 	public function add_gallery_lightbox_selector( $link, $id, $size, $permalink, $icon, $text ) {
-		if ( preg_match( '/<a(.*?)href=(?:\'|")([^<]*?).(bmp|gif|jpeg|jpg|png)(?:\'|")(.*?)>/i', $link ) === 1 ) {
-			$link = ( preg_match( '/<a.*? rel=("|\').*?("|\')>/', $link ) === 1 ? preg_replace( '/(<a.*? rel=(?:"|\').*?)((?:"|\').*?>)/', '$1 ' . $this->options['settings']['selector'] . '[gallery-' . $this->gallery_no . ']' . '$2', $link ) : preg_replace( '/(<a.*?)>/', '$1 rel="' . $this->options['settings']['selector'] . '[gallery-' . $this->gallery_no . ']' . '">', $link ) );
-			$link = ( preg_match( '/<a.*? href=("|\').*?("|\')>/', $link ) === 1 ? preg_replace( '/(<a.*? href=(?:"|\')).*?((?:"|\').*?>)/', '$1' . wp_get_attachment_url( $id ) . '$2', $link ) : preg_replace( '/(<a.*?)>/', '$1 href="' . wp_get_attachment_url( $id ) . '">', $link ) );
-		}
-		
-		return apply_filters( 'rl_lightbox_attachment_link', $link, $id, $size, $permalink, $icon, $text );
+		$link = (preg_match( '/<a.*? rel=("|\').*?("|\')>/', $link ) === 1 ? preg_replace( '/(<a.*? rel=(?:"|\').*?)((?:"|\').*?>)/', '$1 ' . $this->options['settings']['selector'] . '[gallery-' . $this->gallery_no . ']' . '$2', $link ) : preg_replace( '/(<a.*?)>/', '$1 rel="' . $this->options['settings']['selector'] . '[gallery-' . $this->gallery_no . ']' . '">', $link ));
+
+		return apply_filters( 'rl_lightbox_attachment_link', ( preg_match( '/<a.*? href=("|\').*?("|\')>/', $link ) === 1 ? preg_replace( '/(<a.*? href=(?:"|\')).*?((?:"|\').*?>)/', '$1' . wp_get_attachment_url( $id ) . '$2', $link ) : preg_replace( '/(<a.*?)>/', '$1 href="' . wp_get_attachment_url( $id ) . '">', $link ) ), $id, $size, $permalink, $icon, $text );
 	}
 
 	public function load_defaults() {

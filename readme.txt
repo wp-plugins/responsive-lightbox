@@ -4,7 +4,7 @@ Donate link: http://www.dfactory.eu/
 Tags: gallery, images, lightbox, links, photos, template, theme, photo, image, picture, slideshow, modal, overlay, YouTube, Vimeo, video, videos
 Requires at least: 3.6
 Tested up to: 4.2.2
-Stable tag: 1.4.12
+Stable tag: 1.4.13
 License: MIT License
 License URI: http://opensource.org/licenses/MIT
 
@@ -64,6 +64,9 @@ No questions yet.
 2. screenshot-2.jpg
 
 == Changelog ==
+
+= 1.4.13 =
+* Fix: Reverted back the regex change in lightbox selector to gallery links
 
 = 1.4.12 =
 * Fix: jQuery prettyPhoto DOM Cross-Site Scripting (XSS) vulnerability
@@ -190,5 +193,5 @@ Initial release
 
 == Upgrade Notice ==
 
-= 1.4.12 =
-* Fix: jQuery prettyPhoto DOM Cross-Site Scripting (XSS) vulnerability
+= 1.4.13 =
+* Fix: Reverted back the regex change in lightbox selector to gallery links
