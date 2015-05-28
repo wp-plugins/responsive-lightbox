@@ -4,7 +4,7 @@ Donate link: http://www.dfactory.eu/
 Tags: gallery, images, lightbox, links, photos, template, theme, photo, image, picture, slideshow, modal, overlay, YouTube, Vimeo, video, videos
 Requires at least: 3.6
 Tested up to: 4.2.2
-Stable tag: 1.4.13
+Stable tag: 1.4.14
 License: MIT License
 License URI: http://opensource.org/licenses/MIT
 
@@ -24,6 +24,7 @@ For more information, check out plugin page at [dFactory](http://www.dfactory.eu
 * Automatically add lightbox to WordPress video links (YouTube, Vimeo)
 * Option to display single post images as a gallery
 * Option to modify native WP gallery links image size
+* Option to set gallery images title from image title, caption, alt or description
 * Option to trigger lightbox on custom jquery events
 * Enter a selector for lightbox
 * Highly customizable settings for each of the lightbox scripts
@@ -64,6 +65,10 @@ No questions yet.
 2. screenshot-2.jpg
 
 == Changelog ==
+
+= 1.4.14 =
+* New: Option to set gallery images title from image title, caption, alt or description
+* Tweak: Improved regex for Youtube video links
 
 = 1.4.13 =
 * Fix: Reverted back the regex change in lightbox selector to gallery links
@@ -193,5 +198,5 @@ Initial release
 
 == Upgrade Notice ==
 
-= 1.4.13 =
-* Fix: Reverted back the regex change in lightbox selector to gallery links
+= 1.4.14 =
+* New: Option to set gallery images title from image title, caption, alt or description

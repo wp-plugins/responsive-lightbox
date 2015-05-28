@@ -2,7 +2,7 @@
 /*
 Plugin Name: Responsive Lightbox
 Description: Responsive Lightbox allows users to view larger versions of images and galleries in a lightbox (overlay) effect optimized for mobile devices.
-Version: 1.4.13
+Version: 1.4.14
 Author: dFactory
 Author URI: http://www.dfactory.eu/
 Plugin URI: http://www.dfactory.eu/plugins/responsive-lightbox/
@@ -28,7 +28,7 @@ if ( ! defined( 'ABSPATH' ) )
  * Responsive Lightbox class.
  *
  * @class Responsive_Lightbox
- * @version	1.4.13
+ * @version	1.4.14
  */
 class Responsive_Lightbox {
 
@@ -39,6 +39,7 @@ class Responsive_Lightbox {
 			'galleries'					 => true,
 			'enable_gallery_image_size'	 => false,
 			'gallery_image_size'		 => 'full',
+			'gallery_image_title'		 => 'default',
 			'videos'					 => true,
 			'image_links'				 => true,
 			'images_as_gallery'			 => false,
@@ -122,7 +123,7 @@ class Responsive_Lightbox {
 				'quit_on_document_click' => true
 			)
 		),
-		'version'		 => '1.4.13'
+		'version'		 => '1.4.14'
 	);
 	private $scripts = array();
 	private $options = array();
@@ -189,7 +190,7 @@ class Responsive_Lightbox {
 	}
 
 	public function add_videos_lightbox_selector( $content ) {
-		preg_match_all( '/<a(.*?)href=(?:\'|")((?:(?:http|https):\/\/)?(?:www\.)?((youtube\.com\/watch\?v=[a-z0-9_\-]+)|(vimeo\.com\/[0-9]{8,})))(?:\'|")(.*?)>/i', $content, $links );
+		preg_match_all( '/<a(.*?)href=(?:\'|")((?:(?:http|https):\/\/)?(?:www\.)?(((?:youtu\.be\/|youtube\.com(?:\/embed\/|\/v\/|\/watch\?v=|\/watch\?.+&v=))([\w-]{11})(?:.+))|(vimeo\.com\/[0-9]{8,})))(?:\'|")(.*?)>/i', $content, $links );
 
 		if ( isset( $links[0] ) ) {
 			foreach ( $links[0] as $id => $link ) {
@@ -258,6 +259,34 @@ class Responsive_Lightbox {
 	}
 	
 	public function add_gallery_lightbox_selector( $link, $id, $size, $permalink, $icon, $text ) {
+		
+		// gallery image title option
+		$title_arg = apply_filters( 'rl_lightbox_attachment_image_title_arg', ( isset( $this->options['settings']['gallery_image_title'] ) ? $this->options['settings']['gallery_image_title'] : $this->defaults['settings']['gallery_image_title'] ), $link, $id );
+		
+		if ( $title_arg && $title_arg != 'default' ) {
+			switch( $title_arg ) {
+				case 'title':
+					$title = get_the_title( $id );
+					break;
+				case 'caption':
+					$title = get_post_field( 'post_excerpt', $id ) ;
+					break;
+				case 'alt':
+					$title = get_post_meta( $id, '_wp_attachment_image_alt', true );
+					break;
+				case 'description':
+					$title = get_post_field( 'post_content', $id ) ;
+					break;
+				default:
+					$title = '';
+			}
+			
+			// option to adjust the title
+			$title = apply_filters( 'rl_lightbox_attachment_image_title', $title, $link, $id );
+			
+			$link = str_replace( '<a href', '<a title="'. wp_strip_all_tags( trim( $title ) ) .'" href', $link );
+		}
+
 		$link = (preg_match( '/<a.*? rel=("|\').*?("|\')>/', $link ) === 1 ? preg_replace( '/(<a.*? rel=(?:"|\').*?)((?:"|\').*?>)/', '$1 ' . $this->options['settings']['selector'] . '[gallery-' . $this->gallery_no . ']' . '$2', $link ) : preg_replace( '/(<a.*?)>/', '$1 rel="' . $this->options['settings']['selector'] . '[gallery-' . $this->gallery_no . ']' . '">', $link ));
 
 		return apply_filters( 'rl_lightbox_attachment_link', ( preg_match( '/<a.*? href=("|\').*?("|\')>/', $link ) === 1 ? preg_replace( '/(<a.*? href=(?:"|\')).*?((?:"|\').*?>)/', '$1' . wp_get_attachment_url( $id ) . '$2', $link ) : preg_replace( '/(<a.*?)>/', '$1 href="' . wp_get_attachment_url( $id ) . '">', $link ) ), $id, $size, $permalink, $icon, $text );
@@ -337,6 +366,14 @@ class Responsive_Lightbox {
 		$this->choices = array(
 			'yes'	 => __( 'Enable', 'responsive-lightbox' ),
 			'no'	 => __( 'Disable', 'responsive-lightbox' )
+		);
+		
+		$this->gallery_image_titles = array(
+			'default'		=> __( 'Default (none)', 'responsive-lightbox' ),
+			'title'	 		=> __( 'Image Title', 'responsive-lightbox' ),
+			'caption'		=> __( 'Image Caption', 'responsive-lightbox' ),
+			'alt'	 		=> __( 'Image Alt Text', 'responsive-lightbox' ),
+			'description'	=> __( 'Image Description', 'responsive-lightbox' )
 		);
 
 		$this->loading_places = array(
@@ -433,6 +470,7 @@ class Responsive_Lightbox {
 		add_settings_field( 'rl_selector', __( 'Selector', 'responsive-lightbox' ), array( &$this, 'rl_selector' ), 'responsive_lightbox_settings', 'responsive_lightbox_settings' );
 		add_settings_field( 'rl_galleries', __( 'Galleries', 'responsive-lightbox' ), array( &$this, 'rl_galleries' ), 'responsive_lightbox_settings', 'responsive_lightbox_settings' );
 		add_settings_field( 'rl_enable_gallery_image_size', __( 'Gallery image size', 'responsive-lightbox' ), array( &$this, 'rl_enable_gallery_image_size' ), 'responsive_lightbox_settings', 'responsive_lightbox_settings' );
+		add_settings_field( 'rl_gallery_image_title', __( 'Gallery image title', 'responsive-lightbox' ), array( &$this, 'rl_gallery_image_title' ), 'responsive_lightbox_settings', 'responsive_lightbox_settings' );
 		add_settings_field( 'rl_videos', __( 'Video links', 'responsive-lightbox' ), array( &$this, 'rl_videos' ), 'responsive_lightbox_settings', 'responsive_lightbox_settings' );
 		add_settings_field( 'rl_image_links', __( 'Image links', 'responsive-lightbox' ), array( &$this, 'rl_image_links' ), 'responsive_lightbox_settings', 'responsive_lightbox_settings' );
 		add_settings_field( 'rl_images_as_gallery', __( 'Single images as gallery', 'responsive-lightbox' ), array( &$this, 'rl_images_as_gallery' ), 'responsive_lightbox_settings', 'responsive_lightbox_settings' );
@@ -621,6 +659,21 @@ class Responsive_Lightbox {
 				</select>
 				<p class="description">' . __( 'Select image size for gallery image links.', 'responsive-lightbox' ) . '</p>
 			</div>
+		</div>';
+	}
+
+	public function rl_gallery_image_title() {
+		echo '
+		<div id="rl_gallery_image_title" class="wplikebtns">
+			<select name="responsive_lightbox_settings[gallery_image_title]" value="' . esc_attr( $this->options['settings']['gallery_image_title'] ) . '" />';
+
+		foreach ( $this->gallery_image_titles as $val => $trans ) {
+			echo '<option value="' . esc_attr( $val ) . '" ' . selected( $this->options['settings']['gallery_image_title'], esc_attr( $val ), false ) . '>' . esc_attr( $trans ) . '</option>';
+		}
+
+		echo '
+			</select>
+			<p class="description">' . __( 'Select the title for lightboxed WP gallery images.', 'responsive-lightbox' ) . '</p>
 		</div>';
 	}
 
@@ -1515,6 +1568,9 @@ class Responsive_Lightbox {
 			if ( $input['enable_gallery_image_size'] === true ) {
 				$input['gallery_image_size'] = esc_attr( isset( $input['gallery_image_size'] ) && $input['gallery_image_size'] !== '' ? $input['gallery_image_size'] : $this->defaults['settings']['gallery_image_size'] );
 			}
+			
+			// gallery image title
+			$input['gallery_image_title'] = esc_attr( isset( $input['gallery_image_title'] ) && in_array( $input['gallery_image_title'], array_keys( $this->gallery_image_titles ) ) ? $input['gallery_image_title'] : $this->defaults['settings']['gallery_image_title'] );
 
 			// checkboxes
 			$input['galleries'] = (isset( $input['galleries'], $this->choices[$input['galleries']] ) ? ($input['galleries'] === 'yes' ? true : false) : $this->defaults['settings']['galleries']);
