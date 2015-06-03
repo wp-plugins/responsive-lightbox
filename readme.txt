@@ -2,9 +2,9 @@
 Contributors: dfactory
 Donate link: http://www.dfactory.eu/
 Tags: gallery, images, lightbox, links, photos, template, theme, photo, image, picture, slideshow, modal, overlay, YouTube, Vimeo, video, videos
-Requires at least: 3.6
+Requires at least: 4.0
 Tested up to: 4.2.2
-Stable tag: 1.4.14
+Stable tag: 1.5.0
 License: MIT License
 License URI: http://opensource.org/licenses/MIT
 
@@ -25,6 +25,7 @@ For more information, check out plugin page at [dFactory](http://www.dfactory.eu
 * Option to display single post images as a gallery
 * Option to modify native WP gallery links image size
 * Option to set gallery images title from image title, caption, alt or description
+* Option to force lightbox for custom WP gallery replacements like Jetpack tiled galleries
 * Option to trigger lightbox on custom jquery events
 * Enter a selector for lightbox
 * Highly customizable settings for each of the lightbox scripts
@@ -65,6 +66,10 @@ No questions yet.
 2. screenshot-2.jpg
 
 == Changelog ==
+
+= 1.5.0 =
+* New: Revamped User Interface
+* New: Option to force lightbox for custom WP gallery replacements like Jetpack tiled galleries 
 
 = 1.4.14 =
 * New: Option to set gallery images title from image title, caption, alt or description
@@ -198,5 +203,6 @@ Initial release
 
 == Upgrade Notice ==
 
-= 1.4.14 =
-* New: Option to set gallery images title from image title, caption, alt or description
+= 1.5.0 =
+* New: Revamped User Interface
+* New: Option to force lightbox for custom WP gallery replacements like Jetpack tiled galleries 
