@@ -986,7 +986,7 @@ class Responsive_Lightbox_Settings {
 
 			case ( 'boolean' ) :
 			
-				$html .= '<label class="cb-checkbox"><input id="' . $args['id'] . '" type="checkbox" name="' . $args['name'] . '" value="1" ' . checked( true, (bool) $args['value'], false ) . ' />' . $args['label'] . '</label>';
+				$html .= '<label class="cb-checkbox"><input id="' . $args['id'] . '" type="checkbox" name="' . $args['name'] . '" value="1" ' . checked( (bool) $args['value'], true, false ) . ' />' . $args['label'] . '</label>';
 				break;
 				
 			case ( 'radio' ) :
@@ -1164,39 +1164,45 @@ class Responsive_Lightbox_Settings {
 			if ( $this->settings[$setting_id]['fields'] ) {
 
 				foreach ( $this->settings[$setting_id]['fields'] as $field_id => $field ) {
-					
+
 					if ( $field['type'] === 'multiple' ) {
 						
 						if ( $field['fields'] ) {
 						
 							foreach ( $field['fields'] as $subfield_id => $subfield ) {
 								
-								switch ( $subfield['type'] ) {
-									case 'boolean' :
-										$input[$subfield_id] = isset( $input[$subfield_id] );
-										break;
-										
-									default :
-										$input[$subfield_id] = isset( $input[$subfield_id] ) ? $this->sanitize_field( $input[$subfield_id], $subfield['type'] ) : $this->defaults[$setting_id][$field_id][$subfield_id];
-										break;	
-								}
+								// if subfield has parent
+								if ( ! empty( $this->settings[$setting_id]['fields'][$subfield_id]['parent'] ) ) {
+									
+									$field_parent = $this->settings[$setting_id]['fields'][$subfield_id]['parent'];
+									
+									$input[$field_parent][$zubfield_id] = isset( $input[$field_parent][$subfield_id] ) ? $this->sanitize_field( $input[$field_parent][$subfield_id], $field['type'] ) : ( $field['type'] === 'boolean' ? false : $this->defaults[$setting_id][$field_parent][$subfield_id] );
 								
+								} else {
+
+									$input[$subfield_id] = isset( $input[$subfield_id] ) ? $this->sanitize_field( $input[$subfield_id], $subfield['type'] ) : ( $subfield['type'] === 'boolean' ? false : $this->defaults[$setting_id][$field_id][$subfield_id] );
+								
+								}
+
 							}
 						
 						}
 						
 					} else {
 						
-						switch ( $field['type'] ) {
-							case 'boolean' :
-								$input[$field_id] = isset( $input[$field_id] );
-								break;
-								
-							default :
-								$input[$field_id] = isset( $input[$field_id] ) ? $this->sanitize_field( $input[$field_id], $field['type'] ) : $this->defaults[$setting_id][$field_id];
-								break;	
-						}
+						// if field has parent
+						if ( ! empty( $this->settings[$setting_id]['fields'][$field_id]['parent'] ) ) {
+							
+							$field_parent = $this->settings[$setting_id]['fields'][$field_id]['parent'];
+							
+							$input[$field_parent][$field_id] = isset( $input[$field_parent][$field_id] ) ? $this->sanitize_field( $input[$field_parent][$field_id], $field['type'] ) : ( $field['type'] === 'boolean' ? false : $this->defaults[$setting_id][$field_parent][$field_id] );
 						
+						} else {
+
+							$input[$field_id] = isset( $input[$field_id] ) ? $this->sanitize_field( $input[$field_id], $field['type'] ) : ( $field['type'] === 'boolean' ? false : $this->defaults[$setting_id][$field_id] );
+						
+						}
+
 					}
 				}
 			
@@ -1220,10 +1226,6 @@ class Responsive_Lightbox_Settings {
 			add_settings_error( 'reset' . '_' . $this->settings[$setting_id]['prefix']  . '_' . $setting_id, 'settings_restored', __( 'Settings restored to defaults.', 'responsive-lightbox' ), 'updated' );
 			
 		}
-
-		// echo '<pre>'; print_r($this->settings[$setting_id]['prefix']); echo '</pre>';
-		// echo '<pre>'; print_r($input); echo '</pre>';
-		// echo '<pre>'; print_r($_POST); echo '</pre>';
 		
 		return $input;
 	}

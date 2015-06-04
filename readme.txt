@@ -4,7 +4,7 @@ Donate link: http://www.dfactory.eu/
 Tags: gallery, images, lightbox, links, photos, template, theme, photo, image, picture, slideshow, modal, overlay, YouTube, Vimeo, video, videos
 Requires at least: 4.0
 Tested up to: 4.2.2
-Stable tag: 1.5.0
+Stable tag: 1.5.1
 License: MIT License
 License URI: http://opensource.org/licenses/MIT
 
@@ -66,6 +66,11 @@ No questions yet.
 2. screenshot-2.jpg
 
 == Changelog ==
+
+= 1.5.1 =
+* Tweak: Support for multiple custom galleries per page (via gallery-n) in rel
+* Fix: Boolean / subfields bug not saving settings properly
+* Fix: Vimeo videos automatic lightbox not working when query parameters were not set
 
 = 1.5.0 =
 * New: Revamped User Interface
@@ -203,6 +208,6 @@ Initial release
 
 == Upgrade Notice ==
 
-= 1.5.0 =
-* New: Revamped User Interface
-* New: Option to force lightbox for custom WP gallery replacements like Jetpack tiled galleries 
+= 1.5.1 =
+* Tweak: Support for multiple custom galleries per page (via gallery-n) in rel
+* Fix: Boolean / subfields bug not saving settings properly

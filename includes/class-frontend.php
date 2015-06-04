@@ -50,7 +50,7 @@ class Responsive_Lightbox_Frontend {
 	 * @return mixed
 	 */
 	public function add_videos_lightbox_selector( $content ) {
-		preg_match_all( '/<a(.*?)href=(?:\'|")((?:(?:http|https):\/\/)?(?:www\.)?(((?:youtu\.be\/|youtube\.com(?:\/embed\/|\/v\/|\/watch\?v=|\/watch\?.+&v=))([\w-]{11})(?:.+))|(vimeo\.com\/[0-9]{8,})))(?:\'|")(.*?)>/i', $content, $links );
+		preg_match_all( '/<a(.*?)href=(?:\'|")((?:(?:http|https):\/\/)?(?:www\.)?(((?:youtu\.be\/|youtube\.com(?:\/embed\/|\/v\/|\/watch\?v=|\/watch\?.+&v=))([\w-]{11})(?:.+))|(vimeo\.com\/[0-9]*)))(?:\'|")(.*?)>/i', $content, $links );
 
 		if ( isset( $links[0] ) ) {
 			foreach ( $links[0] as $id => $link ) {
@@ -69,8 +69,13 @@ class Responsive_Lightbox_Frontend {
 						} else
 							$content = str_replace( $link, preg_replace( '/rel=(?:\'|")(.*?)(?:\'|")/', 'rel="' . ( $result[1] !== '' ? $result[1] . ' ' : '' ) . $this->options['settings']['selector'] . '-video-' . $id . '"', $link ), $content );
 					}
-				} else
-					$content = str_replace( $link, '<a' . $links[1][$id] . 'href="' . $links[2][$id] . '"' . $links[6][$id] . ' rel="' . $this->options['settings']['selector'] . '-video-' . $id . '">', $content );
+				} else {
+					// swipebox video fix
+					if ( $this->options['settings']['script'] === 'swipebox' && strpos( $links[2][$id], 'vimeo') !== false ) {
+						$links[2][$id] = $links[2][$id] . '?width=' . $this->options['configuration']['swipebox']['video_max_width'];
+					}
+					$content = str_replace( $link, '<a' . $links[1][$id] . 'href="' . $links[2][$id] . '" rel="' . $this->options['settings']['selector'] . '-video-' . $id . '">', $content );
+				}
 			}
 		}
 
@@ -176,9 +181,9 @@ class Responsive_Lightbox_Frontend {
 				}
 
 				if ( preg_match( '/<a.*?rel=(?:\'|")(.*?)(?:\'|").*?>/', $link, $result ) === 1 ) {
-					$content = str_replace( $link, preg_replace( '/rel=(?:\'|")(.*?)(?:\'|")/', 'rel="' . $this->options['settings']['selector'] . '"' . ( ! empty ( $title ) ? ' title="' . $title . '"' : '' ) . ( $this->options['settings']['script'] === 'imagelightbox' ? ' data-imagelightbox="' . $id . '"' : '' ), $link ), $content );
+					$content = str_replace( $link, preg_replace( '/rel=(?:\'|")(.*?)(?:\'|")/', 'rel="' . $this->options['settings']['selector'] . '[gallery-' . $this->gallery_no . ']' . '"' . ( ! empty ( $title ) ? ' title="' . $title . '"' : '' ) . ( $this->options['settings']['script'] === 'imagelightbox' ? ' data-imagelightbox="' . $id . '"' : '' ), $link ), $content );
 				} else {
-					$content = str_replace( $link, '<a' . $links[1][$id] . 'href="' . $links[2][$id] . '.' . $links[3][$id] . '"' . $links[4][$id] . ' rel="' . $this->options['settings']['selector'] . '"' . ( $this->options['settings']['script'] === 'imagelightbox' ? ' data-imagelightbox="' . $id . '"' : '' ) . ( ! empty ( $title ) ? ' title="' . $title . '"' : '' ) . '>', $content );
+					$content = str_replace( $link, '<a' . $links[1][$id] . 'href="' . $links[2][$id] . '.' . $links[3][$id] . '"' . $links[4][$id] . ' rel="' . $this->options['settings']['selector'] . '[gallery-' . $this->gallery_no . ']' . '"' . ( $this->options['settings']['script'] === 'imagelightbox' ? ' data-imagelightbox="' . $id . '"' : '' ) . ( ! empty ( $title ) ? ' title="' . $title . '"' : '' ) . '>', $content );
 				}
 			}
 		}
