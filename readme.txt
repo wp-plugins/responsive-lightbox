@@ -2,9 +2,9 @@
 Contributors: dfactory
 Donate link: http://www.dfactory.eu/
 Tags: gallery, images, lightbox, links, photos, template, theme, photo, image, picture, slideshow, modal, overlay, YouTube, Vimeo, video, videos
-Requires at least: 3.3
-Tested up to: 4.1
-Stable tag: 1.4.10
+Requires at least: 4.0
+Tested up to: 4.2.2
+Stable tag: 1.5.1
 License: MIT License
 License URI: http://opensource.org/licenses/MIT
 
@@ -24,6 +24,8 @@ For more information, check out plugin page at [dFactory](http://www.dfactory.eu
 * Automatically add lightbox to WordPress video links (YouTube, Vimeo)
 * Option to display single post images as a gallery
 * Option to modify native WP gallery links image size
+* Option to set gallery images title from image title, caption, alt or description
+* Option to force lightbox for custom WP gallery replacements like Jetpack tiled galleries
 * Option to trigger lightbox on custom jquery events
 * Enter a selector for lightbox
 * Highly customizable settings for each of the lightbox scripts
@@ -64,6 +66,32 @@ No questions yet.
 2. screenshot-2.jpg
 
 == Changelog ==
+
+= 1.5.1 =
+* Tweak: Support for multiple custom galleries per page (via gallery-n) in rel
+* Fix: Boolean / subfields bug not saving settings properly
+* Fix: Vimeo videos automatic lightbox not working when query parameters were not set
+
+= 1.5.0 =
+* New: Revamped User Interface
+* New: Option to force lightbox for custom WP gallery replacements like Jetpack tiled galleries 
+
+= 1.4.14 =
+* New: Option to set gallery images title from image title, caption, alt or description
+* Tweak: Improved regex for Youtube video links
+
+= 1.4.13 =
+* Fix: Reverted back the regex change in lightbox selector to gallery links
+
+= 1.4.12 =
+* Fix: jQuery prettyPhoto DOM Cross-Site Scripting (XSS) vulnerability
+* Tweak: Added regex filetype check before applying lightbox selector to gallery links.
+* Tweak: Switched from wp_generate_password() to custom function, without needless DB call.
+
+= 1.4.11 =
+* Tweak: Swipebox script updated to 1.3.0.2
+* Tweak: prettyPhoto CSS tweaks
+* Tweak: fancyBox IE patch
 
 = 1.4.10 =
 * Tweak: Image Lightbox updated
@@ -180,5 +208,6 @@ Initial release
 
 == Upgrade Notice ==
 
-= 1.4.10 =
-* Tweak: Image Lightbox updated
+= 1.5.1 =
+* Tweak: Support for multiple custom galleries per page (via gallery-n) in rel
+* Fix: Boolean / subfields bug not saving settings properly
