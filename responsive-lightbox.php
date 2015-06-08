@@ -2,7 +2,7 @@
 /*
 Plugin Name: Responsive Lightbox
 Description: Responsive Lightbox allows users to view larger versions of images and galleries in a lightbox (overlay) effect optimized for mobile devices.
-Version: 1.5.1
+Version: 1.5.2
 Author: dFactory
 Author URI: http://www.dfactory.eu/
 Plugin URI: http://www.dfactory.eu/plugins/responsive-lightbox/
@@ -36,7 +36,7 @@ include_once( RESPONSIVE_LIGHTBOX_PATH . 'includes/class-settings.php' );
  * Responsive Lightbox class.
  *
  * @class Responsive_Lightbox
- * @version	1.5.1
+ * @version	1.5.2
  */
 class Responsive_Lightbox {
 
@@ -129,9 +129,19 @@ class Responsive_Lightbox {
 				'quit_on_end'				=> false,
 				'quit_on_image_click'		=> false,
 				'quit_on_document_click'	=> true
+			),
+			'tosrus'	 	=> array(
+				'effect'					=> 'slide',
+				'infinite'					=> true,
+				'keys'						=> false,
+				'autoplay'					=> true,
+				'pause_on_hover'			=> false,
+				'timeout'					=> 4000,
+				'pagination'				=> true,
+				'pagination_type'			=> 'thumbnails'
 			)
 		),
-		'version'		 => '1.5.1'
+		'version'		 => '1.5.2'
 	);
 	public $options = array();
 	private static $_instance;
@@ -141,7 +151,7 @@ class Responsive_Lightbox {
 	private function __wakeup() {}
 
 	/**
-	 * Main Events Maker instance.
+	 * Main Responsive Lightbox instance.
 	 */
 	public static function instance() {
 		if ( self::$_instance === null ) {
@@ -337,6 +347,7 @@ class Responsive_Lightbox {
 		) );
 
 		if ( $args['script'] === 'prettyphoto' ) {
+			
 			wp_register_script(
 				'responsive-lightbox-prettyphoto', plugins_url( 'assets/prettyphoto/js/jquery.prettyPhoto.js', __FILE__ ), array( 'jquery' ), '', ($this->options['settings']['loading_place'] === 'header' ? false : true )
 			);
@@ -344,10 +355,10 @@ class Responsive_Lightbox {
 			wp_enqueue_script( 'responsive-lightbox-prettyphoto' );
 
 			wp_register_style(
-				'responsive-lightbox-prettyphoto-front', plugins_url( 'assets/prettyphoto/css/prettyPhoto.css', __FILE__ )
+				'responsive-lightbox-prettyphoto', plugins_url( 'assets/prettyphoto/css/prettyPhoto.css', __FILE__ )
 			);
 
-			wp_enqueue_style( 'responsive-lightbox-prettyphoto-front' );
+			wp_enqueue_style( 'responsive-lightbox-prettyphoto' );
 
 			$args = array_merge(
 				$args, array(
@@ -374,7 +385,9 @@ class Responsive_Lightbox {
 				'social'			 => $this->get_boolean_value( $this->options['configuration']['prettyphoto']['social'] )
 				)
 			);
+			
 		} elseif ( $args['script'] === 'swipebox' ) {
+			
 			wp_register_script(
 				'responsive-lightbox-swipebox', plugins_url( 'assets/swipebox/js/jquery.swipebox.min.js', __FILE__ ), array( 'jquery' ), '', ($this->options['settings']['loading_place'] === 'header' ? false : true )
 			);
@@ -382,10 +395,10 @@ class Responsive_Lightbox {
 			wp_enqueue_script( 'responsive-lightbox-swipebox' );
 
 			wp_register_style(
-				'responsive-lightbox-swipebox-front', plugins_url( 'assets/swipebox/css/swipebox.min.css', __FILE__ )
+				'responsive-lightbox-swipebox', plugins_url( 'assets/swipebox/css/swipebox.min.css', __FILE__ )
 			);
 
-			wp_enqueue_style( 'responsive-lightbox-swipebox-front' );
+			wp_enqueue_style( 'responsive-lightbox-swipebox' );
 
 			$args = array_merge(
 				$args, array(
@@ -398,7 +411,9 @@ class Responsive_Lightbox {
 				'loopAtEnd'					=> $this->get_boolean_value( $this->options['configuration']['swipebox']['loop_at_end'] )
 				)
 			);
+			
 		} elseif ( $args['script'] === 'fancybox' ) {
+			
 			wp_register_script(
 				'responsive-lightbox-fancybox', plugins_url( 'assets/fancybox/jquery.fancybox-1.3.4.js', __FILE__ ), array( 'jquery' ), '', ($this->options['settings']['loading_place'] === 'header' ? false : true )
 			);
@@ -406,10 +421,10 @@ class Responsive_Lightbox {
 			wp_enqueue_script( 'responsive-lightbox-fancybox' );
 
 			wp_register_style(
-				'responsive-lightbox-fancybox-front', plugins_url( 'assets/fancybox/jquery.fancybox-1.3.4.css', __FILE__ )
+				'responsive-lightbox-fancybox', plugins_url( 'assets/fancybox/jquery.fancybox-1.3.4.css', __FILE__ )
 			);
 
-			wp_enqueue_style( 'responsive-lightbox-fancybox-front' );
+			wp_enqueue_style( 'responsive-lightbox-fancybox' );
 
 			$args = array_merge(
 				$args, array(
@@ -440,7 +455,9 @@ class Responsive_Lightbox {
 				'videoHeight'		 => $this->options['configuration']['fancybox']['video_height']
 				)
 			);
+			
 		} elseif ( $args['script'] === 'nivo' ) {
+			
 			wp_register_script(
 				'responsive-lightbox-nivo', plugins_url( 'assets/nivo/nivo-lightbox.min.js', __FILE__ ), array( 'jquery' ), '', ($this->options['settings']['loading_place'] === 'header' ? false : true )
 			);
@@ -448,16 +465,16 @@ class Responsive_Lightbox {
 			wp_enqueue_script( 'responsive-lightbox-nivo' );
 
 			wp_register_style(
-				'responsive-lightbox-nivo-front', plugins_url( 'assets/nivo/nivo-lightbox.css', __FILE__ )
+				'responsive-lightbox-nivo', plugins_url( 'assets/nivo/nivo-lightbox.css', __FILE__ )
 			);
 
-			wp_enqueue_style( 'responsive-lightbox-nivo-front' );
+			wp_enqueue_style( 'responsive-lightbox-nivo' );
 
 			wp_register_style(
-				'responsive-lightbox-nivo-front-template', plugins_url( 'assets/nivo/themes/default/default.css', __FILE__ )
+				'responsive-lightbox-nivo', plugins_url( 'assets/nivo/themes/default/default.css', __FILE__ )
 			);
 
-			wp_enqueue_style( 'responsive-lightbox-nivo-front-template' );
+			wp_enqueue_style( 'responsive-lightbox-nivo' );
 
 			$args = array_merge(
 				$args, array(
@@ -467,18 +484,18 @@ class Responsive_Lightbox {
 				'errorMessage'			 => esc_attr( $this->options['configuration']['nivo']['error_message'] )
 				)
 			);
+			
 		} elseif ( $args['script'] === 'imagelightbox' ) {
+			
 			wp_register_script(
 				'responsive-lightbox-imagelightbox', plugins_url( 'assets/imagelightbox/js/imagelightbox.min.js', __FILE__ ), array( 'jquery' ), '', ($this->options['settings']['loading_place'] === 'header' ? false : true )
 			);
-
 			wp_enqueue_script( 'responsive-lightbox-imagelightbox' );
 
 			wp_register_style(
-				'responsive-lightbox-imagelightbox-front', plugins_url( 'assets/imagelightbox/css/imagelightbox.css', __FILE__ )
+				'responsive-lightbox-imagelightbox', plugins_url( 'assets/imagelightbox/css/imagelightbox.css', __FILE__ )
 			);
-
-			wp_enqueue_style( 'responsive-lightbox-imagelightbox-front' );
+			wp_enqueue_style( 'responsive-lightbox-imagelightbox' );
 
 			$args = array_merge(
 				$args, array(
@@ -488,6 +505,31 @@ class Responsive_Lightbox {
 				'quitOnEnd'				 => $this->get_boolean_value( $this->options['configuration']['imagelightbox']['quit_on_end'] ),
 				'quitOnImageClick'		 => $this->get_boolean_value( $this->options['configuration']['imagelightbox']['quit_on_image_click'] ),
 				'quitOnDocumentClick'	 => $this->get_boolean_value( $this->options['configuration']['imagelightbox']['quit_on_document_click'] ),
+				)
+			);
+			
+		} elseif ( $args['script'] === 'tosrus' ) {
+			
+			wp_register_script(
+				'responsive-lightbox-tosrus', plugins_url( 'assets/tosrus/js/jquery.tosrus.min.all.js', __FILE__ ), array( 'jquery' ), '', ($this->options['settings']['loading_place'] === 'header' ? false : true )
+			);
+			wp_enqueue_script( 'responsive-lightbox-tosrus' );
+
+			wp_register_style(
+				'responsive-lightbox-tosrus', plugins_url( 'assets/tosrus/css/jquery.tosrus.all.min.css', __FILE__ )
+			);
+			wp_enqueue_style( 'responsive-lightbox-tosrus' );
+			
+			$args = array_merge(
+				$args, array(
+				'effect'					=> $this->options['configuration']['tosrus']['effect'],
+				'infinite'	 				=> $this->get_boolean_value( $this->options['configuration']['tosrus']['infinite'] ),
+				'keys'	 					=> $this->get_boolean_value( $this->options['configuration']['tosrus']['keys'] ),
+				'autoplay'	 				=> $this->get_boolean_value( $this->options['configuration']['tosrus']['autoplay'] ),
+				'pause_on_hover'	 		=> $this->get_boolean_value( $this->options['configuration']['tosrus']['pause_on_hover'] ),
+				'timeout'	 				=> $this->options['configuration']['tosrus']['timeout'],
+				'pagination'	 			=> $this->get_boolean_value( $this->options['configuration']['tosrus']['pagination'] ),
+				'pagination_type'	 		=> $this->options['configuration']['tosrus']['pagination_type']
 				)
 			);
 		}

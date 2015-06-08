@@ -3,8 +3,9 @@
 	$( document ).ready( function () {
 
 		$( document ).on( 'ready' + rlArgs.custom_events, function () {
+			
 			if ( rlArgs.script === 'swipebox' ) {
-				$( 'a[rel*="' + rlArgs.selector + '"]' ).swipebox( {
+				$( 'a[rel*="' + rlArgs.selector + '"], a[data-rel*="' + rlArgs.selector + '"]' ).swipebox( {
 					useCSS: ( rlArgs.animation === '1' ? true : false ),
 					useSVG: ( rlArgs.useSVG === '1' ? true : false ),
 					hideCloseButtonOnMobile: ( rlArgs.hideCloseButtonOnMobile === '1' ? true : false ),
@@ -13,7 +14,8 @@
 					loopAtEnd: ( rlArgs.loopAtEnd === '1' ? true : false )
 				} );
 			} else if ( rlArgs.script === 'prettyphoto' ) {
-				$( 'a[rel*="' + rlArgs.selector + '"]' ).prettyPhoto( {
+				$( 'a[rel*="' + rlArgs.selector + '"], a[data-rel*="' + rlArgs.selector + '"]' ).prettyPhoto( {
+					hook: 'data-rel',
 					animation_speed: rlArgs.animationSpeed,
 					slideshow: ( rlArgs.slideshow === '1' ? parseInt( rlArgs.slideshowDelay ) : false ),
 					autoplay_slideshow: ( rlArgs.slideshowAutoplay === '1' ? true : false ),
@@ -41,7 +43,7 @@
 					ie6_fallback: true
 				} );
 			} else if ( rlArgs.script === 'fancybox' ) {
-				$( 'a[rel*="' + rlArgs.selector + '"]' ).fancybox( {
+				$( 'a[rel*="' + rlArgs.selector + '"], a[data-rel*="' + rlArgs.selector + '"]' ).fancybox( {
 					modal: ( rlArgs.modal === '1' ? true : false ),
 					overlayShow: ( rlArgs.showOverlay === '1' ? true : false ),
 					showCloseButton: ( rlArgs.showCloseButton === '1' ? true : false ),
@@ -72,23 +74,23 @@
 					height: parseInt( rlArgs.videoHeight )
 				} );
 			} else if ( rlArgs.script === 'nivo' ) {
-				$.each( $( 'a[rel*="' + rlArgs.selector + '"]' ), function () {
-					var match = $( this ).attr( 'rel' ).match( new RegExp( rlArgs.selector + '\\[(gallery\\-(?:[\\da-z]{1,4}))\\]', 'ig' ) );
+				$.each( $( 'a[rel*="' + rlArgs.selector + '"], a[data-rel*="' + rlArgs.selector + '"]' ), function () {
+					var match = $( this ).attr( 'data-rel' ).match( new RegExp( rlArgs.selector + '\\[(gallery\\-(?:[\\da-z]{1,4}))\\]', 'ig' ) );
 
 					if ( match !== null ) {
 						$( this ).attr( 'data-lightbox-gallery', match[0] );
 					}
 				} );
 
-				$( 'a[rel*="' + rlArgs.selector + '"]' ).nivoLightbox( {
+				$( 'a[rel*="' + rlArgs.selector + '"], a[data-rel*="' + rlArgs.selector + '"]' ).nivoLightbox( {
 					effect: rlArgs.effect,
 					clickOverlayToClose: ( rlArgs.clickOverlayToClose === '1' ? true : false ),
 					keyboardNav: ( rlArgs.keyboardNav === '1' ? true : false ),
 					errorMessage: rlArgs.errorMessage
 				} );
 			} else if ( rlArgs.script === 'imagelightbox' ) {
-				$( 'a[rel*="' + rlArgs.selector + '"]' ).each( function ( i, item ) {
-					$( 'a[rel="' + item.rel + '"]' ).imageLightbox( {
+				$( 'a[data-rel*="' + rlArgs.selector + '"]' ).each( function ( i, item ) {
+					$( 'a[data-rel="' + $( item ).data( 'rel' ) + '"]' ).imageLightbox( {
 						animationSpeed: parseInt( rlArgs.animationSpeed ),
 						preloadNext: ( rlArgs.preloadNext === '1' ? true : false ),
 						enableKeyboard: ( rlArgs.enableKeyboard === '1' ? true : false ),
@@ -97,7 +99,57 @@
 						quitOnDocClick: ( rlArgs.quitOnDocumentClick === '1' ? true : false )
 					} );
 				} );
+				$( 'a[rel*="' + rlArgs.selector + '"]' ).each( function ( i, item ) {
+					$( 'a[data-rel="' + item.rel + ']"' ).imageLightbox( {
+						animationSpeed: parseInt( rlArgs.animationSpeed ),
+						preloadNext: ( rlArgs.preloadNext === '1' ? true : false ),
+						enableKeyboard: ( rlArgs.enableKeyboard === '1' ? true : false ),
+						quitOnEnd: ( rlArgs.quitOnEnd === '1' ? true : false ),
+						quitOnImgClick: ( rlArgs.quitOnImageClick === '1' ? true : false ),
+						quitOnDocClick: ( rlArgs.quitOnDocumentClick === '1' ? true : false )
+					} );
+				} );
+			} else if ( rlArgs.script === 'tosrus' ) {
+				var selectors = [];
+				
+				$( 'a[rel*="' + rlArgs.selector + '"], a[data-rel*="' + rlArgs.selector + '"]' ).each( function ( i, item ) {
+					selectors.push( $( item ).data( 'rel' ) );
+				} );
+				
+				if ( selectors.length > 0 ) {
+					// make unique
+					selectors = $.unique( selectors );
+
+					$( selectors ).each( function ( i, item ) {
+
+						$( 'a[data-rel="' + item + '"]' ).tosrus( {
+							infinite: ( rlArgs.infinite === '1' ? true : false ),
+							autoplay: {
+								play: ( rlArgs.autoplay === '1' ? true : false ),
+								pauseOnHover: ( rlArgs.pause_on_hover === '1' ? true : false ),
+								timeout: rlArgs.timeout
+							},
+							effect: rlArgs.effect,
+							keys: {
+								prev: ( rlArgs.keys === '1' ? true : false ),
+								next: ( rlArgs.keys === '1' ? true : false ),
+								close: ( rlArgs.keys === '1' ? true : false )
+							},
+							pagination: {
+								add: ( rlArgs.pagination === '1' ? true : false ),
+								type: rlArgs.pagination_type
+							},
+							// forced
+							show: false,
+							caption: {
+								add: true,
+								attributes: ["title"]
+							}
+						} );
+					} );
+				}
 			}
+			
 		} );
 
 	} );

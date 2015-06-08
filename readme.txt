@@ -4,7 +4,7 @@ Donate link: http://www.dfactory.eu/
 Tags: gallery, images, lightbox, links, photos, template, theme, photo, image, picture, slideshow, modal, overlay, YouTube, Vimeo, video, videos
 Requires at least: 4.0
 Tested up to: 4.2.2
-Stable tag: 1.5.1
+Stable tag: 1.5.2
 License: MIT License
 License URI: http://opensource.org/licenses/MIT
 
@@ -18,7 +18,7 @@ For more information, check out plugin page at [dFactory](http://www.dfactory.eu
 
 = Features include: =
 
-* Select from 5 responsive lightbox scripts (SwipeBox, prettyPhoto, FancyBox, Nivo Lightbox, Image Lightbox)
+* Select from 6 responsive lightbox scripts (SwipeBox, prettyPhoto, FancyBox, Nivo Lightbox, Image Lightbox, Tos "R" Us)
 * Automatically add lightbox to WordPress image galleries
 * Automatically add lightbox to WordPress image links
 * Automatically add lightbox to WordPress video links (YouTube, Vimeo)
@@ -66,6 +66,12 @@ No questions yet.
 2. screenshot-2.jpg
 
 == Changelog ==
+
+= 1.5.2 =
+* New: Tos "R" Us lightbox script
+* Fix: Final fix for video links regex (hopefully)
+* Tweak: Switched from rel to data-rel attribute to avoid W3C validation errors
+* Tweak: Optimized gallery image size function
 
 = 1.5.1 =
 * Tweak: Support for multiple custom galleries per page (via gallery-n) in rel
@@ -208,6 +214,7 @@ Initial release
 
 == Upgrade Notice ==
 
-= 1.5.1 =
-* Tweak: Support for multiple custom galleries per page (via gallery-n) in rel
-* Fix: Boolean / subfields bug not saving settings properly
+= 1.5.2 =
+* New: Tos "R" Us lightbox script
+* Fix: Final fix for video links regex (hopefully)
+* Tweak: Switched from rel to data-rel attribute to avoid W3C validation errors

@@ -108,12 +108,10 @@ class Responsive_Lightbox_Settings {
 			),
 			'imagelightbox'	 => array(
 				'name' => __( 'Image Lightbox', 'responsive-lightbox' )
-			)
-		);
-
-		$this->choices = array(
-			'yes'	 => __( 'Enable', 'responsive-lightbox' ),
-			'no'	 => __( 'Disable', 'responsive-lightbox' )
+			),
+			'tosrus'		 => array(
+				'name'		 => __( 'TosRUs', 'responsive-lightbox' ),
+			),
 		);
 		
 		$this->gallery_image_titles = array(
@@ -703,14 +701,14 @@ class Responsive_Lightbox_Settings {
 						'title' => __( 'Keyboard navigation', 'responsive-lightbox' ),
 						'section' => 'responsive_lightbox_configuration',
 						'type' => 'boolean',
-						'label' => __( 'Enable to close lightbox on overlay click.', 'responsive-lightbox' ),
+						'label' => __( 'Enable keyboard navigation (left/right/escape).', 'responsive-lightbox' ),
 						'parent' => 'nivo'
 					),
 					'click_overlay_to_close' => array(
 						'title' => __( 'Click overlay to close', 'responsive-lightbox' ),
 						'section' => 'responsive_lightbox_configuration',
 						'type' => 'boolean',
-						'label' => __( 'Enable keyboard navigation (left/right/escape).', 'responsive-lightbox' ),
+						'label' => __( 'Enable to close lightbox on overlay click.', 'responsive-lightbox' ),
 						'parent' => 'nivo'
 					),
 					'error_message' => array(
@@ -772,6 +770,85 @@ class Responsive_Lightbox_Settings {
 						'label' => __( 'Quit when anything but the viewed image is clicked.', 'responsive-lightbox' ),
 						'parent' => 'imagelightbox'
 					),
+				);
+				
+				break;
+				
+			case ( 'tosrus' ) :
+
+				$this->settings['configuration']['prefix'] = 'rl_tr';
+				$this->settings['configuration']['fields'] = array(
+					'effect' => array(
+						'title' => __( 'Transition effect', 'responsive-lightbox' ),
+						'section' => 'responsive_lightbox_configuration',
+						'type' => 'radio',
+						'description' => __( 'What effect to use for the transition.', 'responsive-lightbox' ),
+						'options' => array(
+							'slide' => __( 'slide', 'responsive-lightbox' ),
+							'fade' => __( 'fade', 'responsive-lightbox' )
+						),
+						'parent' => 'tosrus'
+					),
+					'infinite' => array(
+						'title' => __( 'Infinite loop', 'responsive-lightbox' ),
+						'section' => 'responsive_lightbox_configuration',
+						'type' => 'boolean',
+						'label' => __( 'Whether or not to slide back to the first slide when the last has been reached.', 'responsive-lightbox' ),
+						'parent' => 'tosrus'
+					),
+					'keys' => array(
+						'title' => __( 'Keyboard navigation', 'responsive-lightbox' ),
+						'section' => 'responsive_lightbox_configuration',
+						'type' => 'boolean',
+						'label' => __( 'Enable keyboard navigation (left/right/escape).', 'responsive-lightbox' ),
+						'parent' => 'tosrus'
+					),
+					'autoplay' => array(
+						'title' => __( 'Autoplay', 'responsive-lightbox' ),
+						'section' => 'responsive_lightbox_configuration',
+						'type' => 'multiple',
+						'fields' => array(
+							'autoplay' => array(
+								'type' => 'boolean',
+								'label' => __( 'Automatically start slideshow.', 'responsive-lightbox' ),
+								'parent' => 'tosrus'
+							),
+							'timeout' => array(
+								'type' => 'number',
+								'description' => __( 'The timeout between sliding to the next slide in milliseconds.', 'responsive-lightbox' ),
+								'append' => 'ms',
+								'parent' => 'tosrus'
+							)
+						)
+					),
+					'pause_on_hover' => array(
+						'title' => __( 'Pause on hover', 'responsive-lightbox' ),
+						'section' => 'responsive_lightbox_configuration',
+						'type' => 'boolean',
+						'label' => __( 'Whether or not to pause on hover.', 'responsive-lightbox' ),
+						'parent' => 'tosrus'
+					),
+					'pagination' => array(
+						'title' => __( 'Pagination', 'responsive-lightbox' ),
+						'section' => 'responsive_lightbox_configuration',
+						'type' => 'multiple',
+						'fields' => array(
+							'pagination' => array(
+								'type' => 'boolean',
+								'label' => __( 'Whether or not to add a pagination.', 'responsive-lightbox' ),
+								'parent' => 'tosrus'
+							),
+							'pagination_type' => array(
+								'type' => 'radio',
+								'description' => __( 'What type of pagination to use.', 'responsive-lightbox' ),
+								'options' => array(
+									'bullets' => __( 'Bullets', 'responsive-lightbox' ),
+									'thumbnails' => __( 'Thumbnails', 'responsive-lightbox' )
+								),
+								'parent' => 'tosrus'
+							)
+						)
+					)
 				);
 				
 				break;
@@ -942,7 +1019,7 @@ class Responsive_Lightbox_Settings {
 					if ( $args['type'] === 'multiple' ) {
 						foreach ( $args['fields'] as $subfield_id => $subfield ) {
 							$args['fields'][$subfield_id] = wp_parse_args( $subfield, array(
-								'id' => $subfield_id,
+								'id' => $field_id . '-' . $subfield_id,
 								'class' => ! empty( $subfield['class'] ) ? $subfield['class'] : '',
 								'name' => $setting['option_name'] . ( ! empty( $subfield['parent'] ) ? '[' . $subfield['parent'] . ']' : '' ) . '[' . $subfield_id . ']',
 								'default' => $this->sanitize_field( ! empty( $subfield['parent'] ) ? $this->defaults[$setting_key][$subfield['parent']][$subfield_id] : $this->defaults[$setting_key][$subfield_id], $subfield['type'] ),
@@ -981,7 +1058,7 @@ class Responsive_Lightbox_Settings {
 			return;
 		
 		$html = '';
-		
+				
 		switch ( $args['type'] ) {
 
 			case ( 'boolean' ) :
@@ -992,14 +1069,14 @@ class Responsive_Lightbox_Settings {
 			case ( 'radio' ) :
 				
 				foreach ( $args['options'] as $key => $name ) {
-					$html .= '<label class="cb-radio"><input id="' . $args['id'] . '-' . $key . '" type="radio" name="' . $args['name'] . '" value="' . $key . '" ' . checked( $key, $args['value'], false ) . ' />' . $name . '</label>';
+					$html .= '<label class="cb-radio"><input id="' . $args['id'] . '-' . $key . '" type="radio" name="' . $args['name'] . '" value="' . $key . '" ' . checked( $key, $args['value'], false ) . ' />' . $name . '</label> ';
 				}
 				break;
 				
 			case ( 'checkbox' ) :
 				
 				foreach ( $args['options'] as $key => $name ) {
-					$html .= '<label class="cb-checkbox"><input id="' . $args['id'] . '-' . $key . '" type="checkbox" name="' . $args['name'] . '" value="' . $key . '" ' . checked( $key, $args['value'], false ) . ' />' . $name . '</label>';
+					$html .= '<label class="cb-checkbox"><input id="' . $args['id'] . '-' . $key . '" type="checkbox" name="' . $args['name'] . '" value="' . $key . '" ' . checked( $key, $args['value'], false ) . ' />' . $name . '</label> ';
 				}
 				break;
 				
@@ -1018,8 +1095,16 @@ class Responsive_Lightbox_Settings {
 				
 				$html .= '<fieldset>';
 				
-				foreach ( $args['fields'] as $subfield_id => $subfield_args ) {
-					$html .= $this->render_field( $subfield_args ) . '<br />';
+				if ( $args['fields'] ) {
+						
+					$count = 1;
+					$count_fields = count( $args['fields'] );
+				
+					foreach ( $args['fields'] as $subfield_id => $subfield_args ) {
+						$html .= $this->render_field( $subfield_args ) . ( $count < $count_fields ? '<br />' : '' );
+						$count++;
+					}
+				
 				}
 				
 				$html .= '</fieldset>';
@@ -1170,13 +1255,13 @@ class Responsive_Lightbox_Settings {
 						if ( $field['fields'] ) {
 						
 							foreach ( $field['fields'] as $subfield_id => $subfield ) {
-								
+
 								// if subfield has parent
-								if ( ! empty( $this->settings[$setting_id]['fields'][$subfield_id]['parent'] ) ) {
+								if ( ! empty( $this->settings[$setting_id]['fields'][$field_id]['fields'][$subfield_id]['parent'] ) ) {
 									
-									$field_parent = $this->settings[$setting_id]['fields'][$subfield_id]['parent'];
+									$field_parent = $this->settings[$setting_id]['fields'][$field_id]['fields'][$subfield_id]['parent'];
 									
-									$input[$field_parent][$zubfield_id] = isset( $input[$field_parent][$subfield_id] ) ? $this->sanitize_field( $input[$field_parent][$subfield_id], $field['type'] ) : ( $field['type'] === 'boolean' ? false : $this->defaults[$setting_id][$field_parent][$subfield_id] );
+									$input[$field_parent][$subfield_id] = isset( $input[$field_parent][$subfield_id] ) ? $this->sanitize_field( $input[$field_parent][$subfield_id], $subfield['type'] ) : ( $subfield['type'] === 'boolean' ? false : $this->defaults[$setting_id][$field_parent][$subfield_id] );
 								
 								} else {
 
@@ -1204,6 +1289,7 @@ class Responsive_Lightbox_Settings {
 						}
 
 					}
+					
 				}
 			
 			}
@@ -1226,7 +1312,7 @@ class Responsive_Lightbox_Settings {
 			add_settings_error( 'reset' . '_' . $this->settings[$setting_id]['prefix']  . '_' . $setting_id, 'settings_restored', __( 'Settings restored to defaults.', 'responsive-lightbox' ), 'updated' );
 			
 		}
-		
+
 		return $input;
 	}
 
