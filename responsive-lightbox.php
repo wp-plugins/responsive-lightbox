@@ -2,7 +2,7 @@
 /*
 Plugin Name: Responsive Lightbox
 Description: Responsive Lightbox allows users to view larger versions of images and galleries in a lightbox (overlay) effect optimized for mobile devices.
-Version: 1.5.2
+Version: 1.5.3
 Author: dFactory
 Author URI: http://www.dfactory.eu/
 Plugin URI: http://www.dfactory.eu/plugins/responsive-lightbox/
@@ -36,7 +36,7 @@ include_once( RESPONSIVE_LIGHTBOX_PATH . 'includes/class-settings.php' );
  * Responsive Lightbox class.
  *
  * @class Responsive_Lightbox
- * @version	1.5.2
+ * @version	1.5.3
  */
 class Responsive_Lightbox {
 
@@ -141,7 +141,7 @@ class Responsive_Lightbox {
 				'pagination_type'			=> 'thumbnails'
 			)
 		),
-		'version'		 => '1.5.2'
+		'version'		 => '1.5.3'
 	);
 	public $options = array();
 	private static $_instance;
@@ -461,20 +461,17 @@ class Responsive_Lightbox {
 			wp_register_script(
 				'responsive-lightbox-nivo', plugins_url( 'assets/nivo/nivo-lightbox.min.js', __FILE__ ), array( 'jquery' ), '', ($this->options['settings']['loading_place'] === 'header' ? false : true )
 			);
-
 			wp_enqueue_script( 'responsive-lightbox-nivo' );
 
 			wp_register_style(
 				'responsive-lightbox-nivo', plugins_url( 'assets/nivo/nivo-lightbox.css', __FILE__ )
 			);
-
 			wp_enqueue_style( 'responsive-lightbox-nivo' );
 
 			wp_register_style(
-				'responsive-lightbox-nivo', plugins_url( 'assets/nivo/themes/default/default.css', __FILE__ )
+				'responsive-lightbox-nivo-default', plugins_url( 'assets/nivo/themes/default/default.css', __FILE__ )
 			);
-
-			wp_enqueue_style( 'responsive-lightbox-nivo' );
+			wp_enqueue_style( 'responsive-lightbox-nivo-default' );
 
 			$args = array_merge(
 				$args, array(
