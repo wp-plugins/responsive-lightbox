@@ -294,6 +294,13 @@ class Responsive_Lightbox_Settings {
 						'label' => __( 'Hide the close button on mobile devices.', 'responsive-lightbox' ),
 						'parent' => 'swipebox'
 					),
+					'remove_bars_mobile' => array(
+						'title' => __( 'Remove bars on mobile', 'responsive-lightbox' ),
+						'section' => 'responsive_lightbox_configuration',
+						'type' => 'boolean',
+						'label' => __( 'Hide the top and bottom bars on mobile devices.', 'responsive-lightbox' ),
+						'parent' => 'swipebox'
+					),
 					'hide_bars' => array(
 						'title' => __( 'Top and bottom bars', 'responsive-lightbox' ),
 						'section' => 'responsive_lightbox_configuration',

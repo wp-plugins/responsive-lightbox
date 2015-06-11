@@ -2,7 +2,7 @@
 /*
 Plugin Name: Responsive Lightbox
 Description: Responsive Lightbox allows users to view larger versions of images and galleries in a lightbox (overlay) effect optimized for mobile devices.
-Version: 1.5.3
+Version: 1.5.4
 Author: dFactory
 Author URI: http://www.dfactory.eu/
 Plugin URI: http://www.dfactory.eu/plugins/responsive-lightbox/
@@ -36,7 +36,7 @@ include_once( RESPONSIVE_LIGHTBOX_PATH . 'includes/class-settings.php' );
  * Responsive Lightbox class.
  *
  * @class Responsive_Lightbox
- * @version	1.5.3
+ * @version	1.5.4
  */
 class Responsive_Lightbox {
 
@@ -84,6 +84,7 @@ class Responsive_Lightbox {
 				'animation'					=> 'css',
 				'force_png_icons'			=> false,
 				'hide_close_mobile'			=> false,
+				'remove_bars_mobile'		=> false,
 				'hide_bars'					=> true,
 				'hide_bars_delay'			=> 5000,
 				'video_max_width'			=> 1080,
@@ -141,13 +142,12 @@ class Responsive_Lightbox {
 				'pagination_type'			=> 'thumbnails'
 			)
 		),
-		'version'		 => '1.5.3'
+		'version'		 => '1.5.4'
 	);
 	public $options = array();
 	private static $_instance;
 	
 	private function __clone() {}
-
 	private function __wakeup() {}
 
 	/**
@@ -404,6 +404,7 @@ class Responsive_Lightbox {
 				$args, array(
 				'animation'					=> $this->get_boolean_value( ($this->options['configuration']['swipebox']['animation'] === 'css' ? true : false ) ),
 				'hideCloseButtonOnMobile'	=> $this->get_boolean_value( $this->options['configuration']['swipebox']['hide_close_mobile'] ),
+				'removeBarsOnMobile'		=> $this->get_boolean_value( $this->options['configuration']['swipebox']['remove_bars_mobile'] ),
 				'hideBars'					=> $this->get_boolean_value( $this->options['configuration']['swipebox']['hide_bars'] ),
 				'hideBarsDelay'				=> $this->options['configuration']['swipebox']['hide_bars_delay'],
 				'videoMaxWidth'				=> $this->options['configuration']['swipebox']['video_max_width'],
@@ -506,6 +507,14 @@ class Responsive_Lightbox {
 			);
 			
 		} elseif ( $args['script'] === 'tosrus' ) {
+			
+			// swipe support, enqueue Hammer.js on mobile devices only
+			if ( wp_is_mobile() ) {
+				wp_register_script(
+					'responsive-lightbox-hammer-js', plugins_url( 'assets/tosrus/js/hammer.min.js', __FILE__ ), array(), '', ($this->options['settings']['loading_place'] === 'header' ? false : true )
+				);
+				wp_enqueue_script( 'responsive-lightbox-hammer-js' );
+			}
 			
 			wp_register_script(
 				'responsive-lightbox-tosrus', plugins_url( 'assets/tosrus/js/jquery.tosrus.min.all.js', __FILE__ ), array( 'jquery' ), '', ($this->options['settings']['loading_place'] === 'header' ? false : true )

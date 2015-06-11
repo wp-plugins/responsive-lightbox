@@ -4,7 +4,7 @@ Donate link: http://www.dfactory.eu/
 Tags: gallery, images, lightbox, links, photos, template, theme, photo, image, picture, slideshow, modal, overlay, YouTube, Vimeo, video, videos
 Requires at least: 4.0
 Tested up to: 4.2.2
-Stable tag: 1.5.3
+Stable tag: 1.5.4
 License: MIT License
 License URI: http://opensource.org/licenses/MIT
 
@@ -66,6 +66,10 @@ No questions yet.
 2. screenshot-2.jpg
 
 == Changelog ==
+
+= 1.5.4 =
+* Tweak: Swipebox option to remove top and bottom bars on mobile devices
+* Fix: Swipe support for Tos "R" Us lightbox script
 
 = 1.5.3 =
 * Fix: Nivo lightbox buttons and styles missing
@@ -217,5 +221,6 @@ Initial release
 
 == Upgrade Notice ==
 
-= 1.5.3 =
-* Fix: Nivo lightbox buttons and styles missing
+= 1.5.4 =
+* Tweak: Swipebox option to remove top and bottom bars on mobile devices
+* Fix: Swipe support for Tos "R" Us lightbox script
