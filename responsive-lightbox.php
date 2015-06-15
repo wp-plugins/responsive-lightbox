@@ -2,7 +2,7 @@
 /*
 Plugin Name: Responsive Lightbox
 Description: Responsive Lightbox allows users to view larger versions of images and galleries in a lightbox (overlay) effect optimized for mobile devices.
-Version: 1.5.5
+Version: 1.5.6
 Author: dFactory
 Author URI: http://www.dfactory.eu/
 Plugin URI: http://www.dfactory.eu/plugins/responsive-lightbox/
@@ -36,7 +36,7 @@ include_once( RESPONSIVE_LIGHTBOX_PATH . 'includes/class-settings.php' );
  * Responsive Lightbox class.
  *
  * @class Responsive_Lightbox
- * @version	1.5.5
+ * @version	1.5.6
  */
 class Responsive_Lightbox {
 
@@ -53,6 +53,7 @@ class Responsive_Lightbox {
 			'images_as_gallery'				=> false,
 			'deactivation_delete'			=> false,
 			'loading_place'					=> 'header',
+			'conditional_loading'			=> false,
 			'enable_custom_events'			=> false,
 			'custom_events'					=> 'ajaxComplete'
 		),
@@ -142,7 +143,7 @@ class Responsive_Lightbox {
 				'pagination_type'			=> 'thumbnails'
 			)
 		),
-		'version'		 => '1.5.5'
+		'version'		 => '1.5.6'
 	);
 	public $options = array();
 	private static $_instance;
@@ -339,220 +340,268 @@ class Responsive_Lightbox {
 	 * Enqueue frontend scripts and styles
 	 */
 	public function front_scripts_styles() {
+		
 		$args = apply_filters( 'rl_lightbox_args', array(
 			'script'			 => $this->options['settings']['script'],
 			'selector'			 => $this->options['settings']['selector'],
-			'custom_events'		 => ($this->options['settings']['enable_custom_events'] === true ? ' ' . $this->options['settings']['custom_events'] : ''),
+			'customEvents'		 => ( $this->options['settings']['enable_custom_events'] === true ? ' ' . $this->options['settings']['custom_events'] : '' ),
 			'activeGalleries'	 => $this->get_boolean_value( $this->options['settings']['galleries'] )
 		) );
+		
+		$scripts = array();
+		$styles = array();
+				
+		switch ( $args['script'] ) {
 
-		if ( $args['script'] === 'prettyphoto' ) {
+			case 'prettyphoto' :
 			
-			wp_register_script(
-				'responsive-lightbox-prettyphoto', plugins_url( 'assets/prettyphoto/js/jquery.prettyPhoto.js', __FILE__ ), array( 'jquery' ), '', ($this->options['settings']['loading_place'] === 'header' ? false : true )
-			);
-
-			wp_enqueue_script( 'responsive-lightbox-prettyphoto' );
-
-			wp_register_style(
-				'responsive-lightbox-prettyphoto', plugins_url( 'assets/prettyphoto/css/prettyPhoto.css', __FILE__ )
-			);
-
-			wp_enqueue_style( 'responsive-lightbox-prettyphoto' );
-
-			$args = array_merge(
-				$args, array(
-				'animationSpeed'	 => $this->options['configuration']['prettyphoto']['animation_speed'],
-				'slideshow'			 => $this->get_boolean_value( $this->options['configuration']['prettyphoto']['slideshow'] ),
-				'slideshowDelay'	 => $this->options['configuration']['prettyphoto']['slideshow_delay'],
-				'slideshowAutoplay'	 => $this->get_boolean_value( $this->options['configuration']['prettyphoto']['slideshow_autoplay'] ),
-				'opacity'			 => sprintf( '%.2f', ($this->options['configuration']['prettyphoto']['opacity'] / 100 ) ),
-				'showTitle'			 => $this->get_boolean_value( $this->options['configuration']['prettyphoto']['show_title'] ),
-				'allowResize'		 => $this->get_boolean_value( $this->options['configuration']['prettyphoto']['allow_resize'] ),
-				'allowExpand'		 => $this->get_boolean_value( $this->options['configuration']['prettyphoto']['allow_expand'] ),
-				'width'				 => $this->options['configuration']['prettyphoto']['width'],
-				'height'			 => $this->options['configuration']['prettyphoto']['height'],
-				'separator'			 => $this->options['configuration']['prettyphoto']['separator'],
-				'theme'				 => $this->options['configuration']['prettyphoto']['theme'],
-				'horizontalPadding'	 => $this->options['configuration']['prettyphoto']['horizontal_padding'],
-				'hideFlash'			 => $this->get_boolean_value( $this->options['configuration']['prettyphoto']['hide_flash'] ),
-				'wmode'				 => $this->options['configuration']['prettyphoto']['wmode'],
-				'videoAutoplay'		 => $this->get_boolean_value( $this->options['configuration']['prettyphoto']['video_autoplay'] ),
-				'modal'				 => $this->get_boolean_value( $this->options['configuration']['prettyphoto']['modal'] ),
-				'deeplinking'		 => $this->get_boolean_value( $this->options['configuration']['prettyphoto']['deeplinking'] ),
-				'overlayGallery'	 => $this->get_boolean_value( $this->options['configuration']['prettyphoto']['overlay_gallery'] ),
-				'keyboardShortcuts'	 => $this->get_boolean_value( $this->options['configuration']['prettyphoto']['keyboard_shortcuts'] ),
-				'social'			 => $this->get_boolean_value( $this->options['configuration']['prettyphoto']['social'] )
-				)
-			);
-			
-		} elseif ( $args['script'] === 'swipebox' ) {
-			
-			wp_register_script(
-				'responsive-lightbox-swipebox', plugins_url( 'assets/swipebox/js/jquery.swipebox.min.js', __FILE__ ), array( 'jquery' ), '', ($this->options['settings']['loading_place'] === 'header' ? false : true )
-			);
-
-			wp_enqueue_script( 'responsive-lightbox-swipebox' );
-
-			wp_register_style(
-				'responsive-lightbox-swipebox', plugins_url( 'assets/swipebox/css/swipebox.min.css', __FILE__ )
-			);
-
-			wp_enqueue_style( 'responsive-lightbox-swipebox' );
-
-			$args = array_merge(
-				$args, array(
-				'animation'					=> $this->get_boolean_value( ($this->options['configuration']['swipebox']['animation'] === 'css' ? true : false ) ),
-				'hideCloseButtonOnMobile'	=> $this->get_boolean_value( $this->options['configuration']['swipebox']['hide_close_mobile'] ),
-				'removeBarsOnMobile'		=> $this->get_boolean_value( $this->options['configuration']['swipebox']['remove_bars_mobile'] ),
-				'hideBars'					=> $this->get_boolean_value( $this->options['configuration']['swipebox']['hide_bars'] ),
-				'hideBarsDelay'				=> $this->options['configuration']['swipebox']['hide_bars_delay'],
-				'videoMaxWidth'				=> $this->options['configuration']['swipebox']['video_max_width'],
-				'useSVG'					=> ! $this->options['configuration']['swipebox']['force_png_icons'],
-				'loopAtEnd'					=> $this->get_boolean_value( $this->options['configuration']['swipebox']['loop_at_end'] )
-				)
-			);
-			
-		} elseif ( $args['script'] === 'fancybox' ) {
-			
-			wp_register_script(
-				'responsive-lightbox-fancybox', plugins_url( 'assets/fancybox/jquery.fancybox-1.3.4.js', __FILE__ ), array( 'jquery' ), '', ($this->options['settings']['loading_place'] === 'header' ? false : true )
-			);
-
-			wp_enqueue_script( 'responsive-lightbox-fancybox' );
-
-			wp_register_style(
-				'responsive-lightbox-fancybox', plugins_url( 'assets/fancybox/jquery.fancybox-1.3.4.css', __FILE__ )
-			);
-
-			wp_enqueue_style( 'responsive-lightbox-fancybox' );
-
-			$args = array_merge(
-				$args, array(
-				'modal'				 => $this->get_boolean_value( $this->options['configuration']['fancybox']['modal'] ),
-				'showOverlay'		 => $this->get_boolean_value( $this->options['configuration']['fancybox']['show_overlay'] ),
-				'showCloseButton'	 => $this->get_boolean_value( $this->options['configuration']['fancybox']['show_close_button'] ),
-				'enableEscapeButton' => $this->get_boolean_value( $this->options['configuration']['fancybox']['enable_escape_button'] ),
-				'hideOnOverlayClick' => $this->get_boolean_value( $this->options['configuration']['fancybox']['hide_on_overlay_click'] ),
-				'hideOnContentClick' => $this->get_boolean_value( $this->options['configuration']['fancybox']['hide_on_content_click'] ),
-				'cyclic'			 => $this->get_boolean_value( $this->options['configuration']['fancybox']['cyclic'] ),
-				'showNavArrows'		 => $this->get_boolean_value( $this->options['configuration']['fancybox']['show_nav_arrows'] ),
-				'autoScale'			 => $this->get_boolean_value( $this->options['configuration']['fancybox']['auto_scale'] ),
-				'scrolling'			 => $this->options['configuration']['fancybox']['scrolling'],
-				'centerOnScroll'	 => $this->get_boolean_value( $this->options['configuration']['fancybox']['center_on_scroll'] ),
-				'opacity'			 => $this->get_boolean_value( $this->options['configuration']['fancybox']['opacity'] ),
-				'overlayOpacity'	 => $this->options['configuration']['fancybox']['overlay_opacity'],
-				'overlayColor'		 => $this->options['configuration']['fancybox']['overlay_color'],
-				'titleShow'			 => $this->get_boolean_value( $this->options['configuration']['fancybox']['title_show'] ),
-				'titlePosition'		 => $this->options['configuration']['fancybox']['title_position'],
-				'transitions'		 => $this->options['configuration']['fancybox']['transitions'],
-				'easings'			 => $this->options['configuration']['fancybox']['easings'],
-				'speeds'			 => $this->options['configuration']['fancybox']['speeds'],
-				'changeSpeed'		 => $this->options['configuration']['fancybox']['change_speed'],
-				'changeFade'		 => $this->options['configuration']['fancybox']['change_fade'],
-				'padding'			 => $this->options['configuration']['fancybox']['padding'],
-				'margin'			 => $this->options['configuration']['fancybox']['margin'],
-				'videoWidth'		 => $this->options['configuration']['fancybox']['video_width'],
-				'videoHeight'		 => $this->options['configuration']['fancybox']['video_height']
-				)
-			);
-			
-		} elseif ( $args['script'] === 'nivo' ) {
-			
-			wp_register_script(
-				'responsive-lightbox-nivo', plugins_url( 'assets/nivo/nivo-lightbox.min.js', __FILE__ ), array( 'jquery' ), '', ($this->options['settings']['loading_place'] === 'header' ? false : true )
-			);
-			wp_enqueue_script( 'responsive-lightbox-nivo' );
-
-			wp_register_style(
-				'responsive-lightbox-nivo', plugins_url( 'assets/nivo/nivo-lightbox.css', __FILE__ )
-			);
-			wp_enqueue_style( 'responsive-lightbox-nivo' );
-
-			wp_register_style(
-				'responsive-lightbox-nivo-default', plugins_url( 'assets/nivo/themes/default/default.css', __FILE__ )
-			);
-			wp_enqueue_style( 'responsive-lightbox-nivo-default' );
-
-			$args = array_merge(
-				$args, array(
-				'effect'				 => $this->options['configuration']['nivo']['effect'],
-				'clickOverlayToClose'	 => $this->get_boolean_value( $this->options['configuration']['nivo']['click_overlay_to_close'] ),
-				'keyboardNav'			 => $this->get_boolean_value( $this->options['configuration']['nivo']['keyboard_nav'] ),
-				'errorMessage'			 => esc_attr( $this->options['configuration']['nivo']['error_message'] )
-				)
-			);
-			
-		} elseif ( $args['script'] === 'imagelightbox' ) {
-			
-			wp_register_script(
-				'responsive-lightbox-imagelightbox', plugins_url( 'assets/imagelightbox/js/imagelightbox.min.js', __FILE__ ), array( 'jquery' ), '', ($this->options['settings']['loading_place'] === 'header' ? false : true )
-			);
-			wp_enqueue_script( 'responsive-lightbox-imagelightbox' );
-
-			wp_register_style(
-				'responsive-lightbox-imagelightbox', plugins_url( 'assets/imagelightbox/css/imagelightbox.css', __FILE__ )
-			);
-			wp_enqueue_style( 'responsive-lightbox-imagelightbox' );
-
-			$args = array_merge(
-				$args, array(
-				'animationSpeed'		 => $this->options['configuration']['imagelightbox']['animation_speed'],
-				'preloadNext'			 => $this->get_boolean_value( $this->options['configuration']['imagelightbox']['preload_next'] ),
-				'enableKeyboard'		 => $this->get_boolean_value( $this->options['configuration']['imagelightbox']['enable_keyboard'] ),
-				'quitOnEnd'				 => $this->get_boolean_value( $this->options['configuration']['imagelightbox']['quit_on_end'] ),
-				'quitOnImageClick'		 => $this->get_boolean_value( $this->options['configuration']['imagelightbox']['quit_on_image_click'] ),
-				'quitOnDocumentClick'	 => $this->get_boolean_value( $this->options['configuration']['imagelightbox']['quit_on_document_click'] ),
-				)
-			);
-			
-		} elseif ( $args['script'] === 'tosrus' ) {
-			
-			// swipe support, enqueue Hammer.js on mobile devices only
-			if ( wp_is_mobile() ) {
 				wp_register_script(
-					'responsive-lightbox-hammer-js', plugins_url( 'assets/tosrus/js/hammer.min.js', __FILE__ ), array(), '', ($this->options['settings']['loading_place'] === 'header' ? false : true )
+					'responsive-lightbox-prettyphoto', plugins_url( 'assets/prettyphoto/js/jquery.prettyPhoto.js', __FILE__ ), array( 'jquery' ), '', ($this->options['settings']['loading_place'] === 'header' ? false : true )
 				);
-				wp_enqueue_script( 'responsive-lightbox-hammer-js' );
-			}
-			
-			wp_register_script(
-				'responsive-lightbox-tosrus', plugins_url( 'assets/tosrus/js/jquery.tosrus.min.all.js', __FILE__ ), array( 'jquery' ), '', ($this->options['settings']['loading_place'] === 'header' ? false : true )
-			);
-			wp_enqueue_script( 'responsive-lightbox-tosrus' );
+				wp_register_style(
+					'responsive-lightbox-prettyphoto', plugins_url( 'assets/prettyphoto/css/prettyPhoto.css', __FILE__ )
+				);
+	
+				$scripts[] = 'responsive-lightbox-prettyphoto';
+				$styles[] = 'responsive-lightbox-prettyphoto';
+	
+				$args = array_merge(
+					$args, array(
+					'animationSpeed'	 => $this->options['configuration']['prettyphoto']['animation_speed'],
+					'slideshow'			 => $this->get_boolean_value( $this->options['configuration']['prettyphoto']['slideshow'] ),
+					'slideshowDelay'	 => $this->options['configuration']['prettyphoto']['slideshow_delay'],
+					'slideshowAutoplay'	 => $this->get_boolean_value( $this->options['configuration']['prettyphoto']['slideshow_autoplay'] ),
+					'opacity'			 => sprintf( '%.2f', ($this->options['configuration']['prettyphoto']['opacity'] / 100 ) ),
+					'showTitle'			 => $this->get_boolean_value( $this->options['configuration']['prettyphoto']['show_title'] ),
+					'allowResize'		 => $this->get_boolean_value( $this->options['configuration']['prettyphoto']['allow_resize'] ),
+					'allowExpand'		 => $this->get_boolean_value( $this->options['configuration']['prettyphoto']['allow_expand'] ),
+					'width'				 => $this->options['configuration']['prettyphoto']['width'],
+					'height'			 => $this->options['configuration']['prettyphoto']['height'],
+					'separator'			 => $this->options['configuration']['prettyphoto']['separator'],
+					'theme'				 => $this->options['configuration']['prettyphoto']['theme'],
+					'horizontalPadding'	 => $this->options['configuration']['prettyphoto']['horizontal_padding'],
+					'hideFlash'			 => $this->get_boolean_value( $this->options['configuration']['prettyphoto']['hide_flash'] ),
+					'wmode'				 => $this->options['configuration']['prettyphoto']['wmode'],
+					'videoAutoplay'		 => $this->get_boolean_value( $this->options['configuration']['prettyphoto']['video_autoplay'] ),
+					'modal'				 => $this->get_boolean_value( $this->options['configuration']['prettyphoto']['modal'] ),
+					'deeplinking'		 => $this->get_boolean_value( $this->options['configuration']['prettyphoto']['deeplinking'] ),
+					'overlayGallery'	 => $this->get_boolean_value( $this->options['configuration']['prettyphoto']['overlay_gallery'] ),
+					'keyboardShortcuts'	 => $this->get_boolean_value( $this->options['configuration']['prettyphoto']['keyboard_shortcuts'] ),
+					'social'			 => $this->get_boolean_value( $this->options['configuration']['prettyphoto']['social'] )
+					)
+				);
+				
+				break;
 
-			wp_register_style(
-				'responsive-lightbox-tosrus', plugins_url( 'assets/tosrus/css/jquery.tosrus.all.min.css', __FILE__ )
-			);
-			wp_enqueue_style( 'responsive-lightbox-tosrus' );
+			case 'swipebox' :
 			
-			$args = array_merge(
-				$args, array(
-				'effect'					=> $this->options['configuration']['tosrus']['effect'],
-				'infinite'	 				=> $this->get_boolean_value( $this->options['configuration']['tosrus']['infinite'] ),
-				'keys'	 					=> $this->get_boolean_value( $this->options['configuration']['tosrus']['keys'] ),
-				'autoplay'	 				=> $this->get_boolean_value( $this->options['configuration']['tosrus']['autoplay'] ),
-				'pause_on_hover'	 		=> $this->get_boolean_value( $this->options['configuration']['tosrus']['pause_on_hover'] ),
-				'timeout'	 				=> $this->options['configuration']['tosrus']['timeout'],
-				'pagination'	 			=> $this->get_boolean_value( $this->options['configuration']['tosrus']['pagination'] ),
-				'pagination_type'	 		=> $this->options['configuration']['tosrus']['pagination_type']
-				)
-			);
+				wp_register_script(
+					'responsive-lightbox-swipebox', plugins_url( 'assets/swipebox/js/jquery.swipebox.min.js', __FILE__ ), array( 'jquery' ), '', ($this->options['settings']['loading_place'] === 'header' ? false : true )
+				);
+				wp_register_style(
+					'responsive-lightbox-swipebox', plugins_url( 'assets/swipebox/css/swipebox.min.css', __FILE__ )
+				);
+
+				$scripts[] = 'responsive-lightbox-swipebox';
+				$styles[] = 'responsive-lightbox-swipebox';
+	
+				$args = array_merge(
+					$args, array(
+					'animation'					=> $this->get_boolean_value( ($this->options['configuration']['swipebox']['animation'] === 'css' ? true : false ) ),
+					'hideCloseButtonOnMobile'	=> $this->get_boolean_value( $this->options['configuration']['swipebox']['hide_close_mobile'] ),
+					'removeBarsOnMobile'		=> $this->get_boolean_value( $this->options['configuration']['swipebox']['remove_bars_mobile'] ),
+					'hideBars'					=> $this->get_boolean_value( $this->options['configuration']['swipebox']['hide_bars'] ),
+					'hideBarsDelay'				=> $this->options['configuration']['swipebox']['hide_bars_delay'],
+					'videoMaxWidth'				=> $this->options['configuration']['swipebox']['video_max_width'],
+					'useSVG'					=> ! $this->options['configuration']['swipebox']['force_png_icons'],
+					'loopAtEnd'					=> $this->get_boolean_value( $this->options['configuration']['swipebox']['loop_at_end'] )
+					)
+				);
+				
+				break;
+			
+			case 'fancybox' :
+			
+				wp_register_script(
+					'responsive-lightbox-fancybox', plugins_url( 'assets/fancybox/jquery.fancybox-1.3.4.js', __FILE__ ), array( 'jquery' ), '', ($this->options['settings']['loading_place'] === 'header' ? false : true )
+				);
+				wp_register_style(
+					'responsive-lightbox-fancybox', plugins_url( 'assets/fancybox/jquery.fancybox-1.3.4.css', __FILE__ )
+				);
+
+				$scripts[] = 'responsive-lightbox-fancybox';
+				$styles[] = 'responsive-lightbox-fancybox';
+	
+				$args = array_merge(
+					$args, array(
+					'modal'				 => $this->get_boolean_value( $this->options['configuration']['fancybox']['modal'] ),
+					'showOverlay'		 => $this->get_boolean_value( $this->options['configuration']['fancybox']['show_overlay'] ),
+					'showCloseButton'	 => $this->get_boolean_value( $this->options['configuration']['fancybox']['show_close_button'] ),
+					'enableEscapeButton' => $this->get_boolean_value( $this->options['configuration']['fancybox']['enable_escape_button'] ),
+					'hideOnOverlayClick' => $this->get_boolean_value( $this->options['configuration']['fancybox']['hide_on_overlay_click'] ),
+					'hideOnContentClick' => $this->get_boolean_value( $this->options['configuration']['fancybox']['hide_on_content_click'] ),
+					'cyclic'			 => $this->get_boolean_value( $this->options['configuration']['fancybox']['cyclic'] ),
+					'showNavArrows'		 => $this->get_boolean_value( $this->options['configuration']['fancybox']['show_nav_arrows'] ),
+					'autoScale'			 => $this->get_boolean_value( $this->options['configuration']['fancybox']['auto_scale'] ),
+					'scrolling'			 => $this->options['configuration']['fancybox']['scrolling'],
+					'centerOnScroll'	 => $this->get_boolean_value( $this->options['configuration']['fancybox']['center_on_scroll'] ),
+					'opacity'			 => $this->get_boolean_value( $this->options['configuration']['fancybox']['opacity'] ),
+					'overlayOpacity'	 => $this->options['configuration']['fancybox']['overlay_opacity'],
+					'overlayColor'		 => $this->options['configuration']['fancybox']['overlay_color'],
+					'titleShow'			 => $this->get_boolean_value( $this->options['configuration']['fancybox']['title_show'] ),
+					'titlePosition'		 => $this->options['configuration']['fancybox']['title_position'],
+					'transitions'		 => $this->options['configuration']['fancybox']['transitions'],
+					'easings'			 => $this->options['configuration']['fancybox']['easings'],
+					'speeds'			 => $this->options['configuration']['fancybox']['speeds'],
+					'changeSpeed'		 => $this->options['configuration']['fancybox']['change_speed'],
+					'changeFade'		 => $this->options['configuration']['fancybox']['change_fade'],
+					'padding'			 => $this->options['configuration']['fancybox']['padding'],
+					'margin'			 => $this->options['configuration']['fancybox']['margin'],
+					'videoWidth'		 => $this->options['configuration']['fancybox']['video_width'],
+					'videoHeight'		 => $this->options['configuration']['fancybox']['video_height']
+					)
+				);
+				
+				break;
+			
+			case 'nivo' :
+
+				wp_register_script(
+					'responsive-lightbox-nivo', plugins_url( 'assets/nivo/nivo-lightbox.min.js', __FILE__ ), array( 'jquery' ), '', ($this->options['settings']['loading_place'] === 'header' ? false : true )
+				);
+				wp_register_style(
+					'responsive-lightbox-nivo', plugins_url( 'assets/nivo/nivo-lightbox.css', __FILE__ )
+				);
+				wp_register_style(
+					'responsive-lightbox-nivo-default', plugins_url( 'assets/nivo/themes/default/default.css', __FILE__ )
+				);
+				
+				$scripts[] = 'responsive-lightbox-nivo';
+				$styles[] = 'responsive-lightbox-nivo';
+				$styles[] = 'responsive-lightbox-nivo-default';
+	
+				$args = array_merge(
+					$args, array(
+					'effect'				 => $this->options['configuration']['nivo']['effect'],
+					'clickOverlayToClose'	 => $this->get_boolean_value( $this->options['configuration']['nivo']['click_overlay_to_close'] ),
+					'keyboardNav'			 => $this->get_boolean_value( $this->options['configuration']['nivo']['keyboard_nav'] ),
+					'errorMessage'			 => esc_attr( $this->options['configuration']['nivo']['error_message'] )
+					)
+				);
+				
+				break;
+				
+			case 'imagelightbox' :
+
+				wp_register_script(
+					'responsive-lightbox-imagelightbox', plugins_url( 'assets/imagelightbox/js/imagelightbox.min.js', __FILE__ ), array( 'jquery' ), '', ($this->options['settings']['loading_place'] === 'header' ? false : true )
+				);
+				wp_register_style(
+					'responsive-lightbox-imagelightbox', plugins_url( 'assets/imagelightbox/css/imagelightbox.css', __FILE__ )
+				);
+				
+				$scripts[] = 'responsive-lightbox-imagelightbox';
+				$styles[] = 'responsive-lightbox-imagelightbox';
+	
+				$args = array_merge(
+					$args, array(
+					'animationSpeed'		 => $this->options['configuration']['imagelightbox']['animation_speed'],
+					'preloadNext'			 => $this->get_boolean_value( $this->options['configuration']['imagelightbox']['preload_next'] ),
+					'enableKeyboard'		 => $this->get_boolean_value( $this->options['configuration']['imagelightbox']['enable_keyboard'] ),
+					'quitOnEnd'				 => $this->get_boolean_value( $this->options['configuration']['imagelightbox']['quit_on_end'] ),
+					'quitOnImageClick'		 => $this->get_boolean_value( $this->options['configuration']['imagelightbox']['quit_on_image_click'] ),
+					'quitOnDocumentClick'	 => $this->get_boolean_value( $this->options['configuration']['imagelightbox']['quit_on_document_click'] ),
+					)
+				);
+				
+				break;
+				
+			case 'tosrus' :
+			
+				// swipe support, enqueue Hammer.js on mobile devices only
+				if ( wp_is_mobile() ) {
+					wp_register_script(
+						'responsive-lightbox-hammer-js', plugins_url( 'assets/tosrus/js/hammer.min.js', __FILE__ ), array(), '', ($this->options['settings']['loading_place'] === 'header' ? false : true )
+					);
+					$scripts[] = 'responsive-lightbox-hammer-js';
+				}
+			
+				wp_register_script(
+					'responsive-lightbox-tosrus', plugins_url( 'assets/tosrus/js/jquery.tosrus.min.all.js', __FILE__ ), array( 'jquery' ), '', ($this->options['settings']['loading_place'] === 'header' ? false : true )
+				);
+				wp_register_style(
+					'responsive-lightbox-tosrus', plugins_url( 'assets/tosrus/css/jquery.tosrus.all.min.css', __FILE__ )
+				);
+				
+				$scripts[] = 'responsive-lightbox-tosrus';
+				$styles[] = 'responsive-lightbox-tosrus';
+				
+				$args = array_merge( $args, array(
+					'effect'					=> $this->options['configuration']['tosrus']['effect'],
+					'infinite'	 				=> $this->get_boolean_value( $this->options['configuration']['tosrus']['infinite'] ),
+					'keys'	 					=> $this->get_boolean_value( $this->options['configuration']['tosrus']['keys'] ),
+					'autoplay'	 				=> $this->get_boolean_value( $this->options['configuration']['tosrus']['autoplay'] ),
+					'pauseOnHover'	 			=> $this->get_boolean_value( $this->options['configuration']['tosrus']['pause_on_hover'] ),
+					'timeout'	 				=> $this->options['configuration']['tosrus']['timeout'],
+					'pagination'	 			=> $this->get_boolean_value( $this->options['configuration']['tosrus']['pagination'] ),
+					'paginationType'	 		=> $this->options['configuration']['tosrus']['pagination_type']
+					)
+				);
+				
+				break;
+				
+			default :
+				
+				break;
 		}
 
-		wp_register_script(
-			'responsive-lightbox-front', plugins_url( 'js/front.js', __FILE__ ), array( 'jquery' ), '', ($this->options['settings']['loading_place'] === 'header' ? false : true )
-		);
+		// run scripts by default
+		$contitional_scripts = true;
 
-		wp_enqueue_script( 'responsive-lightbox-front' );
+		if ( $this->options['settings']['conditional_loading'] === true ) {
 
-		wp_add_inline_style(
-			'responsive-lightbox-swipebox', '#swipebox-action #swipebox-close, #swipebox-action #swipebox-prev, #swipebox-action #swipebox-next { background-image: url(\'assets/swipebox/source/img/icons.png\') !important; }'
-		);
+			global $post;
 
-		wp_localize_script(
-			'responsive-lightbox-front', 'rlArgs', $args
-		);
+			if ( is_object( $post ) ) {
+				
+				// is gallery present in content
+				$has_gallery = has_shortcode( $post->post_content, 'gallery' );
+				
+				// are images present in content
+				preg_match_all( '/<a(.*?)href=(?:\'|")([^<]*?).(bmp|gif|jpeg|jpg|png)(?:\'|")(.*?)>/i', $post->post_content, $links );
+
+				$has_images = (bool) $links[0];
+				
+				if ( $has_gallery === false && $has_images === false ) {
+					$contitional_scripts = false;
+				}
+			
+			}
+			
+		}
+
+		if ( ! empty( $args['script'] ) && ! empty( $args['selector'] ) && apply_filters( 'rl_lightbox_conditional_loading', $contitional_scripts ) != false ) {
+
+			wp_register_script( 'responsive-lightbox', plugins_url( 'js/front.js', __FILE__ ), array( 'jquery' ), '', ( $this->options['settings']['loading_place'] === 'header' ? false : true ) );
+			
+			$scripts[] = 'responsive-lightbox';
+			
+			// enqueue scripts
+			if ( $scripts && is_array( $scripts ) ) {
+				foreach ( $scripts as $script ) {
+					wp_enqueue_script( $script );
+				}
+				
+				wp_localize_script(	'responsive-lightbox', 'rlArgs', $args );
+			}
+			
+			// enqueue styles
+			if ( $styles && is_array( $styles ) ) {
+				foreach ( $styles as $style ) {
+					wp_enqueue_style( $style );
+				}
+			}
+		}
 	}
 
 	/**

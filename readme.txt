@@ -4,7 +4,7 @@ Donate link: http://www.dfactory.eu/
 Tags: gallery, images, lightbox, links, photos, template, theme, photo, image, picture, slideshow, modal, overlay, YouTube, Vimeo, video, videos
 Requires at least: 4.0
 Tested up to: 4.2.2
-Stable tag: 1.5.5
+Stable tag: 1.5.6
 License: MIT License
 License URI: http://opensource.org/licenses/MIT
 
@@ -27,6 +27,7 @@ For more information, check out plugin page at [dFactory](http://www.dfactory.eu
 * Option to set gallery images title from image title, caption, alt or description
 * Option to force lightbox for custom WP gallery replacements like Jetpack tiled galleries
 * Option to trigger lightbox on custom jquery events
+* Option to conditionally load scripts and styles only on pages that have images or galleries in post content
 * Enter a selector for lightbox
 * Highly customizable settings for each of the lightbox scripts
 * Multisite support
@@ -66,6 +67,9 @@ No questions yet.
 2. screenshot-2.jpg
 
 == Changelog ==
+
+= 1.5.6 =
+* New: Option to conditionally load scripts and styles only on pages that have images or galleries in post content.
 
 = 1.5.5 =
 * Tweak: Multiple backward rel attribute compatibility tweaks
@@ -226,5 +230,5 @@ Initial release
 
 == Upgrade Notice ==
 
-= 1.5.5 =
-* Tweak: Multiple backward rel attribute compatibility tweaks
+= 1.5.6 =
+* New: Option to conditionally load scripts and styles only on pages that have images or galleries in post content.

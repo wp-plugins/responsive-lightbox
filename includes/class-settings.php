@@ -23,10 +23,6 @@ class Responsive_Lightbox_Settings {
 		
 		// set instance
 		Responsive_Lightbox()->settings = $this;
-		
-		// set vars
-		$this->defaults = Responsive_Lightbox()->defaults;
-		$this->options = Responsive_Lightbox()->options;
 
 		// actions
 		add_action( 'admin_init', array( &$this, 'register_settings' ) );
@@ -240,6 +236,12 @@ class Responsive_Lightbox_Settings {
 						'description' => __( 'Select where all the lightbox scripts should be placed.', 'responsive-lightbox' ),
 						'options' => $this->loading_places,
 					),
+					'conditional_loading' => array(
+						'title' => __( 'Conditional loading', 'responsive-lightbox' ),
+						'section' => 'responsive_lightbox_settings',
+						'type' => 'boolean',
+						'label' => __( 'Enable to load scripts and styles only on pages that have images or galleries in post content.', 'responsive-lightbox' ),
+					),
 					'deactivation_delete' => array(
 						'title' => __( 'Delete data', 'responsive-lightbox' ),
 						'section' => 'responsive_lightbox_settings',
@@ -254,7 +256,7 @@ class Responsive_Lightbox_Settings {
 				// 'callback'		=> array( &$this, 'validate_options' ),
 				'sections'		=> array(
 					'responsive_lightbox_configuration' => array(
-						'title' 		=> __( 'Lightbox settings', 'responsive-lightbox' ) . ': ' . $this->scripts[$this->options['settings']['script']]['name'],
+						'title' 		=> __( 'Lightbox settings', 'responsive-lightbox' ) . ': ' . $this->scripts[Responsive_Lightbox()->options['settings']['script']]['name'],
 						// 'callback' 	=> '',
 						// 'page' 		=> '',
 					),
@@ -265,7 +267,7 @@ class Responsive_Lightbox_Settings {
 			)
 		);
 
-		switch ( $this->options['settings']['script'] ) {
+		switch ( Responsive_Lightbox()->options['settings']['script'] ) {
 			
 			case ( 'swipebox' ) :
 
@@ -915,7 +917,7 @@ class Responsive_Lightbox_Settings {
 			<div class="responsive-lightbox-settings">
 			
 				<div class="df-credits">
-					<h3 class="hndle">' . __( 'Responsive Lightbox', 'responsive-lightbox' ) . ' ' . $this->defaults['version'] . '</h3>
+					<h3 class="hndle">' . __( 'Responsive Lightbox', 'responsive-lightbox' ) . ' ' . Responsive_Lightbox()->defaults['version'] . '</h3>
 					<div class="inside">
 						<h4 class="inner">' . __( 'Need support?', 'responsive-lightbox' ) . '</h4>
 						<p class="inner">' . __( 'If you are having problems with this plugin, please talk about them in the', 'responsive-lightbox' ) . ' <a href="http://www.dfactory.eu/support/?utm_source=responsive-lightbox-settings&utm_medium=link&utm_campaign=support" target="_blank" title="' . __( 'Support forum', 'responsive-lightbox' ) . '">' . __( 'Support forum', 'responsive-lightbox' ) . '</a></p>
@@ -937,7 +939,7 @@ class Responsive_Lightbox_Settings {
 				</div>
 			
 				<form action="options.php" method="post">
-					<input type="hidden" name="script_r" value="' . esc_attr( $this->options['settings']['script'] ) . '" />';
+					<input type="hidden" name="script_r" value="' . esc_attr( Responsive_Lightbox()->options['settings']['script'] ) . '" />';
 
 		wp_nonce_field( 'update-options' );
 		settings_fields( $this->tabs[$tab_key]['key'] );
@@ -1017,8 +1019,8 @@ class Responsive_Lightbox_Settings {
 						'max' => ! empty( $field['max'] ) ? (int) $field['max'] : '',
 						'options' => ! empty( $field['options'] ) ? $field['options'] : '',
 						'fields' => ! empty( $field['fields'] ) ? $field['fields'] : '',
-						'default' => $field['type'] === 'multiple' ? '' : ( $this->sanitize_field( ! empty( $field['parent'] ) ? $this->defaults[$setting_key][$field['parent']][$field_key] : $this->defaults[$setting_key][$field_key], $field['type'] ) ),
-						'value' => $field['type'] === 'multiple' ? '' : ( $this->sanitize_field( ! empty( $field['parent'] ) ? $this->options[$setting_key][$field['parent']][$field_key] : $this->options[$setting_key][$field_key], $field['type'] ) ),
+						'default' => $field['type'] === 'multiple' ? '' : ( $this->sanitize_field( ! empty( $field['parent'] ) ? Responsive_Lightbox()->defaults[$setting_key][$field['parent']][$field_key] : Responsive_Lightbox()->defaults[$setting_key][$field_key], $field['type'] ) ),
+						'value' => $field['type'] === 'multiple' ? '' : ( $this->sanitize_field( ! empty( $field['parent'] ) ? Responsive_Lightbox()->options[$setting_key][$field['parent']][$field_key] : Responsive_Lightbox()->options[$setting_key][$field_key], $field['type'] ) ),
 						'label_for' => $field_id,
 						'return' => false
 					);
@@ -1029,8 +1031,8 @@ class Responsive_Lightbox_Settings {
 								'id' => $field_id . '-' . $subfield_id,
 								'class' => ! empty( $subfield['class'] ) ? $subfield['class'] : '',
 								'name' => $setting['option_name'] . ( ! empty( $subfield['parent'] ) ? '[' . $subfield['parent'] . ']' : '' ) . '[' . $subfield_id . ']',
-								'default' => $this->sanitize_field( ! empty( $subfield['parent'] ) ? $this->defaults[$setting_key][$subfield['parent']][$subfield_id] : $this->defaults[$setting_key][$subfield_id], $subfield['type'] ),
-								'value' => $this->sanitize_field( ! empty( $subfield['parent'] ) ? $this->options[$setting_key][$subfield['parent']][$subfield_id] : $this->options[$setting_key][$subfield_id], $subfield['type'] ),
+								'default' => $this->sanitize_field( ! empty( $subfield['parent'] ) ? Responsive_Lightbox()->defaults[$setting_key][$subfield['parent']][$subfield_id] : Responsive_Lightbox()->defaults[$setting_key][$subfield_id], $subfield['type'] ),
+								'value' => $this->sanitize_field( ! empty( $subfield['parent'] ) ? Responsive_Lightbox()->options[$setting_key][$subfield['parent']][$subfield_id] : Responsive_Lightbox()->options[$setting_key][$subfield_id], $subfield['type'] ),
 								'return' => true
 							) );
 						}
@@ -1119,7 +1121,7 @@ class Responsive_Lightbox_Settings {
 				
 			case ( 'range' ) :
 				$html .= '<input id="' . $args['id'] . '" type="range" name="' . $args['name'] . '" value="' . $args['value'] . '" min="' . $args['min'] . '" max="' . $args['max'] . '" oninput="this.form.' . $args['id'] . '_range.value=this.value" />';
-				$html .= '<output name="' . $args['id'] . '_range">' . esc_attr( $this->options['configuration']['prettyphoto']['opacity'] ) . '</output>';
+				$html .= '<output name="' . $args['id'] . '_range">' . esc_attr( Responsive_Lightbox()->options['configuration']['prettyphoto']['opacity'] ) . '</output>';
 				break;
 				
 			case ( 'color_picker' ) :
@@ -1268,11 +1270,11 @@ class Responsive_Lightbox_Settings {
 									
 									$field_parent = $this->settings[$setting_id]['fields'][$field_id]['fields'][$subfield_id]['parent'];
 									
-									$input[$field_parent][$subfield_id] = isset( $input[$field_parent][$subfield_id] ) ? $this->sanitize_field( $input[$field_parent][$subfield_id], $subfield['type'] ) : ( $subfield['type'] === 'boolean' ? false : $this->defaults[$setting_id][$field_parent][$subfield_id] );
+									$input[$field_parent][$subfield_id] = isset( $input[$field_parent][$subfield_id] ) ? $this->sanitize_field( $input[$field_parent][$subfield_id], $subfield['type'] ) : ( $subfield['type'] === 'boolean' ? false : Responsive_Lightbox()->defaults[$setting_id][$field_parent][$subfield_id] );
 								
 								} else {
 
-									$input[$subfield_id] = isset( $input[$subfield_id] ) ? $this->sanitize_field( $input[$subfield_id], $subfield['type'] ) : ( $subfield['type'] === 'boolean' ? false : $this->defaults[$setting_id][$field_id][$subfield_id] );
+									$input[$subfield_id] = isset( $input[$subfield_id] ) ? $this->sanitize_field( $input[$subfield_id], $subfield['type'] ) : ( $subfield['type'] === 'boolean' ? false : Responsive_Lightbox()->defaults[$setting_id][$field_id][$subfield_id] );
 								
 								}
 
@@ -1287,11 +1289,11 @@ class Responsive_Lightbox_Settings {
 							
 							$field_parent = $this->settings[$setting_id]['fields'][$field_id]['parent'];
 							
-							$input[$field_parent][$field_id] = isset( $input[$field_parent][$field_id] ) ? $this->sanitize_field( $input[$field_parent][$field_id], $field['type'] ) : ( $field['type'] === 'boolean' ? false : $this->defaults[$setting_id][$field_parent][$field_id] );
+							$input[$field_parent][$field_id] = isset( $input[$field_parent][$field_id] ) ? $this->sanitize_field( $input[$field_parent][$field_id], $field['type'] ) : ( $field['type'] === 'boolean' ? false : Responsive_Lightbox()->defaults[$setting_id][$field_parent][$field_id] );
 						
 						} else {
 
-							$input[$field_id] = isset( $input[$field_id] ) ? $this->sanitize_field( $input[$field_id], $field['type'] ) : ( $field['type'] === 'boolean' ? false : $this->defaults[$setting_id][$field_id] );
+							$input[$field_id] = isset( $input[$field_id] ) ? $this->sanitize_field( $input[$field_id], $field['type'] ) : ( $field['type'] === 'boolean' ? false : Responsive_Lightbox()->defaults[$setting_id][$field_id] );
 						
 						}
 
@@ -1303,17 +1305,17 @@ class Responsive_Lightbox_Settings {
 			
 			if ( $setting_id === 'configuration' ) {
 				// merge scripts settings
-				$input = array_merge( $this->options['configuration'], $input );
+				$input = array_merge( Responsive_Lightbox()->options['configuration'], $input );
 			}
 
 		} elseif ( isset( $_POST['reset' . '_' . $this->settings[$setting_id]['prefix']  . '_' . $setting_id] ) ) {
 			
 			if ( $setting_id === 'configuration' ) {
 				// merge scripts settings
-				$input[$this->options['settings']['script']] = $this->defaults['configuration'][$this->options['settings']['script']];
-				$input = array_merge( $this->options['configuration'], $input );
+				$input[Responsive_Lightbox()->options['settings']['script']] = Responsive_Lightbox()->defaults['configuration'][Responsive_Lightbox()->options['settings']['script']];
+				$input = array_merge( Responsive_Lightbox()->options['configuration'], $input );
 			} else {
-				$input = $this->defaults[$setting_id];
+				$input = Responsive_Lightbox()->defaults[$setting_id];
 			}
 			
 			add_settings_error( 'reset' . '_' . $this->settings[$setting_id]['prefix']  . '_' . $setting_id, 'settings_restored', __( 'Settings restored to defaults.', 'responsive-lightbox' ), 'updated' );

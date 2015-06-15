@@ -1,10 +1,31 @@
 ( function ( $ ) {
 
-	$( document ).ready( function () {
+	$( document ).on( 'ready' + rlArgs.customEvents, function () {
+		
+		// initialise event
+		$.event.trigger( {
+			type		: 'doResponsiveLightbox',
+			script		: rlArgs.script,
+			selector	: rlArgs.selector,
+			args		: rlArgs
+		} );
+		
+	} );
+	
+	// this is similar to the WP function add_action();
+	$( document ).on( 'doResponsiveLightbox', function( event ) {
 
-		$( document ).on( 'ready' + rlArgs.custom_events, function () {
-			
-			if ( rlArgs.script === 'swipebox' ) {
+    	var script 		= event.script,
+    		selector 	= event.selector
+    		args 		= event.args;
+    		
+    	if ( script === undefined || selector === undefined ) {
+    		return false;
+    	}
+    	
+    	switch( script ) {
+    		
+    		case 'swipebox':
 				
 				$( 'a[rel*="' + rlArgs.selector + '"], a[data-rel*="' + rlArgs.selector + '"]' ).swipebox( {
 					useCSS						: ( rlArgs.animation === '1' ? true : false ),
@@ -16,7 +37,9 @@
 					loopAtEnd					: ( rlArgs.loopAtEnd === '1' ? true : false )
 				} );
 				
-			} else if ( rlArgs.script === 'prettyphoto' ) {
+				break;
+				
+			case 'prettyphoto':
 				
 				$( 'a[rel*="' + rlArgs.selector + '"], a[data-rel*="' + rlArgs.selector + '"]' ).prettyPhoto( {
 					hook						: 'data-rel',
@@ -47,7 +70,9 @@
 					ie6_fallback				: true
 				} );
 				
-			} else if ( rlArgs.script === 'fancybox' ) {
+				break;
+				
+			case 'fancybox':
 				
 				$( 'a[rel*="' + rlArgs.selector + '"], a[data-rel*="' + rlArgs.selector + '"]' ).fancybox( {
 					modal						: ( rlArgs.modal === '1' ? true : false ),
@@ -80,7 +105,9 @@
 					height						: parseInt( rlArgs.videoHeight )
 				} );
 				
-			} else if ( rlArgs.script === 'nivo' ) {
+				break;
+				
+			case 'nivo':
 				
 				$.each( $( 'a[rel*="' + rlArgs.selector + '"], a[data-rel*="' + rlArgs.selector + '"]' ), function () {
 					
@@ -110,7 +137,9 @@
 					errorMessage				: rlArgs.errorMessage
 				} );
 				
-			} else if ( rlArgs.script === 'imagelightbox' ) {
+				break;
+				
+			case 'imagelightbox':
 				
 				var selectors = [];
 				
@@ -133,8 +162,6 @@
 					// make unique
 					selectors = $.unique( selectors );
 					
-					console.log(selectors);
-					
 					$( selectors ).each( function ( i, item ) {
 						$( 'a[data-rel="' + item + '"], a[rel="' + item + '"]' ).imageLightbox( {
 							animationSpeed		: parseInt( rlArgs.animationSpeed ),
@@ -147,7 +174,9 @@
 					} );
 				}
 				
-			} else if ( rlArgs.script === 'tosrus' ) {
+				break;
+				
+			case 'tosrus':
 				
 				var selectors = [];
 				
@@ -198,9 +227,14 @@
 						} );
 					} );
 				}
-			}
+				
+				break;
 			
-		} );
+			default :
+			
+				break;	
+			
+		}
 
 	} );
 
