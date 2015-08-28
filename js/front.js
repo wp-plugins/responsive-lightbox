@@ -1,7 +1,7 @@
 ( function ( $ ) {
 
 	$( document ).on( 'ready' + rlArgs.customEvents, function () {
-		
+
 		// initialise event
 		$.event.trigger( {
 			type		: 'doResponsiveLightbox',
@@ -121,7 +121,7 @@
 					// for some browsers, `attr` is undefined; for others,
 					// `attr` is false.  Check for both.
 					if ( typeof attr !== typeof undefined && attr !== false ) {
-						var match = attr.match( new RegExp( rlArgs.selector + '\\[(gallery\\-(?:[\\da-z]{1,4}))\\]', 'ig' ) );
+						var match = attr.match( new RegExp( rlArgs.selector + '\\-(gallery\\-(?:[\\da-z]{1,4}))', 'ig' ) );
 						
 						if ( match !== null ) {
 							$( this ).attr( 'data-lightbox-gallery', match[0] );
@@ -220,6 +220,7 @@
 							},
 							// forced
 							show					: false,
+							buttons					: true,
 							caption					: {
 								add						: true,
 								attributes				: ["title"]
