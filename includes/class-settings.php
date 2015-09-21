@@ -24,9 +24,9 @@ class Responsive_Lightbox_Settings {
 		Responsive_Lightbox()->settings = $this;
 
 		// actions
-		add_action( 'admin_init', array( &$this, 'register_settings' ) );
-		add_action( 'admin_menu', array( &$this, 'admin_menu_options' ) );
-		add_action( 'after_setup_theme', array( &$this, 'load_defaults' ) );
+		add_action( 'admin_init', array( $this, 'register_settings' ) );
+		add_action( 'admin_menu', array( $this, 'admin_menu_options' ) );
+		add_action( 'after_setup_theme', array( $this, 'load_defaults' ) );
 	}
 
 	/**
@@ -139,7 +139,7 @@ class Responsive_Lightbox_Settings {
 			'settings' => array(
 				'option_group'	=> 'responsive_lightbox_settings',
 				'option_name'	=> 'responsive_lightbox_settings',
-				// 'callback'		=> array( &$this, 'validate_options' ),
+				// 'callback'		=> array( $this, 'validate_options' ),
 				'sections'		=> array(
 					'responsive_lightbox_settings' => array(
 						'title' 		=> __( 'General settings', 'responsive-lightbox' ),
@@ -259,7 +259,7 @@ class Responsive_Lightbox_Settings {
 			'configuration' => array(
 				'option_group'	=> 'responsive_lightbox_configuration',
 				'option_name'	=> 'responsive_lightbox_configuration',
-				// 'callback'		=> array( &$this, 'validate_options' ),
+				// 'callback'		=> array( $this, 'validate_options' ),
 				'sections'		=> array(
 					'responsive_lightbox_configuration' => array(
 						'title' 		=> __( 'Lightbox settings', 'responsive-lightbox' ) . ': ' . $this->scripts[Responsive_Lightbox()->options['settings']['script']]['name'],
@@ -893,7 +893,7 @@ class Responsive_Lightbox_Settings {
 		$this->tabs['addons'] = array(
 			'name'	 	=> __( 'Add-ons', 'responsive-lightbox' ),
 			'key'	 	=> 'responsive_lightbox_configuration',
-			'callback'	=>  array( &$this, 'addons_tab_cb' )
+			'callback'	=>  array( $this, 'addons_tab_cb' )
 		);
 		
 	}
@@ -905,7 +905,7 @@ class Responsive_Lightbox_Settings {
 	 */
 	public function admin_menu_options() {
 		add_options_page(
-			__( 'Responsive Lightbox', 'responsive-lightbox' ), __( 'Responsive Lightbox', 'responsive-lightbox' ), 'manage_options', 'responsive-lightbox', array( &$this, 'options_page' )
+			__( 'Responsive Lightbox', 'responsive-lightbox' ), __( 'Responsive Lightbox', 'responsive-lightbox' ), 'manage_options', 'responsive-lightbox', array( $this, 'options_page' )
 		);
 	}
 
@@ -1002,7 +1002,7 @@ class Responsive_Lightbox_Settings {
 			register_setting(
 				esc_attr( $setting_id ),
 				! empty( $setting['option_name'] ) ? esc_attr( $setting['option_name'] ) : $setting_id,
-				! empty( $setting['callback'] ) ? $setting['callback'] : array( &$this, 'validate_settings' )
+				! empty( $setting['callback'] ) ? $setting['callback'] : array( $this, 'validate_settings' )
 			);
 			
 			// register sections
@@ -1065,7 +1065,7 @@ class Responsive_Lightbox_Settings {
 					add_settings_field(
 						esc_attr( $field_id ),
 						! empty( $field['title'] ) ? esc_html( $field['title'] ) : '',
-						array( &$this, 'render_field' ),
+						array( $this, 'render_field' ),
 						! empty( $field['page'] ) ? esc_attr( $field['page'] ) : $setting_id,
 						! empty( $field['section'] ) ? esc_attr( $field['section'] ) : '',
 						$args
@@ -1085,13 +1085,13 @@ class Responsive_Lightbox_Settings {
 			register_setting(
 				'responsive_lightbox_licenses',
 				'responsive_lightbox_licenses',
-				array( &$this, 'validate_licenses' )
+				array( $this, 'validate_licenses' )
 			);
 			
 			add_settings_section( 
 				'responsive_lightbox_licenses',
 				__( 'Licenses', 'responsive-lightbox' ),
-				array( &$this, 'licenses_section_cb' ),
+				array( $this, 'licenses_section_cb' ),
 				'responsive_lightbox_licenses'
 			);
 			
@@ -1099,7 +1099,7 @@ class Responsive_Lightbox_Settings {
 				add_settings_field(
 					esc_attr( $id ),
 					$extension['name'],
-					array( &$this, 'license_field_cb' ),
+					array( $this, 'license_field_cb' ),
 					'responsive_lightbox_licenses',
 					'responsive_lightbox_licenses',
 					$extension

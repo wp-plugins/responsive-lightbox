@@ -2,7 +2,7 @@
 /*
 Plugin Name: Responsive Lightbox
 Description: Responsive Lightbox allows users to view larger versions of images and galleries in a lightbox (overlay) effect optimized for mobile devices.
-Version: 1.6.1
+Version: 1.6.3
 Author: dFactory
 Author URI: http://www.dfactory.eu/
 Plugin URI: http://www.dfactory.eu/plugins/responsive-lightbox/
@@ -36,7 +36,7 @@ include_once( RESPONSIVE_LIGHTBOX_PATH . 'includes/class-settings.php' );
  * Responsive Lightbox class.
  *
  * @class Responsive_Lightbox
- * @version	1.6.1
+ * @version	1.6.3
  */
 class Responsive_Lightbox {
 
@@ -146,7 +146,7 @@ class Responsive_Lightbox {
 				'pagination_type'			=> 'thumbnails'
 			)
 		),
-		'version'		 => '1.6.1'
+		'version'		 => '1.6.3'
 	);
 	public $options = array();
 	private $notices = array();
@@ -166,8 +166,8 @@ class Responsive_Lightbox {
 	}
 
 	public function __construct() {
-		register_activation_hook( __FILE__, array( &$this, 'activate_multisite' ) );
-		register_deactivation_hook( __FILE__, array( &$this, 'deactivate_multisite' ) );
+		register_activation_hook( __FILE__, array( $this, 'activate_multisite' ) );
+		register_deactivation_hook( __FILE__, array( $this, 'deactivate_multisite' ) );
 
 		// change from older versions
 		$db_version = get_option( 'responsive_lightbox_version' );
@@ -197,14 +197,14 @@ class Responsive_Lightbox {
 		}
 
 		// actions
-		add_action( 'plugins_loaded', array( &$this, 'load_textdomain' ) );
-		add_action( 'wp_enqueue_scripts', array( &$this, 'front_scripts_styles' ) );
-		add_action( 'admin_enqueue_scripts', array( &$this, 'admin_scripts_styles' ) );
-		add_action( 'admin_init', array( &$this, 'update_notices' ) );
-		add_action( 'admin_print_scripts', array( &$this, 'admin_inline_js' ), 999 );
+		add_action( 'plugins_loaded', array( $this, 'load_textdomain' ) );
+		add_action( 'wp_enqueue_scripts', array( $this, 'front_scripts_styles' ) );
+		add_action( 'admin_enqueue_scripts', array( $this, 'admin_scripts_styles' ) );
+		add_action( 'admin_init', array( $this, 'update_notices' ) );
+		add_action( 'admin_print_scripts', array( $this, 'admin_inline_js' ), 999 );
 
 		// filters
-		add_filter( 'plugin_action_links', array( &$this, 'plugin_settings_link' ), 10, 2 );
+		add_filter( 'plugin_action_links', array( $this, 'plugin_settings_link' ), 10, 2 );
 	}
 
 	/**
@@ -330,10 +330,10 @@ class Responsive_Lightbox {
 			'paragraph' => $paragraph
 		);
 
-		add_action( 'admin_notices', array( &$this, 'display_notice') );
+		add_action( 'admin_notices', array( $this, 'display_notice') );
 
 		if( $network )
-			add_action( 'network_admin_notices', array( &$this, 'display_notice') );
+			add_action( 'network_admin_notices', array( $this, 'display_notice') );
 	}
 	
 	/**
